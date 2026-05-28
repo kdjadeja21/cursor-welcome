@@ -1,13 +1,22 @@
 @import "tailwindcss";
 
+/* Cursor Community Brand Guidelines — Dark theme */
 :root {
-  --background: #020617;
-  --foreground: #e2e8f0;
+  --background: #14120b;
+  --foreground: #edecec;
+  --accent: #f54e00;
+  --card: #1b1913;
+  --card-01: #1d1b15;
+  --card-02: #201e18;
+  --card-03: #26241e;
+  --card-04: #2b2923;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-card: var(--card);
   --font-sans: var(--font-inter);
 }
 
@@ -19,7 +28,8 @@ body {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  /* "Cursor Gothic" is the official brand typeface — add the font files from the Brand Assets zip to use it */
+  font-family: "Cursor Gothic", var(--font-inter), system-ui, -apple-system, sans-serif;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -112,8 +122,8 @@ body {
 
 @keyframes fillLogo {
   to {
-    fill: #e0f2fe;
-    stroke: rgba(125, 211, 252, 0);
+    fill: #edecec;
+    stroke: rgba(245, 78, 0, 0);
   }
 }
 
@@ -194,9 +204,9 @@ body {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(1200px 800px at 20% 10%, rgba(56, 189, 248, 0.08), transparent 60%),
-    radial-gradient(1000px 700px at 80% 90%, rgba(99, 102, 241, 0.1), transparent 60%),
-    linear-gradient(135deg, #0f172a 0%, #020617 100%);
+    radial-gradient(1200px 800px at 20% 10%, rgba(245, 78, 0, 0.07), transparent 60%),
+    radial-gradient(1000px 700px at 80% 90%, rgba(245, 78, 0, 0.05), transparent 60%),
+    linear-gradient(135deg, #1b1913 0%, #14120b 100%);
   z-index: -2;
 }
 
@@ -206,7 +216,7 @@ body {
   inset: -20%;
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(125, 211, 252, 0.06),
+    rgba(245, 78, 0, 0.05),
     transparent 50%
   );
   animation: drift 18s ease-in-out infinite alternate;
@@ -221,9 +231,9 @@ body {
 
 .welcome-particle {
   position: absolute;
-  background: rgba(186, 230, 253, 0.55);
+  background: rgba(245, 78, 0, 0.55);
   border-radius: 50%;
-  box-shadow: 0 0 6px rgba(186, 230, 253, 0.6);
+  box-shadow: 0 0 6px rgba(245, 78, 0, 0.5);
   animation: float linear infinite;
   opacity: 0;
 }
@@ -265,8 +275,8 @@ body {
   transform: translateX(-50%);
   background: radial-gradient(
     ellipse at center,
-    rgba(56, 189, 248, 0.35),
-    rgba(56, 189, 248, 0) 70%
+    rgba(245, 78, 0, 0.35),
+    rgba(245, 78, 0, 0) 70%
   );
   filter: blur(6px);
   opacity: 0;
@@ -282,8 +292,8 @@ body {
 }
 
 .welcome-logo path {
-  fill: rgba(125, 211, 252, 0);
-  stroke: #7dd3fc;
+  fill: rgba(245, 78, 0, 0);
+  stroke: #f54e00;
   stroke-width: 6;
   stroke-linejoin: round;
   stroke-linecap: round;
@@ -296,8 +306,8 @@ body {
 
 .welcome-logo-wrap.lit .welcome-logo {
   filter:
-    drop-shadow(0 0 6px rgba(125, 211, 252, 0.3))
-    drop-shadow(0 0 14px rgba(56, 189, 248, 0.18));
+    drop-shadow(0 0 6px rgba(245, 78, 0, 0.3))
+    drop-shadow(0 0 14px rgba(245, 78, 0, 0.18));
 }
 
 .welcome-text-block {
@@ -317,10 +327,7 @@ body {
   animation:
     brandIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 4s forwards,
     brandSpacing 1.4s ease-out 4s forwards;
-  background: linear-gradient(90deg, #7dd3fc, #c4b5fd, #7dd3fc);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #f54e00;
 }
 
 .welcome-heading {
@@ -328,7 +335,7 @@ body {
   font-weight: 700;
   line-height: 1.15;
   max-width: 18ch;
-  color: #f8fafc;
+  color: #edecec;
   letter-spacing: -0.01em;
 }
 
@@ -343,7 +350,7 @@ body {
 .welcome-accent {
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #7dd3fc, transparent);
+  background: linear-gradient(90deg, transparent, #f54e00, transparent);
   border-radius: 2px;
   animation: accentGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 5.7s forwards;
 }
@@ -351,16 +358,16 @@ body {
 .welcome-date {
   font-size: clamp(0.95rem, 1.8vw, 1.15rem);
   font-weight: 500;
-  color: #cbd5e1;
+  color: rgba(237, 236, 236, 0.8);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 0.55rem 1.1rem;
-  border: 1px solid rgba(125, 211, 252, 0.25);
+  border: 1px solid rgba(245, 78, 0, 0.25);
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.55);
+  background: rgba(27, 25, 19, 0.55);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 0 24px rgba(56, 189, 248, 0.08) inset;
+  box-shadow: 0 0 24px rgba(245, 78, 0, 0.08) inset;
   opacity: 0;
   transform: translateY(14px);
   animation: dateIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 6s forwards;
@@ -370,11 +377,11 @@ body {
   display: inline-block;
   width: 6px;
   height: 6px;
-  background: #7dd3fc;
+  background: #f54e00;
   border-radius: 50%;
   margin-right: 0.6rem;
   vertical-align: middle;
-  box-shadow: 0 0 10px #7dd3fc;
+  box-shadow: 0 0 10px #f54e00;
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -396,8 +403,8 @@ body {
   gap: 0.55rem;
   padding: 0.45rem 0.9rem;
   border-radius: 999px;
-  border: 1px solid rgba(125, 211, 252, 0.18);
-  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(245, 78, 0, 0.18);
+  background: rgba(27, 25, 19, 0.45);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
@@ -407,13 +414,13 @@ body {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #94a3b8;
+  color: rgba(237, 236, 236, 0.6);
 }
 
 .welcome-sponsor-name {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: #edecec;
 }
 
 /* ---------- Sidebar ---------- */
@@ -421,7 +428,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 40;
-  background: rgba(2, 6, 23, 0.55);
+  background: rgba(20, 18, 11, 0.55);
   opacity: 0;
   animation: backdropIn 0.25s ease forwards;
 }
@@ -436,8 +443,8 @@ body {
   height: 100%;
   transform: translateX(100%);
   animation: sidebarIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  background: rgba(15, 23, 42, 0.96);
-  border-left: 1px solid rgba(125, 211, 252, 0.15);
+  background: rgba(27, 25, 19, 0.96);
+  border-left: 1px solid rgba(245, 78, 0, 0.15);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: -8px 0 32px rgba(0, 0, 0, 0.35);
@@ -456,7 +463,7 @@ body {
 
   .welcome-logo path {
     stroke-dashoffset: 0;
-    fill: #e0f2fe;
+    fill: #edecec;
   }
 
   .welcome-logo-wrap {

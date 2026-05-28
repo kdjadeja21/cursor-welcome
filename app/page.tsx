@@ -191,7 +191,7 @@ function WelcomeDisplay({ config }: { config: Config }) {
               className="word"
               style={{
                 animationDelay: `${4.7 + index * 0.12}s`,
-                color: index >= accentStart ? "#7dd3fc" : undefined,
+                color: index >= accentStart ? "#f54e00" : undefined,
               }}
             >
               {word}
@@ -273,14 +273,14 @@ function EditSidebar({
         onClick={onClose}
       />
       <aside className="sidebar-panel" aria-label="Welcome screen editor">
-        <div className="flex items-center justify-between border-b border-sky-400/15 px-5 py-4">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.14em] text-sky-200">
+        <div className="flex items-center justify-between border-b border-[#f54e00]/15 px-5 py-4">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.14em] text-[#f54e00]">
             Edit Welcome
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md px-2 py-1 text-sm text-slate-400 transition hover:bg-slate-800 hover:text-slate-200"
+            className="rounded-md px-2 py-1 text-sm text-[#edecec]/60 transition hover:bg-[#26241e] hover:text-[#edecec]"
           >
             Close
           </button>
@@ -289,7 +289,7 @@ function EditSidebar({
         <div className="flex-1 overflow-y-auto px-5 py-5">
           <div className="space-y-5">
             <label className="block space-y-2">
-              <span className="text-xs font-medium uppercase tracking-[0.12em] text-slate-400">
+              <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
                 Brand
               </span>
               <input
@@ -298,13 +298,13 @@ function EditSidebar({
                 onChange={(event) =>
                   onChange({ ...config, brand: event.target.value })
                 }
-                className="w-full rounded-lg border border-sky-400/20 bg-slate-900/80 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-sky-400/50"
+                className="w-full rounded-lg border border-[#f54e00]/20 bg-[#1b1913]/80 px-3 py-2 text-sm text-[#edecec] outline-none transition focus:border-[#f54e00]/50"
                 placeholder="Cursor Ahmedabad"
               />
             </label>
 
             <label className="block space-y-2">
-              <span className="text-xs font-medium uppercase tracking-[0.12em] text-slate-400">
+              <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
                 Title
               </span>
               <textarea
@@ -313,17 +313,17 @@ function EditSidebar({
                   onChange({ ...config, heading: event.target.value })
                 }
                 rows={3}
-                className="w-full resize-none rounded-lg border border-sky-400/20 bg-slate-900/80 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-sky-400/50"
+                className="w-full resize-none rounded-lg border border-[#f54e00]/20 bg-[#1b1913]/80 px-3 py-2 text-sm text-[#edecec] outline-none transition focus:border-[#f54e00]/50"
                 placeholder="Welcome to the Cursor Community Workshop"
               />
             </label>
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
                   Date
                 </span>
-                <label className="flex items-center gap-2 text-xs text-slate-300">
+                <label className="flex items-center gap-2 text-xs text-[#edecec]/80">
                   <input
                     type="checkbox"
                     checked={config.useAutoDate}
@@ -333,7 +333,7 @@ function EditSidebar({
                         useAutoDate: event.target.checked,
                       })
                     }
-                    className="rounded border-sky-400/30 bg-slate-900"
+                    className="rounded border-[#f54e00]/30 bg-[#1b1913]"
                   />
                   Use today
                 </label>
@@ -345,16 +345,16 @@ function EditSidebar({
                 onChange={(event) =>
                   onChange({ ...config, customDate: event.target.value })
                 }
-                className="w-full rounded-lg border border-sky-400/20 bg-slate-900/80 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-sky-400/50 disabled:cursor-not-allowed disabled:opacity-45"
+                className="w-full rounded-lg border border-[#f54e00]/20 bg-[#1b1913]/80 px-3 py-2 text-sm text-[#edecec] outline-none transition focus:border-[#f54e00]/50 disabled:cursor-not-allowed disabled:opacity-45"
               />
             </div>
 
             <label className="block space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
                   Interval Time
                 </span>
-                <span className="text-xs text-sky-300">
+                <span className="text-xs text-[#f54e00]">
                   {config.intervalSec}s
                 </span>
               </div>
@@ -370,30 +370,30 @@ function EditSidebar({
                     intervalSec: Number(event.target.value),
                   })
                 }
-                className="w-full accent-sky-400"
+                className="w-full accent-[#f54e00]"
               />
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-[#edecec]/50">
                 Animation replay interval (5–60 seconds)
               </p>
             </label>
 
-            <div className="space-y-3 border-t border-sky-400/10 pt-4">
+            <div className="space-y-3 border-t border-[#f54e00]/10 pt-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium uppercase tracking-[0.12em] text-slate-400">
+                <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
                   Additional Details
                 </span>
                 <button
                   type="button"
                   onClick={addSponsor}
                   disabled={config.sponsors.length >= MAX_SPONSORS}
-                  className="rounded-md border border-sky-400/25 px-2.5 py-1 text-xs font-medium text-sky-200 transition hover:bg-sky-400/10 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="rounded-md border border-[#f54e00]/25 px-2.5 py-1 text-xs font-medium text-[#f54e00] transition hover:bg-[#f54e00]/10 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Add Sponsor
                 </button>
               </div>
 
               {config.sponsors.length === 0 && (
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-[#edecec]/50">
                   Add up to 5 sponsors with a title and name.
                 </p>
               )}
@@ -402,16 +402,16 @@ function EditSidebar({
                 {config.sponsors.map((sponsor, index) => (
                   <div
                     key={index}
-                    className="rounded-lg border border-sky-400/15 bg-slate-900/50 p-3"
+                    className="rounded-lg border border-[#f54e00]/15 bg-[#1b1913]/50 p-3"
                   >
                     <div className="mb-2 flex items-center justify-between">
-                      <span className="text-xs font-medium text-slate-400">
+                      <span className="text-xs font-medium text-[#edecec]/60">
                         Sponsor {index + 1}
                       </span>
                       <button
                         type="button"
                         onClick={() => removeSponsor(index)}
-                        className="text-xs text-slate-500 transition hover:text-red-300"
+                        className="text-xs text-[#edecec]/50 transition hover:text-red-300"
                       >
                         Remove
                       </button>
@@ -424,7 +424,7 @@ function EditSidebar({
                           updateSponsor(index, "title", event.target.value)
                         }
                         placeholder="Title (e.g. Gold Sponsor)"
-                        className="w-full rounded-md border border-sky-400/20 bg-slate-950/80 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-sky-400/50"
+                        className="w-full rounded-md border border-[#f54e00]/20 bg-[#14120b]/80 px-3 py-2 text-sm text-[#edecec] outline-none transition focus:border-[#f54e00]/50"
                       />
                       <input
                         type="text"
@@ -433,7 +433,7 @@ function EditSidebar({
                           updateSponsor(index, "name", event.target.value)
                         }
                         placeholder="Name (e.g. Acme Corp)"
-                        className="w-full rounded-md border border-sky-400/20 bg-slate-950/80 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-sky-400/50"
+                        className="w-full rounded-md border border-[#f54e00]/20 bg-[#14120b]/80 px-3 py-2 text-sm text-[#edecec] outline-none transition focus:border-[#f54e00]/50"
                       />
                     </div>
                   </div>
@@ -443,7 +443,7 @@ function EditSidebar({
           </div>
         </div>
 
-        <div className="border-t border-sky-400/10 px-5 py-4">
+        <div className="border-t border-[#f54e00]/10 px-5 py-4">
           <button
             type="button"
             onClick={onReset}
@@ -577,14 +577,14 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setIsEditing(true)}
-            className="rounded-full border border-sky-400/25 bg-slate-950/70 px-4 py-2 text-sm font-medium text-sky-100 backdrop-blur transition hover:border-sky-400/45 hover:bg-slate-900/80"
+            className="rounded-full border border-[#f54e00]/25 bg-[#14120b]/70 px-4 py-2 text-sm font-medium text-[#edecec] backdrop-blur transition hover:border-[#f54e00]/45 hover:bg-[#1b1913]/80"
           >
             Edit
           </button>
           <button
             type="button"
             onClick={toggleFullscreen}
-            className="rounded-full border border-sky-400/25 bg-slate-950/70 px-4 py-2 text-sm font-medium text-sky-100 backdrop-blur transition hover:border-sky-400/45 hover:bg-slate-900/80"
+            className="rounded-full border border-[#f54e00]/25 bg-[#14120b]/70 px-4 py-2 text-sm font-medium text-[#edecec] backdrop-blur transition hover:border-[#f54e00]/45 hover:bg-[#1b1913]/80"
           >
             Preview
           </button>
