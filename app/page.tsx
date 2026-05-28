@@ -191,7 +191,7 @@ function WelcomeDisplay({ config }: { config: Config }) {
               className="word"
               style={{
                 animationDelay: `${4.7 + index * 0.12}s`,
-                color: index >= accentStart ? "#f54e00" : undefined,
+                color: index >= accentStart ? "#edecec" : undefined,
               }}
             >
               {word}

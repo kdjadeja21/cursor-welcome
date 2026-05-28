@@ -327,7 +327,7 @@ body {
   animation:
     brandIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 4s forwards,
     brandSpacing 1.4s ease-out 4s forwards;
-  color: #f54e00;
+  color: #edecec;
 }
 
 .welcome-heading {
