@@ -13,6 +13,7 @@ interface Config {
   useAutoDate: boolean;
   customDate: string;
   intervalSec: number;
+  intervalEnabled: boolean;
   sponsors: Sponsor[];
 }
 
@@ -23,6 +24,7 @@ function createDefaultConfig(): Config {
     useAutoDate: true,
     customDate: new Date().toISOString().slice(0, 10),
     intervalSec: 15,
+    intervalEnabled: true,
     sponsors: [],
   };
 }
@@ -64,6 +66,10 @@ function parseStoredConfig(raw: unknown): Config | null {
         ? data.customDate
         : DEFAULT_CONFIG.customDate,
     intervalSec,
+    intervalEnabled:
+      typeof data.intervalEnabled === "boolean"
+        ? data.intervalEnabled
+        : DEFAULT_CONFIG.intervalEnabled,
     sponsors,
   };
 }
@@ -349,11 +355,28 @@ function EditSidebar({
               />
             </div>
 
-            <label className="block space-y-2">
+            <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
                   Interval Time
                 </span>
+                <label className="flex items-center gap-2 text-xs text-[#edecec]/80">
+                  <input
+                    type="checkbox"
+                    checked={config.intervalEnabled}
+                    onChange={(event) =>
+                      onChange({
+                        ...config,
+                        intervalEnabled: event.target.checked,
+                      })
+                    }
+                    className="rounded border-[#f54e00]/30 bg-[#1b1913]"
+                  />
+                  Auto replay
+                </label>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-[#edecec]/50">Replay every</span>
                 <span className="text-xs text-[#f54e00]">
                   {config.intervalSec}s
                 </span>
@@ -364,18 +387,21 @@ function EditSidebar({
                 max={60}
                 step={1}
                 value={config.intervalSec}
+                disabled={!config.intervalEnabled}
                 onChange={(event) =>
                   onChange({
                     ...config,
                     intervalSec: Number(event.target.value),
                   })
                 }
-                className="w-full accent-[#f54e00]"
+                className="w-full accent-[#f54e00] disabled:cursor-not-allowed disabled:opacity-45"
               />
               <p className="text-xs text-[#edecec]/50">
-                Animation replay interval (5–60 seconds)
+                {config.intervalEnabled
+                  ? "Animation replay interval (5–60 seconds)"
+                  : "Auto replay is off — the animation plays once."}
               </p>
-            </label>
+            </div>
 
             <div className="space-y-3 border-t border-[#f54e00]/10 pt-4">
               <div className="flex items-center justify-between">
@@ -487,13 +513,15 @@ export default function Home() {
   }, [config, isHydrated]);
 
   useEffect(() => {
+    if (!config.intervalEnabled) return;
+
     const intervalMs = Math.max(config.intervalSec, 5) * 1000;
     const timer = window.setInterval(() => {
       setCycleKey((current) => current + 1);
     }, intervalMs);
 
     return () => window.clearInterval(timer);
-  }, [config.intervalSec]);
+  }, [config.intervalSec, config.intervalEnabled]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
