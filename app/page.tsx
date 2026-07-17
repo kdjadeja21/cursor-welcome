@@ -91,6 +91,13 @@ function saveConfigToStorage(config: Config) {
     // Ignore quota or private-mode errors.
   }
 }
+
+function buildShareUrl(config: Config): string {
+  const params = new URLSearchParams();
+  params.set("data", JSON.stringify(config));
+  return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+}
+
 const LOGO_PATH =
   "m466.383 137.073-206.469-119.2034c-6.63-3.8287-14.811-3.8287-21.441 0l-206.4586 119.2034c-5.5734 3.218-9.0144 9.169-9.0144 15.615v240.375c0 6.436 3.441 12.397 9.0144 15.615l206.4686 119.203c6.63 3.829 14.811 3.829 21.441 0l206.468-119.203c5.574-3.218 9.015-9.17 9.015-15.615v-240.375c0-6.436-3.441-12.397-9.015-15.615zm-12.969 25.25-199.316 345.223c-1.347 2.326-4.904 1.376-4.904-1.319v-226.048c0-4.517-2.414-8.695-6.33-10.963l-195.7577-113.019c-2.3263-1.347-1.3764-4.905 1.3182-4.905h398.6305c5.661 0 9.199 6.136 6.368 11.041h-.009z";
 
@@ -500,10 +507,33 @@ export default function Home() {
   const [isEditing, setIsEditing] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [cycleKey, setCycleKey] = useState(0);
+  const [shareCopied, setShareCopied] = useState(false);
 
   useEffect(() => {
-    const stored = loadConfigFromStorage();
-    if (stored) setConfig(stored);
+    const params = new URLSearchParams(window.location.search);
+    const sharedParam = params.get("data");
+    let nextConfig: Config | null = null;
+
+    if (sharedParam) {
+      try {
+        nextConfig = parseStoredConfig(JSON.parse(sharedParam));
+      } catch {
+        nextConfig = null;
+      }
+    }
+
+    if (!nextConfig) {
+      nextConfig = loadConfigFromStorage();
+    }
+
+    if (nextConfig) setConfig(nextConfig);
+
+    if (sharedParam) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("data");
+      window.history.replaceState({}, "", url.pathname + url.search);
+    }
+
     setIsHydrated(true);
   }, []);
 
@@ -557,6 +587,18 @@ export default function Home() {
     setConfig(createDefaultConfig());
     setCycleKey((current) => current + 1);
   }, []);
+
+  const handleShare = useCallback(async () => {
+    const shareUrl = buildShareUrl(config);
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setShareCopied(true);
+      window.setTimeout(() => setShareCopied(false), 2000);
+    } catch {
+      window.prompt("Copy this link:", shareUrl);
+    }
+  }, [config]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -615,6 +657,13 @@ export default function Home() {
             className="rounded-full border border-[#f54e00]/25 bg-[#14120b]/70 px-4 py-2 text-sm font-medium text-[#edecec] backdrop-blur transition hover:border-[#f54e00]/45 hover:bg-[#1b1913]/80"
           >
             Preview
+          </button>
+          <button
+            type="button"
+            onClick={handleShare}
+            className="rounded-full border border-[#f54e00]/25 bg-[#14120b]/70 px-4 py-2 text-sm font-medium text-[#edecec] backdrop-blur transition hover:border-[#f54e00]/45 hover:bg-[#1b1913]/80"
+          >
+            {shareCopied ? "Copied!" : "Share"}
           </button>
         </div>
       )}
