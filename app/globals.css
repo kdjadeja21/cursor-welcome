@@ -423,6 +423,53 @@ body {
   color: #edecec;
 }
 
+.welcome-footer {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  z-index: 20;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(237, 236, 236, 0.38);
+  white-space: nowrap;
+}
+
+.welcome-footer-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.welcome-footer-country {
+  gap: 0.45rem;
+}
+
+.welcome-footer-flag {
+  flex-shrink: 0;
+  border-radius: 1px;
+  box-shadow: 0 0 0 0.5px rgba(237, 236, 236, 0.12);
+}
+
+.welcome-footer-sep {
+  color: rgba(237, 236, 236, 0.22);
+}
+
+.welcome-footer a {
+  color: rgba(237, 236, 236, 0.55);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.welcome-footer a:hover {
+  color: #f54e00;
+}
+
 /* ---------- Sidebar ---------- */
 .sidebar-backdrop {
   position: fixed;
