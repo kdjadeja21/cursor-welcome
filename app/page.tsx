@@ -490,6 +490,25 @@ function EditSidebar({
   );
 }
 
+const DEVELOPER_LINK = "https://linktr.ee/krushnasinh";
+
+function WelcomeFooter() {
+  return (
+    <footer className="welcome-footer">
+      Crafted by{" "}
+      <a
+        href={DEVELOPER_LINK}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Krushnasinh Jadeja on Linktree"
+      >
+        Krushnasinh Jadeja
+      </a>{" "}
+      · India · Built with Cursor
+    </footer>
+  );
+}
+
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
   const tag = target.tagName;
@@ -641,6 +660,7 @@ export default function Home() {
       <div className="welcome-bg" aria-hidden="true" />
       <Particles />
       <WelcomeDisplay key={cycleKey} config={config} />
+      <WelcomeFooter />
 
       {!isFullscreen && (
         <div className="fixed right-5 top-5 z-30 flex gap-2">

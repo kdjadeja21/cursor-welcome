@@ -423,6 +423,30 @@ body {
   color: #edecec;
 }
 
+.welcome-footer {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  z-index: 20;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(237, 236, 236, 0.38);
+  white-space: nowrap;
+}
+
+.welcome-footer a {
+  color: rgba(237, 236, 236, 0.55);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.welcome-footer a:hover {
+  color: #f54e00;
+}
+
 /* ---------- Sidebar ---------- */
 .sidebar-backdrop {
   position: fixed;
