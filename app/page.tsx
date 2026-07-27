@@ -492,19 +492,58 @@ function EditSidebar({
 
 const DEVELOPER_LINK = "https://linktr.ee/krushnasinh";
 
+function IndiaFlag({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 21 14"
+      width="16"
+      height="11"
+      aria-hidden="true"
+      role="img"
+    >
+      <title>India flag</title>
+      <rect width="21" height="14" fill="#138808" />
+      <rect width="21" height="9.333" fill="#ffffff" />
+      <rect width="21" height="4.667" fill="#ff9933" />
+      <circle
+        cx="10.5"
+        cy="7"
+        r="2.1"
+        fill="none"
+        stroke="#000080"
+        strokeWidth="0.45"
+      />
+      <circle cx="10.5" cy="7" r="0.35" fill="#000080" />
+    </svg>
+  );
+}
+
 function WelcomeFooter() {
   return (
     <footer className="welcome-footer">
-      Crafted by{" "}
-      <a
-        href={DEVELOPER_LINK}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Krushnasinh Jadeja on Linktree"
-      >
-        Krushnasinh Jadeja
-      </a>{" "}
-      · India · Built with Cursor
+      <span className="welcome-footer-line">
+        Crafted by{" "}
+        <a
+          href={DEVELOPER_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Krushnasinh Jadeja on Linktree"
+        >
+          Krushnasinh Jadeja
+        </a>
+      </span>
+      <span className="welcome-footer-sep" aria-hidden="true">
+        ·
+      </span>
+      <span className="welcome-footer-line welcome-footer-country">
+        <IndiaFlag className="welcome-footer-flag" />
+        India
+      </span>
+      <span className="welcome-footer-sep" aria-hidden="true">
+        ·
+      </span>
+      <span className="welcome-footer-line">Built with Cursor</span>
     </footer>
   );
 }
@@ -660,7 +699,7 @@ export default function Home() {
       <div className="welcome-bg" aria-hidden="true" />
       <Particles />
       <WelcomeDisplay key={cycleKey} config={config} />
-      <WelcomeFooter />
+      {!isFullscreen && <WelcomeFooter />}
 
       {!isFullscreen && (
         <div className="fixed right-5 top-5 z-30 flex gap-2">
