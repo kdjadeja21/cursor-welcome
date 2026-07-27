@@ -14,33 +14,32 @@ async function showStep(page, stepNum, title, subtitle = "") {
         overlay.id = "demo-step-overlay";
         overlay.style.cssText = `
           position: fixed;
-          bottom: 28px;
-          left: 50%;
-          transform: translateX(-50%);
+          top: 20px;
+          left: 20px;
           z-index: 99999;
-          background: rgba(20, 18, 11, 0.94);
-          border: 1px solid rgba(245, 78, 0, 0.4);
-          border-radius: 14px;
-          padding: 18px 28px;
-          max-width: min(720px, 92vw);
-          text-align: center;
+          background: rgba(20, 18, 11, 0.92);
+          border: 1px solid rgba(245, 78, 0, 0.35);
+          border-radius: 10px;
+          padding: 12px 16px;
+          width: min(300px, calc(100vw - 220px));
+          text-align: left;
           font-family: ui-sans-serif, system-ui, sans-serif;
-          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
           pointer-events: none;
         `;
         document.body.appendChild(overlay);
       }
 
       overlay.innerHTML = `
-        <div style="color: #f54e00; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 8px;">
+        <div style="color: #f54e00; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px;">
           Step ${stepNum}
         </div>
-        <div style="color: #edecec; font-size: 17px; font-weight: 600; line-height: 1.35; margin-bottom: ${subtitle ? "6px" : "0"};">
+        <div style="color: #edecec; font-size: 14px; font-weight: 600; line-height: 1.3; margin-bottom: ${subtitle ? "4px" : "0"};">
           ${title}
         </div>
         ${
           subtitle
-            ? `<div style="color: rgba(237, 236, 236, 0.68); font-size: 14px; line-height: 1.4;">${subtitle}</div>`
+            ? `<div style="color: rgba(237, 236, 236, 0.62); font-size: 12px; line-height: 1.35;">${subtitle}</div>`
             : ""
         }
       `;
