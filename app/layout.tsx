@@ -20,9 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} min-h-full antialiased`}>
       <Analytics />
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full min-h-dvh flex flex-col">{children}</body>
     </html>
   );
 }
