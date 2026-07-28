@@ -196,6 +196,11 @@ body {
 
 /* ---------- Welcome screen layout ---------- */
 .welcome-root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
   opacity: 0;
   animation: pageFade 1.2s ease-out 0.1s forwards;
 }
@@ -240,12 +245,13 @@ body {
 
 .welcome-stage {
   position: relative;
-  min-height: 100vh;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem 1.25rem;
+  box-sizing: border-box;
   text-align: center;
   gap: clamp(0.25rem, 0.6vw, 0.5rem);
 }
@@ -424,26 +430,32 @@ body {
 }
 
 .welcome-footer {
-  position: fixed;
-  left: 50%;
-  bottom: 1.25rem;
+  position: relative;
   z-index: 20;
-  transform: translateX(-50%);
-  display: inline-flex;
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  gap: 0.55rem;
-  font-size: 0.72rem;
+  column-gap: 0.55rem;
+  row-gap: 0.3rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem max(0.85rem, env(safe-area-inset-bottom));
+  font-size: clamp(0.58rem, 2.2vw, 0.72rem);
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(237, 236, 236, 0.38);
-  white-space: nowrap;
+  text-align: center;
 }
 
 .welcome-footer-line {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  min-width: 0;
 }
 
 .welcome-footer-country {
@@ -452,12 +464,15 @@ body {
 
 .welcome-footer-flag {
   flex-shrink: 0;
+  width: 14px;
+  height: auto;
   border-radius: 1px;
   box-shadow: 0 0 0 0.5px rgba(237, 236, 236, 0.12);
 }
 
 .welcome-footer-sep {
   color: rgba(237, 236, 236, 0.22);
+  flex-shrink: 0;
 }
 
 .welcome-footer a {
@@ -468,6 +483,19 @@ body {
 
 .welcome-footer a:hover {
   color: #f54e00;
+}
+
+@media (max-width: 520px) {
+  .welcome-footer {
+    flex-direction: column;
+    letter-spacing: 0.08em;
+    row-gap: 0.35rem;
+    padding-inline: 0.85rem;
+  }
+
+  .welcome-footer-sep {
+    display: none;
+  }
 }
 
 /* ---------- Sidebar ---------- */
