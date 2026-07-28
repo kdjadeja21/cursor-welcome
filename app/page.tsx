@@ -491,6 +491,7 @@ function EditSidebar({
 }
 
 const DEVELOPER_LINK = "https://linktr.ee/krushnasinh";
+const CURSOR_LINK = "https://cursor.com/";
 
 function IndiaFlag({ className }: { className?: string }) {
   return (
@@ -543,7 +544,17 @@ function WelcomeFooter() {
       <span className="welcome-footer-sep" aria-hidden="true">
         ·
       </span>
-      <span className="welcome-footer-line">Built with Cursor</span>
+      <span className="welcome-footer-line">
+        Built with{" "}
+        <a
+          href={CURSOR_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Cursor"
+        >
+          Cursor
+        </a>
+      </span>
     </footer>
   );
 }

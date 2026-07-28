@@ -20,17 +20,21 @@
   --font-sans: var(--font-inter);
 }
 
-html,
-body {
-  height: 100%;
+html {
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
+  min-height: 100%;
+  min-height: 100dvh;
   background: var(--background);
   color: var(--foreground);
   /* "Cursor Gothic" is the official brand typeface — add the font files from the Brand Assets zip to use it */
   font-family: "Cursor Gothic", var(--font-inter), system-ui, -apple-system, sans-serif;
-  overflow: hidden;
+  /* Allow vertical scroll when zoom/content exceeds the viewport */
+  overflow-x: hidden;
+  overflow-y: auto;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -196,6 +200,11 @@ body {
 
 /* ---------- Welcome screen layout ---------- */
 .welcome-root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
   opacity: 0;
   animation: pageFade 1.2s ease-out 0.1s forwards;
 }
@@ -240,20 +249,27 @@ body {
 
 .welcome-stage {
   position: relative;
-  min-height: 100vh;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Prefer centered layout; fall back to start so zoomed content isn't clipped */
   justify-content: center;
+  justify-content: safe center;
+  width: 100%;
+  max-width: 100%;
   padding: 2rem 1.25rem;
+  box-sizing: border-box;
   text-align: center;
   gap: clamp(0.25rem, 0.6vw, 0.5rem);
+  overflow-x: hidden;
 }
 
 .welcome-logo-wrap {
   position: relative;
-  width: clamp(220px, 36vw, 360px);
-  height: clamp(220px, 36vw, 360px);
+  width: clamp(120px, min(32vw, 28vh), 360px);
+  height: clamp(120px, min(32vw, 28vh), 360px);
+  max-width: 100%;
   display: grid;
   place-items: center;
   opacity: 0;
@@ -315,10 +331,14 @@ body {
   flex-direction: column;
   align-items: center;
   gap: clamp(0.9rem, 2vw, 1.4rem);
+  width: 100%;
+  max-width: min(920px, 100%);
+  box-sizing: border-box;
+  padding-inline: 0.15rem;
 }
 
 .welcome-brand {
-  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+  font-size: clamp(0.95rem, 2.4vw, 1.5rem);
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -328,23 +348,33 @@ body {
     brandIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 4s forwards,
     brandSpacing 1.4s ease-out 4s forwards;
   color: #edecec;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .welcome-heading {
-  font-size: clamp(1.6rem, 4.6vw, 3.4rem);
+  font-size: clamp(1.25rem, 4.6vw, 3.4rem);
   font-weight: 700;
   line-height: 1.15;
-  max-width: 18ch;
+  width: 100%;
+  max-width: min(18ch, 100%);
   color: #edecec;
   letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .welcome-heading .word {
   display: inline-block;
+  max-width: 100%;
   opacity: 0;
   transform: translateY(18px);
   animation: wordIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   margin-right: 0.35ch;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .welcome-accent {
@@ -424,26 +454,33 @@ body {
 }
 
 .welcome-footer {
-  position: fixed;
-  left: 50%;
-  bottom: 1.25rem;
+  position: relative;
   z-index: 20;
-  transform: translateX(-50%);
-  display: inline-flex;
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  gap: 0.55rem;
-  font-size: 0.72rem;
+  column-gap: 0.55rem;
+  row-gap: 0.3rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem max(0.85rem, env(safe-area-inset-bottom));
+  font-size: clamp(0.58rem, 2.2vw, 0.72rem);
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(237, 236, 236, 0.38);
-  white-space: nowrap;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .welcome-footer-line {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  min-width: 0;
 }
 
 .welcome-footer-country {
@@ -452,12 +489,15 @@ body {
 
 .welcome-footer-flag {
   flex-shrink: 0;
+  width: 14px;
+  height: auto;
   border-radius: 1px;
   box-shadow: 0 0 0 0.5px rgba(237, 236, 236, 0.12);
 }
 
 .welcome-footer-sep {
   color: rgba(237, 236, 236, 0.22);
+  flex-shrink: 0;
 }
 
 .welcome-footer a {
@@ -468,6 +508,19 @@ body {
 
 .welcome-footer a:hover {
   color: #f54e00;
+}
+
+@media (max-width: 520px) {
+  .welcome-footer {
+    flex-direction: column;
+    letter-spacing: 0.08em;
+    row-gap: 0.35rem;
+    padding-inline: 0.85rem;
+  }
+
+  .welcome-footer-sep {
+    display: none;
+  }
 }
 
 /* ---------- Sidebar ---------- */
