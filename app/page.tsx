@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface Sponsor {
   title: string;
@@ -123,8 +123,19 @@ function splitHeadingWords(heading: string): string[] {
 }
 
 function Particles() {
-  const particles = useMemo(
-    () =>
+  const [particles, setParticles] = useState<
+    Array<{
+      size: number;
+      left: number;
+      top: number;
+      duration: number;
+      delay: number;
+      opacity: string;
+    }>
+  >([]);
+
+  useEffect(() => {
+    setParticles(
       Array.from({ length: 24 }, () => {
         const size = Math.random() * 2 + 1;
         const dur = 12 + Math.random() * 16;
@@ -137,8 +148,8 @@ function Particles() {
           opacity: (0.3 + Math.random() * 0.5).toFixed(2),
         };
       }),
-    [],
-  );
+    );
+  }, []);
 
   return (
     <div className="welcome-particles" aria-hidden="true">
@@ -285,7 +296,11 @@ function EditSidebar({
         aria-label="Close editor"
         onClick={onClose}
       />
-      <aside className="sidebar-panel" aria-label="Welcome screen editor">
+      <aside
+        className="sidebar-panel"
+        aria-label="Welcome screen editor"
+        data-demo-focus="welcome-editor"
+      >
         <div className="flex items-center justify-between border-b border-[#f54e00]/15 px-5 py-4">
           <h2 className="text-sm font-semibold uppercase tracking-[0.14em] text-[#f54e00]">
             Edit Welcome
@@ -577,11 +592,17 @@ export default function Home() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [cycleKey, setCycleKey] = useState(0);
   const [shareCopied, setShareCopied] = useState(false);
+  const [demoCapture, setDemoCapture] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const sharedParam = params.get("data");
+    const isDemoCapture = params.get("demo") === "1";
     let nextConfig: Config | null = null;
+
+    if (isDemoCapture) {
+      setDemoCapture(true);
+    }
 
     if (sharedParam) {
       try {
@@ -595,7 +616,13 @@ export default function Home() {
       nextConfig = loadConfigFromStorage();
     }
 
-    if (nextConfig) setConfig(nextConfig);
+    if (nextConfig) {
+      setConfig(
+        isDemoCapture ? { ...nextConfig, intervalEnabled: false } : nextConfig,
+      );
+    } else if (isDemoCapture) {
+      setConfig((current) => ({ ...current, intervalEnabled: false }));
+    }
 
     if (sharedParam) {
       const url = new URL(window.location.href);
@@ -706,7 +733,10 @@ export default function Home() {
   }, [isEditing, toggleFullscreen]);
 
   return (
-    <div className="welcome-root relative min-h-screen">
+    <div
+      className={`welcome-root relative min-h-screen${demoCapture ? " demo-capture" : ""}`}
+      data-demo-ready={demoCapture ? "true" : undefined}
+    >
       <div className="welcome-bg" aria-hidden="true" />
       <Particles />
       <WelcomeDisplay key={cycleKey} config={config} />
@@ -717,6 +747,7 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setIsEditing(true)}
+            data-demo-focus="edit-welcome"
             className="rounded-full border border-[#f54e00]/25 bg-[#14120b]/70 px-4 py-2 text-sm font-medium text-[#edecec] backdrop-blur transition hover:border-[#f54e00]/45 hover:bg-[#1b1913]/80"
           >
             Edit

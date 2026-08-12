@@ -1,0 +1,57 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "output": {
+    "video": "public/demo/product-demo.mp4",
+    "captions": "public/demo/product-demo.vtt",
+    "draftDir": "public/demo/draft"
+  },
+  "video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "fit": "pad",
+    "background": "#14120b"
+  },
+  "branding": {
+    "title": "Cursor Welcome",
+    "subtitle": "Community workshop welcome screen"
+  },
+  "tts": {
+    "provider": "edge-tts",
+    "voice": "en-US-AvaNeural",
+    "rate": "+0%"
+  },
+  "sections": [
+    {
+      "id": "welcome",
+      "kind": "title",
+      "text": "Welcome to the Cursor Community welcome screen."
+    },
+    {
+      "id": "home",
+      "route": "/?demo=1",
+      "waitForSelector": [".welcome-root.demo-capture", ".welcome-brand", ".welcome-heading", ".welcome-logo-wrap"],
+      "waitForText": ["Cursor Ahmedabad", "Welcome"],
+      "text": "The animated welcome display greets attendees with your community brand, workshop title, and live date."
+    },
+    {
+      "id": "edit-control",
+      "route": "/?demo=1",
+      "waitForSelector": [".welcome-root.demo-capture", "[data-demo-focus='edit-welcome']"],
+      "focus": { "selector": "[data-demo-focus='edit-welcome']" },
+      "text": "Use Edit to open the sidebar and customize brand, title, sponsors, and animation timing without touching code."
+    },
+    {
+      "id": "open-editor",
+      "route": "/?demo=1",
+      "waitForSelector": [".welcome-root.demo-capture", "[data-demo-focus='edit-welcome']"],
+      "focus": { "selector": "[data-demo-focus='edit-welcome']" },
+      "interaction": {
+        "type": "click",
+        "selector": "[data-demo-focus='edit-welcome']"
+      },
+      "capture": "video",
+      "text": "Click Edit to open the welcome screen editor. Changes persist in local storage for your next session."
+    }
+  ]
+}
