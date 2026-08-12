@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { WatchDemoButton } from "./WatchDemoButton";
 
 interface Sponsor {
   title: string;
@@ -714,6 +715,7 @@ export default function Home() {
 
       {!isFullscreen && (
         <div className="fixed right-5 top-5 z-30 flex gap-2">
+          <WatchDemoButton />
           <button
             type="button"
             onClick={() => setIsEditing(true)}
