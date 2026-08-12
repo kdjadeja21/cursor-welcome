@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { WatchDemoButton } from "./WatchDemoButton";
 
 interface Sponsor {
   title: string;
@@ -735,6 +736,7 @@ export default function Home() {
           >
             {shareCopied ? "Copied!" : "Share"}
           </button>
+          <WatchDemoButton />
         </div>
       )}
 

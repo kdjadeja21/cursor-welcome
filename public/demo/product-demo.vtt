@@ -1,0 +1,73 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:06.768
+Welcome to the Cursor Community welcome screen — a configurable animated display for workshops and events.
+
+2
+00:00:06.768 --> 00:00:16.224
+The home stage opens with the Cursor logo, your community brand, a word-by-word headline, today’s date, and a floating particle backdrop.
+
+3
+00:00:16.224 --> 00:00:22.488
+The brand name is the hero signal — swap it for your chapter or community without touching code.
+
+4
+00:00:22.488 --> 00:00:30.072
+The headline welcomes attendees and animates word by word, with the last few words highlighted for stage presence.
+
+5
+00:00:30.072 --> 00:00:35.328
+The date can follow today automatically, or you can lock a fixed event day from the editor.
+
+6
+00:00:35.328 --> 00:00:42.096
+Top-right controls open the editor, enter presentation preview, or copy a shareable configuration link.
+
+7
+00:00:42.096 --> 00:00:50.640
+Keyboard shortcuts keep the stage smooth — press E to open the editor, F or P for fullscreen preview, and Escape to close.
+
+8
+00:00:50.640 --> 00:00:53.091
+Click Edit to open the sidebar.
+
+9
+00:00:53.091 --> 00:00:58.231
+Customize brand, title, date, auto-replay interval, and sponsors.
+
+10
+00:00:58.231 --> 00:01:00.840
+Changes persist in local storage.
+
+11
+00:01:00.840 --> 00:01:13.632
+Tune Use today or a fixed date, set animation replay from five to sixty seconds or turn auto replay off, add up to five sponsor titles and names, and reset to defaults when you need a clean slate.
+
+12
+00:01:13.632 --> 00:01:26.520
+Shareable links encode the full configuration — custom brand, meetup headline, a locked event date, replay interval, and sponsor chips — so teammates open the same welcome screen instantly.
+
+13
+00:01:26.520 --> 00:01:33.168
+Sponsors appear beneath the date with a title and name for each partner, up to five entries on the welcome loop.
+
+14
+00:01:33.168 --> 00:01:41.928
+Re-open the editor anytime to add or remove sponsors, adjust the replay interval, or refine the welcome copy before doors open.
+
+15
+00:01:41.928 --> 00:01:51.024
+Share copies a URL with your configuration in the query string so anyone can restore the same brand, date, interval, and sponsors.
+
+16
+00:01:51.024 --> 00:01:59.304
+Preview — or press F or P — enters fullscreen presentation mode and hides chrome so the welcome animation fills the stage.
+
+17
+00:01:59.304 --> 00:02:02.932
+The footer credits the maker, India, and Cursor.
+
+18
+00:02:02.932 --> 00:02:11.472
+That covers the full welcome experience — motion, editing, persistence, sponsors, sharing, and presentation mode.
