@@ -1,0 +1,61 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:06.408
+Welcome to Cursor Community Welcome — a configurable animated screen for events and workshops.
+
+2
+00:00:06.408 --> 00:00:15.936
+The welcome screen opens with the Cursor logo, community brand, heading, live date, and a floating particle background — ready for presentation.
+
+3
+00:00:15.936 --> 00:00:21.936
+The brand line names the community or chapter, and the heading carries the event title beneath it.
+
+4
+00:00:21.936 --> 00:00:27.288
+The date can follow today automatically, or you can lock in a custom event date from the editor.
+
+5
+00:00:27.288 --> 00:00:35.304
+Edit, Preview, and Share sit in the corner so hosts can customize, present, or send a link without leaving the screen.
+
+6
+00:00:35.304 --> 00:00:38.474
+Press E or click Edit to open the sidebar.
+
+7
+00:00:38.474 --> 00:00:47.832
+Change brand, title, date, and replay interval, add up to five sponsors, and reset to defaults — all saved in local storage.
+
+8
+00:00:47.832 --> 00:01:00.120
+Share a link with the configuration in the URL, and the screen updates instantly — here, Cursor San Francisco, a custom heading, a fixed September date, and a twenty second replay interval.
+
+9
+00:01:00.120 --> 00:01:07.848
+Up to five sponsor entries appear under the date, each with a title and name, so partners stay on screen during the event.
+
+10
+00:01:07.848 --> 00:01:14.282
+Back in the editor, every sponsor slot, the custom date, and the replay interval are ready to tweak.
+
+11
+00:01:14.282 --> 00:01:18.336
+Auto replay can also be turned off so the animation plays once.
+
+12
+00:01:18.336 --> 00:01:25.440
+Share copies a link with the current settings, so another host can open the same welcome screen without re-entering anything.
+
+13
+00:01:25.440 --> 00:01:36.120
+Keyboard shortcuts keep presentation smooth: E opens the editor, F or P toggles fullscreen, and Escape closes the sidebar or exits presentation mode.
+
+14
+00:01:36.120 --> 00:01:45.264
+Preview, or the F or P keys, enter fullscreen presentation mode and hide the toolbar and footer so the welcome can fill the room display.
+
+15
+00:01:45.264 --> 00:01:51.384
+A compact footer credits the maker and Cursor, and hides automatically when you go fullscreen.

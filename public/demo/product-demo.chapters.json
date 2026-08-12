@@ -1,0 +1,69 @@
+{
+  "chapters": [
+    {
+      "id": "welcome",
+      "label": "Welcome",
+      "startSec": 0
+    },
+    {
+      "id": "welcome-screen",
+      "label": "Welcome Screen",
+      "startSec": 6.408
+    },
+    {
+      "id": "brand-and-heading",
+      "label": "Brand And Heading",
+      "startSec": 15.936
+    },
+    {
+      "id": "live-date",
+      "label": "Live Date",
+      "startSec": 21.936
+    },
+    {
+      "id": "toolbar",
+      "label": "Toolbar",
+      "startSec": 27.288
+    },
+    {
+      "id": "sidebar-editor",
+      "label": "Sidebar Editor",
+      "startSec": 35.304
+    },
+    {
+      "id": "custom-event",
+      "label": "Custom Event",
+      "startSec": 47.832
+    },
+    {
+      "id": "sponsors",
+      "label": "Sponsors",
+      "startSec": 60.120000000000005
+    },
+    {
+      "id": "editor-sponsors",
+      "label": "Editor Sponsors",
+      "startSec": 67.848
+    },
+    {
+      "id": "share-link",
+      "label": "Share Link",
+      "startSec": 78.336
+    },
+    {
+      "id": "keyboard-shortcuts",
+      "label": "Keyboard Shortcuts",
+      "startSec": 85.44
+    },
+    {
+      "id": "presentation-mode",
+      "label": "Presentation Mode",
+      "startSec": 96.12
+    },
+    {
+      "id": "footer",
+      "label": "Footer",
+      "startSec": 105.26400000000001
+    }
+  ]
+}

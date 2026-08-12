@@ -1,0 +1,139 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "output": {
+    "video": "public/demo/product-demo.mp4",
+    "captions": "public/demo/product-demo.vtt",
+    "chapters": "public/demo/product-demo.chapters.json",
+    "draftDir": "public/demo/draft"
+  },
+  "video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "fit": "pad",
+    "background": "#14120b"
+  },
+  "branding": {
+    "title": "Cursor Community Welcome",
+    "subtitle": "A configurable animated welcome screen for events and workshops"
+  },
+  "tts": {
+    "provider": "edge-tts",
+    "voice": "en-US-AvaNeural",
+    "rate": "+0%"
+  },
+  "sections": [
+    {
+      "id": "welcome",
+      "kind": "title",
+      "text": "Welcome to Cursor Community Welcome — a configurable animated screen for events and workshops."
+    },
+    {
+      "id": "welcome-screen",
+      "route": "/",
+      "waitForText": ["Cursor Ahmedabad"],
+      "waitForSelector": [".welcome-stage", ".welcome-brand", ".welcome-heading"],
+      "settleMs": 600,
+      "text": "The welcome screen opens with the Cursor logo, community brand, heading, live date, and a floating particle background — ready for presentation."
+    },
+    {
+      "id": "brand-and-heading",
+      "route": "/",
+      "waitForText": ["Cursor Ahmedabad"],
+      "waitForSelector": [".welcome-brand"],
+      "settleMs": 400,
+      "focus": { "selector": ".welcome-brand", "padding": 16 },
+      "text": "The brand line names the community or chapter, and the heading carries the event title beneath it."
+    },
+    {
+      "id": "live-date",
+      "route": "/",
+      "waitForSelector": [".welcome-date"],
+      "settleMs": 400,
+      "focus": { "selector": ".welcome-date", "padding": 12 },
+      "text": "The date can follow today automatically, or you can lock in a custom event date from the editor."
+    },
+    {
+      "id": "toolbar",
+      "route": "/",
+      "waitForText": ["Edit", "Preview", "Share"],
+      "waitForSelector": ["button:text-is('Edit')"],
+      "settleMs": 300,
+      "focus": { "selector": ".fixed.right-5.top-5", "padding": 10 },
+      "text": "Edit, Preview, and Share sit in the corner so hosts can customize, present, or send a link without leaving the screen."
+    },
+    {
+      "id": "sidebar-editor",
+      "route": "/",
+      "waitForText": ["Edit"],
+      "waitForSelector": ["button:text-is('Edit')"],
+      "settleMs": 300,
+      "interaction": { "type": "click", "selector": "button:text-is('Edit')" },
+      "capture": "video",
+      "text": "Press E or click Edit to open the sidebar. Change brand, title, date, and replay interval, add up to five sponsors, and reset to defaults — all saved in local storage."
+    },
+    {
+      "id": "custom-event",
+      "route": "/?data=%7B%22brand%22%3A%22Cursor%20San%20Francisco%22%2C%22heading%22%3A%22Welcome%20to%20CursorConf%20Night%22%2C%22useAutoDate%22%3Afalse%2C%22customDate%22%3A%222026-09-15%22%2C%22intervalSec%22%3A20%2C%22intervalEnabled%22%3Atrue%2C%22sponsors%22%3A%5B%7B%22title%22%3A%22Gold%20Sponsor%22%2C%22name%22%3A%22Acme%20Corp%22%7D%2C%7B%22title%22%3A%22Silver%20Sponsor%22%2C%22name%22%3A%22Northwind%20Labs%22%7D%2C%7B%22title%22%3A%22Community%20Partner%22%2C%22name%22%3A%22Dev%20Guild%22%7D%2C%7B%22title%22%3A%22Venue%20Partner%22%2C%22name%22%3A%22Harbor%20Hall%22%7D%2C%7B%22title%22%3A%22Media%20Partner%22%2C%22name%22%3A%22Code%20Daily%22%7D%5D%7D",
+      "waitForText": ["Cursor San Francisco", "Acme Corp"],
+      "waitForSelector": [".welcome-sponsors", ".welcome-brand"],
+      "settleMs": 700,
+      "text": "Share a link with the configuration in the URL, and the screen updates instantly — here, Cursor San Francisco, a custom heading, a fixed September date, and a twenty second replay interval."
+    },
+    {
+      "id": "sponsors",
+      "route": "/",
+      "waitForText": ["Gold Sponsor", "Acme Corp"],
+      "waitForSelector": [".welcome-sponsors"],
+      "settleMs": 400,
+      "focus": { "selector": ".welcome-sponsors", "padding": 16 },
+      "text": "Up to five sponsor entries appear under the date, each with a title and name, so partners stay on screen during the event."
+    },
+    {
+      "id": "editor-sponsors",
+      "route": "/",
+      "waitForText": ["Edit"],
+      "waitForSelector": ["button:text-is('Edit')"],
+      "settleMs": 300,
+      "interaction": { "type": "click", "selector": "button:text-is('Edit')" },
+      "capture": "video",
+      "text": "Back in the editor, every sponsor slot, the custom date, and the replay interval are ready to tweak. Auto replay can also be turned off so the animation plays once."
+    },
+    {
+      "id": "share-link",
+      "route": "/",
+      "waitForText": ["Share"],
+      "waitForSelector": ["button:text-is('Share')"],
+      "settleMs": 300,
+      "interaction": { "type": "click", "selector": "button:text-is('Share')" },
+      "capture": "video",
+      "text": "Share copies a link with the current settings, so another host can open the same welcome screen without re-entering anything."
+    },
+    {
+      "id": "keyboard-shortcuts",
+      "route": "/",
+      "waitForSelector": [".welcome-stage"],
+      "settleMs": 300,
+      "interaction": { "type": "press", "key": "e" },
+      "capture": "video",
+      "text": "Keyboard shortcuts keep presentation smooth: E opens the editor, F or P toggles fullscreen, and Escape closes the sidebar or exits presentation mode."
+    },
+    {
+      "id": "presentation-mode",
+      "route": "/",
+      "waitForText": ["Preview"],
+      "waitForSelector": ["button:text-is('Preview')"],
+      "settleMs": 400,
+      "focus": { "selector": "button:text-is('Preview')", "padding": 10 },
+      "text": "Preview, or the F or P keys, enter fullscreen presentation mode and hide the toolbar and footer so the welcome can fill the room display."
+    },
+    {
+      "id": "footer",
+      "route": "/",
+      "waitForSelector": [".welcome-footer"],
+      "settleMs": 400,
+      "focus": { "selector": ".welcome-footer", "padding": 12 },
+      "text": "A compact footer credits the maker and Cursor, and hides automatically when you go fullscreen."
+    }
+  ]
+}
