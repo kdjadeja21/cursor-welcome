@@ -167,7 +167,7 @@
       "id": "footer",
       "route": "/",
       "waitForSelector": [".welcome-footer"],
-      "waitForText": ["Krushnasinh Jadeja", "India", "Cursor"],
+      "waitForText": ["Krushnasinh Jadeja"],
       "focus": { "selector": ".welcome-footer", "padding": 12 },
       "settleMs": 400,
       "text": "The footer credits the maker, India, and Cursor. That covers the full welcome experience — motion, editing, persistence, sponsors, sharing, and presentation mode."
