@@ -583,3 +583,38 @@ body {
     width: clamp(120px, 22vw, 260px);
   }
 }
+
+/* Settled UI for product-demo capture (?demo=1) */
+.demo-capture *,
+.demo-capture *::before,
+.demo-capture *::after {
+  animation-duration: 0.001ms !important;
+  animation-delay: 0ms !important;
+  transition: none !important;
+}
+
+.demo-capture .welcome-logo path {
+  stroke-dashoffset: 0;
+  fill: #edecec;
+}
+
+.demo-capture .welcome-logo-wrap {
+  opacity: 1;
+  transform: scale(0.5) translateY(-2%);
+}
+
+.demo-capture .welcome-brand,
+.demo-capture .welcome-heading .word,
+.demo-capture .welcome-date,
+.demo-capture .welcome-sponsor {
+  opacity: 1;
+  transform: none;
+}
+
+.demo-capture .welcome-accent {
+  width: clamp(120px, 22vw, 260px);
+}
+
+.demo-capture.welcome-root {
+  opacity: 1;
+}
