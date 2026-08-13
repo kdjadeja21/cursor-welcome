@@ -1,0 +1,79 @@
+{
+  "chapters": [
+    {
+      "id": "welcome",
+      "label": "Welcome",
+      "startSec": 0
+    },
+    {
+      "id": "home",
+      "label": "Home",
+      "startSec": 6.768
+    },
+    {
+      "id": "brand-focus",
+      "label": "Brand Focus",
+      "startSec": 16.224
+    },
+    {
+      "id": "heading-focus",
+      "label": "Heading Focus",
+      "startSec": 22.488
+    },
+    {
+      "id": "date-focus",
+      "label": "Date Focus",
+      "startSec": 30.072
+    },
+    {
+      "id": "controls",
+      "label": "Controls",
+      "startSec": 35.328
+    },
+    {
+      "id": "keyboard-edit",
+      "label": "Keyboard Edit",
+      "startSec": 44.784000000000006
+    },
+    {
+      "id": "open-editor",
+      "label": "Open Editor",
+      "startSec": 55.12800000000001
+    },
+    {
+      "id": "editor-fields",
+      "label": "Editor Fields",
+      "startSec": 64.39200000000001
+    },
+    {
+      "id": "customized",
+      "label": "Customized",
+      "startSec": 77.18400000000001
+    },
+    {
+      "id": "sponsors-focus",
+      "label": "Sponsors Focus",
+      "startSec": 90.07200000000002
+    },
+    {
+      "id": "editor-sponsors",
+      "label": "Editor Sponsors",
+      "startSec": 96.72000000000001
+    },
+    {
+      "id": "share",
+      "label": "Share",
+      "startSec": 105.48000000000002
+    },
+    {
+      "id": "preview",
+      "label": "Preview",
+      "startSec": 114.57600000000002
+    },
+    {
+      "id": "footer",
+      "label": "Footer",
+      "startSec": 122.85600000000002
+    }
+  ]
+}

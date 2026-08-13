@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# product-demo (managed)
+**/demo/draft/
+public/demo/draft/
+.cursor-plugins/product-demo/
+storageState.json
