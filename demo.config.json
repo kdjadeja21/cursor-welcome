@@ -96,7 +96,7 @@
       "id": "footer",
       "route": "/",
       "waitForSelector": [".welcome-footer"],
-      "waitForText": ["Crafted by", "India", "Cursor"],
+      "waitForText": ["Crafted by", "Built with"],
       "focus": { "selector": ".welcome-footer", "padding": 10 },
       "settleMs": 400,
       "text": "The footer credits the crafter in India and links back to Cursor — a polished close for every community session."
