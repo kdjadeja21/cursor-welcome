@@ -1,0 +1,54 @@
+{
+  "chapters": [
+    {
+      "id": "welcome",
+      "label": "Welcome",
+      "startSec": 0
+    },
+    {
+      "id": "landing",
+      "label": "Landing",
+      "startSec": 6.768
+    },
+    {
+      "id": "controls",
+      "label": "Controls",
+      "startSec": 15.672
+    },
+    {
+      "id": "open-editor",
+      "label": "Open Editor",
+      "startSec": 23.712
+    },
+    {
+      "id": "keyboard-edit",
+      "label": "Keyboard Edit",
+      "startSec": 35.568
+    },
+    {
+      "id": "customized",
+      "label": "Customized",
+      "startSec": 46.224
+    },
+    {
+      "id": "sponsors",
+      "label": "Sponsors",
+      "startSec": 58.751999999999995
+    },
+    {
+      "id": "share",
+      "label": "Share",
+      "startSec": 66.816
+    },
+    {
+      "id": "preview",
+      "label": "Preview",
+      "startSec": 72.312
+    },
+    {
+      "id": "footer",
+      "label": "Footer",
+      "startSec": 78.816
+    }
+  ]
+}
