@@ -36,8 +36,7 @@
         ".welcome-logo-wrap",
         ".welcome-brand",
         ".welcome-heading",
-        ".welcome-date",
-        ".welcome-particles"
+        ".welcome-date"
       ],
       "settleMs": 800,
       "text": "The home stage opens with the Cursor logo, your community brand, a word-by-word headline, today’s date, and a floating particle backdrop."
@@ -65,14 +64,6 @@
       "focus": { "selector": ".welcome-date", "padding": 14 },
       "settleMs": 300,
       "text": "The date can follow today automatically, or you can lock a fixed event day from the editor."
-    },
-    {
-      "id": "particles-focus",
-      "route": "/",
-      "waitForSelector": [".welcome-particles"],
-      "focus": { "selector": ".welcome-particles", "padding": 8 },
-      "settleMs": 400,
-      "text": "A floating particle field sits behind the stage so the welcome screen feels alive even before anyone edits a setting."
     },
     {
       "id": "controls",
