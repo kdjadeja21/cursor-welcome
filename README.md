@@ -2,9 +2,12 @@
 
 A configurable animated welcome screen for community events and workshops, with **SpaceXAI branding by default** and a one-click toggle back to the classic Cursor look. Built with Next.js, React, Rive, and Tailwind CSS.
 
+The animated brand mark is both the loading screen and the screen's centrepiece — it plays once, settles, and the rest of the page assembles around it without the logo ever moving or changing.
+
 ## Features
 
-- Two branding themes: SpaceXAI (default, monochrome, with a one-time Rive intro animation) and Cursor (orange accent, animated SVG mark)
+- Two branding themes: SpaceXAI (default, monochrome, animated Rive lockup) and Cursor (orange accent, animated SVG mark)
+- The brand mark doubles as the loading screen, then stays on stage as the rest of the page assembles around it
 - Animated welcome display with the brand logo, heading, brand name, and live date
 - Floating particle background effect
 - Sidebar editor to customize all content without touching code — changes persist via `localStorage`
@@ -61,9 +64,13 @@ All settings are saved to `localStorage` and restored on the next visit. Use **R
 
 The SpaceXAI files under `public/brand/spacexai/` are copied verbatim from the official brand asset kit — only the filenames were simplified. Per the [SpaceXAI brand guidelines](https://x.ai/legal/brand-guidelines), the logo is used exactly as provided: no recolouring, cropping, or glow effects are applied to it, and the chapter name is kept clear of the mark so the two never read as a single new logo. Do not edit these files.
 
-On page load, the supplied `spacexai-dark.riv` plays once as a full-screen intro (via the Rive web runtime), then fades out to reveal the welcome page, which uses the static `symbol-white.svg` for the rest of the session — the animation never runs inside the main page itself. If the runtime cannot load, or the visitor prefers reduced motion, the intro is skipped entirely and the static logo is shown from the start. Switching themes afterwards (via the toggle or `T`) never replays the intro.
+The loading screen and the welcome screen share one brand mark: the supplied `spacexai-dark.riv` (played via the Rive web runtime) renders into the same slot at the same size for the whole session, so the logo you watch while the page loads is the logo that stays on screen. Nothing crossfades between two different logos.
 
-Theme definitions (copy, favicon, logo) live in [`app/themes.ts`](app/themes.ts).
+The mark holds for a beat before it plays — long enough for the page to finish fading up — and holds again once it has finished, so the wordmark is readable rather than writing itself while the browser is still busy. Only then does the rest of the page appear: the mark glides up into place while the brand name, heading, date and sponsors write themselves in. Replays (the interval, the theme toggle, `T`, or a reset) play the mark again the same way.
+
+If the Rive runtime cannot load, or the visitor prefers reduced motion, the still `wordmark-white.svg` lockup takes its place and the page is revealed immediately.
+
+Theme definitions (copy, favicon, brand mark) live in [`app/themes.ts`](app/themes.ts), and the mark itself is rendered by [`app/brand-mark.tsx`](app/brand-mark.tsx).
 
 ## Tech Stack
 

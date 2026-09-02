@@ -2,11 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { BrandLogo } from "./brand-logo";
-import { IntroLoader } from "./intro-loader";
+import { BrandMark } from "./brand-mark";
 import { DEFAULT_THEME, isThemeId, THEMES, type ThemeId } from "./themes";
-
-type Phase = "deciding" | "intro" | "main";
+import { usePrefersReducedMotion } from "./use-prefers-reduced-motion";
 
 interface Sponsor {
   title: string;
@@ -185,12 +183,22 @@ function Particles() {
 
 function WelcomeDisplay({
   config,
-  cycleKey,
+  markKey,
+  revealKey,
+  isRevealed,
+  isReplay,
+  reduceMotion,
+  onMarkSettled,
 }: {
   config: Config;
-  cycleKey: number;
+  markKey: number;
+  revealKey: number;
+  isRevealed: boolean;
+  isReplay: boolean;
+  reduceMotion: boolean;
+  onMarkSettled: () => void;
 }) {
-  const logoRef = useRef<HTMLDivElement>(null);
+  const markRef = useRef<HTMLDivElement>(null);
   const theme = THEMES[config.theme];
   const words = splitHeadingWords(config.heading);
   const accentStart = Math.max(words.length - 3, 0);
@@ -199,32 +207,38 @@ function WelcomeDisplay({
   );
 
   /**
-   * The wrapper stays mounted across replays, so its entry animation (and,
-   * for the Cursor theme, its glow) is restarted by hand instead of remounting.
+   * The mark's slot stays mounted across replays so nothing on the stage
+   * shifts, which means its own entry animation has to be restarted by hand.
    */
   useEffect(() => {
-    const node = logoRef.current;
+    const node = markRef.current;
     if (!node) return;
 
-    node.classList.remove("lit");
     node.style.animation = "none";
     void node.offsetWidth;
     node.style.animation = "";
-
-    const timer = window.setTimeout(() => {
-      node.classList.add("lit");
-    }, 2800);
-
-    return () => window.clearTimeout(timer);
-  }, [cycleKey]);
+  }, [markKey]);
 
   return (
     <main className="welcome-stage">
-      <div ref={logoRef} className="welcome-logo-wrap">
-        <BrandLogo logo={theme.logo} cycleKey={cycleKey} />
+      <div
+        ref={markRef}
+        className={`welcome-mark-wrap${isRevealed ? " settled" : ""}`}
+      >
+        <BrandMark
+          key={markKey}
+          mark={theme.mark}
+          reduceMotion={reduceMotion}
+          isReplay={isReplay}
+          onSettled={onMarkSettled}
+        />
       </div>
 
-      <div className="welcome-text-block" key={cycleKey}>
+      <div
+        className={`welcome-text-block${isRevealed ? "" : " welcome-text-waiting"}`}
+        key={revealKey}
+        aria-hidden={!isRevealed}
+      >
         <div className="welcome-brand">{config.brand}</div>
 
         <h1 className="welcome-heading" aria-label={config.heading}>
@@ -233,7 +247,7 @@ function WelcomeDisplay({
               key={`${word}-${index}`}
               className="word"
               style={{
-                animationDelay: `${4.7 + index * 0.12}s`,
+                animationDelay: `${0.45 + index * 0.1}s`,
                 color:
                   index >= accentStart ? "var(--foreground)" : undefined,
               }}
@@ -256,7 +270,7 @@ function WelcomeDisplay({
               <div
                 key={`${sponsor.title}-${sponsor.name}-${index}`}
                 className="welcome-sponsor"
-                style={{ animationDelay: `${6.5 + index * 0.15}s` }}
+                style={{ animationDelay: `${1.95 + index * 0.15}s` }}
               >
                 {sponsor.title.trim() && (
                   <span className="welcome-sponsor-title">
@@ -564,9 +578,16 @@ function IndiaFlag({ className }: { className?: string }) {
   );
 }
 
-function WelcomeFooter() {
+/**
+ * Kept mounted while the mark is still animating — it reserves the stage's
+ * height, so revealing it later never nudges the mark out of position.
+ */
+function WelcomeFooter({ isVisible }: { isVisible: boolean }) {
   return (
-    <footer className="welcome-footer">
+    <footer
+      className={`welcome-footer${isVisible ? "" : " welcome-footer-waiting"}`}
+      aria-hidden={!isVisible}
+    >
       <span className="welcome-footer-line">
         Crafted by{" "}
         <a
@@ -617,15 +638,33 @@ function isTypingTarget(target: EventTarget | null): boolean {
 export default function Home() {
   const [config, setConfig] = useState<Config>(DEFAULT_CONFIG);
   const [isHydrated, setIsHydrated] = useState(false);
+  /** Bumped to replay the brand mark; the mark remounts on every change. */
+  const [markKey, setMarkKey] = useState(0);
+  /** Bumped when the mark settles, restarting the copy's entry animations. */
+  const [revealKey, setRevealKey] = useState(0);
+  const [isRevealed, setIsRevealed] = useState(false);
   /**
-   * The Rive intro is a one-time splash decided once at hydration and never
-   * revisited, so switching themes afterwards never replays it.
+   * The very first pass doubles as the loading screen: only the brand mark is
+   * on screen. Once it has played, the surrounding chrome stays put for the
+   * rest of the session, so replays never hide it again.
    */
-  const [phase, setPhase] = useState<Phase>("deciding");
+  const [hasLoaded, setHasLoaded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [cycleKey, setCycleKey] = useState(0);
   const [shareCopied, setShareCopied] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  const handleMarkSettled = useCallback(() => {
+    setIsRevealed(true);
+    setHasLoaded(true);
+    setRevealKey((current) => current + 1);
+  }, []);
+
+  /** Hides the copy again and plays the mark from the top. */
+  const replayMark = useCallback(() => {
+    setIsRevealed(false);
+    setMarkKey((current) => current + 1);
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -652,14 +691,6 @@ export default function Home() {
       window.history.replaceState({}, "", url.pathname + url.search);
     }
 
-    const resolvedTheme = nextConfig?.theme ?? DEFAULT_CONFIG.theme;
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    setPhase(
-      THEMES[resolvedTheme].intro && !prefersReducedMotion ? "intro" : "main",
-    );
     setIsHydrated(true);
   }, []);
 
@@ -668,16 +699,16 @@ export default function Home() {
     saveConfigToStorage(config);
   }, [config, isHydrated]);
 
+  /** Counts from the moment the loading screen hands over, so the first play
+   * of the mark is never cut short. */
   useEffect(() => {
-    if (!config.intervalEnabled) return;
+    if (!config.intervalEnabled || !hasLoaded) return;
 
     const intervalMs = Math.max(config.intervalSec, 5) * 1000;
-    const timer = window.setInterval(() => {
-      setCycleKey((current) => current + 1);
-    }, intervalMs);
+    const timer = window.setInterval(replayMark, intervalMs);
 
     return () => window.clearInterval(timer);
-  }, [config.intervalSec, config.intervalEnabled]);
+  }, [config.intervalSec, config.intervalEnabled, hasLoaded, replayMark]);
 
   /**
    * The attribute lives on <html> so the themed tokens also reach <body>, and
@@ -731,15 +762,15 @@ export default function Home() {
     }
 
     setConfig(createDefaultConfig());
-    setCycleKey((current) => current + 1);
-  }, []);
+    replayMark();
+  }, [replayMark]);
 
   const handleToggleTheme = useCallback(() => {
     setConfig((current) =>
       applyTheme(current, current.theme === "spacexai" ? "cursor" : "spacexai"),
     );
-    setCycleKey((current) => current + 1);
-  }, []);
+    replayMark();
+  }, [replayMark]);
 
   const handleShare = useCallback(async () => {
     const shareUrl = buildShareUrl(config);
@@ -755,7 +786,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (phase !== "main") return;
+      if (!hasLoaded) return;
       if (event.ctrlKey || event.metaKey || event.altKey) return;
       if (isTypingTarget(event.target)) return;
 
@@ -794,26 +825,33 @@ export default function Home() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [phase, isEditing, toggleFullscreen, handleToggleTheme]);
-
-  const intro = THEMES[config.theme].intro;
+  }, [hasLoaded, isEditing, toggleFullscreen, handleToggleTheme]);
 
   return (
-    <div className="welcome-root relative min-h-screen">
+    <div
+      className="welcome-root relative min-h-screen"
+      data-phase={hasLoaded ? "stage" : "loading"}
+    >
       <div className="welcome-bg" aria-hidden="true" />
 
-      {phase === "intro" && intro && (
-        <IntroLoader intro={intro} onFinish={() => setPhase("main")} />
-      )}
-
-      {phase === "main" && (
+      {isHydrated && (
         <>
-          <Particles />
-          <WelcomeDisplay config={config} cycleKey={cycleKey} />
-          {!isFullscreen && <WelcomeFooter />}
+          {hasLoaded && <Particles />}
 
-          {!isFullscreen && (
-            <div className="fixed right-5 top-5 z-30 flex gap-2">
+          <WelcomeDisplay
+            config={config}
+            markKey={markKey}
+            revealKey={revealKey}
+            isRevealed={isRevealed}
+            isReplay={hasLoaded}
+            reduceMotion={prefersReducedMotion}
+            onMarkSettled={handleMarkSettled}
+          />
+
+          {!isFullscreen && <WelcomeFooter isVisible={hasLoaded} />}
+
+          {!isFullscreen && hasLoaded && (
+            <div className="stage-actions fixed right-5 top-5 z-30 flex gap-2">
               <button
                 type="button"
                 onClick={() => setIsEditing(true)}

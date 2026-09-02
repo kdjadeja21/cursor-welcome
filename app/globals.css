@@ -21,6 +21,12 @@
   --accent-line-alpha: 0.85;
   --pill-border-alpha: 0.18;
   --pill-glow-alpha: 0.05;
+  /*
+   * One slot for the brand mark, shared by the loading beat and the welcome
+   * stage. The SpaceXAI mark is a wide landscape lockup.
+   */
+  --mark-w: clamp(220px, min(56vw, 38vh), 620px);
+  --mark-h: clamp(100px, min(25vw, 17vh), 280px);
 }
 
 /* Cursor Community Brand Guidelines — Dark theme */
@@ -43,6 +49,9 @@
   --accent-line-alpha: 1;
   --pill-border-alpha: 0.25;
   --pill-glow-alpha: 0.08;
+  /* The Cursor mark is square. */
+  --mark-w: clamp(120px, min(32vw, 28vh), 360px);
+  --mark-h: var(--mark-w);
 }
 
 @theme inline {
@@ -112,6 +121,18 @@ body {
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes markIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes chromeIn {
+  to {
+    opacity: 1;
   }
 }
 
@@ -306,20 +327,59 @@ body {
   overflow-x: hidden;
 }
 
-.welcome-logo-wrap {
+/*
+ * The mark keeps this slot for the whole session: the loading beat, the
+ * welcome stage and every replay all render into it, so the mark never jumps
+ * size or position between them.
+ */
+.welcome-mark-wrap {
+  --mark-lift: 0px;
   position: relative;
-  width: clamp(120px, min(32vw, 28vh), 360px);
-  height: clamp(120px, min(32vw, 28vh), 360px);
+  width: var(--mark-w);
+  height: var(--mark-h);
   max-width: 100%;
   display: grid;
   place-items: center;
+  transform: translateY(var(--mark-lift));
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.brand-mark {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  overflow: visible;
+  transition: filter 0.6s ease;
+}
+
+/*
+ * SpaceXAI: the Rive lockup is the loading animation, so while it plays the
+ * mark sits nearer the middle of the viewport and then glides up into its
+ * place on the stage as the rest of the copy writes itself in.
+ */
+[data-theme="spacexai"] .welcome-root[data-phase="loading"] .welcome-mark-wrap {
+  --mark-lift: clamp(1.5rem, 13vh, 8rem);
+}
+
+[data-theme="spacexai"] .brand-mark {
   opacity: 0;
-  transform: scale(0.9) translateY(0);
+  animation: markIn 0.35s ease-out forwards;
+}
+
+/* Extra clear space beneath the lockup so the chapter line never reads as
+ * part of it. */
+[data-theme="spacexai"] .welcome-stage {
+  gap: clamp(1.5rem, 3.4vw, 3rem);
+}
+
+/* Cursor keeps its stroke-draw entrance, settle-in shrink and idle float. */
+[data-theme="cursor"] .welcome-mark-wrap {
+  opacity: 0;
   animation:
     logoIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards,
     logoShrink 1.1s cubic-bezier(0.65, 0, 0.35, 1) 3s forwards,
     logoFloat 5s ease-in-out 4.6s infinite;
-  will-change: transform;
 }
 
 /*
@@ -327,7 +387,7 @@ body {
  * mark, so they are limited to the Cursor theme. The SpaceXAI brand guidelines
  * require its logo to be used exactly as provided, without adjustment.
  */
-[data-theme="cursor"] .welcome-logo-wrap::after {
+[data-theme="cursor"] .welcome-mark-wrap::after {
   content: "";
   position: absolute;
   left: 50%;
@@ -346,14 +406,7 @@ body {
   pointer-events: none;
 }
 
-.welcome-logo {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  transition: filter 0.6s ease;
-}
-
-[data-theme="cursor"] .welcome-logo path {
+[data-theme="cursor"] .brand-mark path {
   fill: rgb(var(--accent-rgb) / 0);
   stroke: var(--accent);
   stroke-width: 6;
@@ -366,58 +419,10 @@ body {
     fillLogo 1s ease-out 1.8s forwards;
 }
 
-[data-theme="cursor"] .welcome-logo-wrap.lit .welcome-logo {
+[data-theme="cursor"] .welcome-mark-wrap.settled .brand-mark {
   filter:
     drop-shadow(0 0 6px rgb(var(--accent-rgb) / 0.3))
     drop-shadow(0 0 14px rgb(var(--accent-rgb) / 0.18));
-}
-
-/*
- * The SpaceXAI symbol mark is landscape rather than square, and gets extra
- * clear space beneath it so the chapter line never reads as part of a lockup.
- */
-[data-theme="spacexai"] .welcome-logo-wrap {
-  width: clamp(200px, min(52vw, 34vh), 560px);
-  height: clamp(90px, min(23vw, 15vh), 250px);
-}
-
-[data-theme="spacexai"] .welcome-stage {
-  gap: clamp(1.25rem, 3vw, 2.5rem);
-}
-
-.welcome-logo-static {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* ---------- One-time intro screen ---------- */
-.intro-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--background);
-  opacity: 1;
-  transition: opacity 450ms ease;
-}
-
-.intro-overlay-leaving {
-  opacity: 0;
-}
-
-.intro-logo-wrap {
-  width: clamp(220px, min(56vw, 38vh), 620px);
-  height: clamp(100px, min(25vw, 17vh), 280px);
-  display: grid;
-  place-items: center;
-}
-
-.intro-rive {
-  width: 100%;
-  height: 100%;
 }
 
 .welcome-text-block {
@@ -431,6 +436,14 @@ body {
   padding-inline: 0.15rem;
 }
 
+/*
+ * The copy waits for the mark to finish, but stays in the layout while it
+ * does: it is what holds the mark at the height it will settle at.
+ */
+.welcome-text-waiting {
+  visibility: hidden;
+}
+
 .welcome-brand {
   font-size: clamp(0.95rem, 2.4vw, 1.5rem);
   font-weight: 500;
@@ -439,8 +452,8 @@ body {
   opacity: 0;
   transform: translateY(14px);
   animation:
-    brandIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 4s forwards,
-    brandSpacing 1.4s ease-out 4s forwards;
+    brandIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards,
+    brandSpacing 1.4s ease-out 0.1s forwards;
   color: var(--foreground);
   max-width: 100%;
   overflow-wrap: anywhere;
@@ -481,7 +494,7 @@ body {
     transparent
   );
   border-radius: 2px;
-  animation: accentGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 5.7s forwards;
+  animation: accentGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.3s forwards;
 }
 
 .welcome-date {
@@ -499,7 +512,7 @@ body {
   box-shadow: 0 0 24px rgb(var(--accent-rgb) / var(--pill-glow-alpha)) inset;
   opacity: 0;
   transform: translateY(14px);
-  animation: dateIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 6s forwards;
+  animation: dateIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.55s forwards;
 }
 
 .welcome-date .dot {
@@ -573,6 +586,15 @@ body {
   color: rgb(var(--foreground-rgb) / 0.38);
   text-align: center;
   overflow-wrap: anywhere;
+  opacity: 1;
+  transition: opacity 0.8s ease 0.4s;
+}
+
+/* Present but unseen during the loading beat, so the stage height is stable. */
+.welcome-footer-waiting {
+  visibility: hidden;
+  opacity: 0;
+  transition: none;
 }
 
 .welcome-footer-line {
@@ -652,6 +674,11 @@ body {
 }
 
 /* ---------- Themed UI chrome ---------- */
+.stage-actions {
+  opacity: 0;
+  animation: chromeIn 0.8s ease-out 0.4s forwards;
+}
+
 .stage-btn {
   border-radius: 999px;
   border: 1px solid rgb(var(--accent-rgb) / 0.25);
@@ -855,13 +882,21 @@ body {
     transition: none !important;
   }
 
-  .welcome-logo path {
+  .brand-mark {
+    opacity: 1;
+  }
+
+  .brand-mark path {
     stroke-dashoffset: 0;
     fill: var(--foreground);
   }
 
-  .welcome-logo-wrap {
+  .welcome-mark-wrap {
     opacity: 1;
+    transform: none;
+  }
+
+  [data-theme="cursor"] .welcome-mark-wrap {
     transform: scale(0.5) translateY(-2%);
   }
 

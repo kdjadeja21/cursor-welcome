@@ -1,22 +1,21 @@
 export type ThemeId = "spacexai" | "cursor";
 
 /**
- * What the main welcome stage renders once it's showing. This is always a
- * static mark — the Rive animation is reserved for the one-time intro below,
- * per the SpaceXAI brand guidelines' "use exactly as provided" requirement.
+ * The brand mark, defined once per theme. The loading beat and the welcome
+ * stage render this same definition in the same element, so the mark a visitor
+ * sees while the page loads is the mark they keep looking at afterwards.
  */
-export type ThemeLogo =
-  | { kind: "image"; src: string; alt: string }
+export type ThemeMark =
+  | {
+      kind: "rive";
+      src: string;
+      artboard: string;
+      stateMachine: string;
+      /** Used when the Rive runtime fails, or the visitor prefers reduced motion. */
+      still: string;
+      alt: string;
+    }
   | { kind: "path"; d: string; viewBox: string; alt: string };
-
-/** A one-time Rive intro played before the welcome stage appears. */
-export interface ThemeIntro {
-  src: string;
-  artboard: string;
-  stateMachine: string;
-  fallback: string;
-  alt: string;
-}
 
 export interface Theme {
   id: ThemeId;
@@ -24,8 +23,7 @@ export interface Theme {
   brand: string;
   heading: string;
   favicon: string;
-  logo: ThemeLogo;
-  intro?: ThemeIntro;
+  mark: ThemeMark;
 }
 
 const CURSOR_LOGO_PATH =
@@ -38,16 +36,12 @@ export const THEMES: Record<ThemeId, Theme> = {
     brand: "SpaceXAI Ahmedabad",
     heading: "Welcome to the SpaceXAI Community Workshop",
     favicon: "/brand/spacexai/favicon.svg",
-    logo: {
-      kind: "image",
-      src: "/brand/spacexai/symbol-white.svg",
-      alt: "SpaceXAI logo",
-    },
-    intro: {
+    mark: {
+      kind: "rive",
       src: "/brand/spacexai/spacexai-dark.riv",
       artboard: "SPACE X WEB",
       stateMachine: "SPACE X WEB",
-      fallback: "/brand/spacexai/symbol-white.svg",
+      still: "/brand/spacexai/wordmark-white.svg",
       alt: "SpaceXAI",
     },
   },
@@ -57,7 +51,7 @@ export const THEMES: Record<ThemeId, Theme> = {
     brand: "Cursor Ahmedabad",
     heading: "Welcome to the Cursor Community Workshop",
     favicon: "/brand/cursor/logo.svg",
-    logo: {
+    mark: {
       kind: "path",
       d: CURSOR_LOGO_PATH,
       viewBox: "0 0 476 530",
