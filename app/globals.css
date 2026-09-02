@@ -23,10 +23,17 @@
   --pill-glow-alpha: 0.05;
   /*
    * One slot for the brand mark, shared by the loading beat and the welcome
-   * stage. The SpaceXAI mark is a wide landscape lockup.
+   * stage. Sized to the SpaceXAI symbol's own 834×318 viewBox so the mark
+   * fills the slot instead of sitting in a larger letterboxed frame.
    */
-  --mark-w: clamp(220px, min(56vw, 38vh), 620px);
-  --mark-h: clamp(100px, min(25vw, 17vh), 280px);
+  --mark-w: clamp(200px, min(42vw, 28vh), 480px);
+  --mark-h: calc(var(--mark-w) * 318 / 834);
+  /*
+   * The X sits at ~32% of the viewBox, with the swoosh trailing right. This
+   * slides the wrap so the X lands on the same axis as the copy below — a
+   * placement offset, not a crop or recolour of the asset.
+   */
+  --mark-nudge: 18%;
 }
 
 /* Cursor Community Brand Guidelines — Dark theme */
@@ -49,9 +56,10 @@
   --accent-line-alpha: 1;
   --pill-border-alpha: 0.25;
   --pill-glow-alpha: 0.08;
-  /* The Cursor mark is square. */
+  /* The Cursor mark is square, and its diamond is already optically centred. */
   --mark-w: clamp(120px, min(32vw, 28vh), 360px);
   --mark-h: var(--mark-w);
+  --mark-nudge: 0px;
 }
 
 @theme inline {
@@ -338,9 +346,15 @@ body {
   width: var(--mark-w);
   height: var(--mark-h);
   max-width: 100%;
+  /* Canvas/SVG intrinsic size must not stretch this past --mark-w, or the
+   * mark sits in a too-wide box and the X reads as left of the copy. */
+  min-width: 0;
+  flex-shrink: 0;
+  align-self: center;
+  margin-inline: auto;
   display: grid;
   place-items: center;
-  transform: translateY(var(--mark-lift));
+  transform: translate(var(--mark-nudge), var(--mark-lift));
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
 }
@@ -348,9 +362,23 @@ body {
 .brand-mark {
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: grid;
+  place-items: center;
   object-fit: contain;
+  object-position: center;
   overflow: visible;
   transition: filter 0.6s ease;
+}
+
+.brand-mark canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  justify-self: center;
+  align-self: center;
 }
 
 /*
@@ -893,7 +921,7 @@ body {
 
   .welcome-mark-wrap {
     opacity: 1;
-    transform: none;
+    transform: translate(var(--mark-nudge), 0);
   }
 
   [data-theme="cursor"] .welcome-mark-wrap {
