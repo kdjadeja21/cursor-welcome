@@ -4,7 +4,48 @@ import { useMemo, type CSSProperties, type ReactNode } from "react";
 
 import { unit } from "./unit";
 
-type BotKind = "round" | "wide" | "tall" | "peanut" | "bean" | "stack" | "drop";
+type BotKind =
+  | "circle"
+  | "pebble"
+  | "squircle"
+  | "capsule"
+  | "triangle"
+  | "hexagon"
+  | "cloud"
+  | "droplet";
+
+interface BotColor {
+  id: string;
+  hex: string;
+}
+
+const SHAPES: BotKind[] = [
+  "circle",
+  "pebble",
+  "squircle",
+  "capsule",
+  "triangle",
+  "hexagon",
+  "cloud",
+  "droplet",
+];
+
+/** Official grokbots.ai studio palette (chip row, cream first). */
+const COLORS: BotColor[] = [
+  { id: "creme", hex: "#f1efe9" },
+  { id: "brun", hex: "#8b5e3c" },
+  { id: "rouge", hex: "#e8483f" },
+  { id: "orange", hex: "#f08a24" },
+  { id: "ambre", hex: "#f0b429" },
+  { id: "vert", hex: "#3ecf8e" },
+  { id: "turquoise", hex: "#2fbfa0" },
+  { id: "bleu", hex: "#3b93f0" },
+  { id: "violet", hex: "#8b5cf6" },
+  { id: "rose", hex: "#e152b0" },
+  { id: "gris", hex: "#a3a3a3" },
+];
+
+const LIGHT_FILLS = new Set(["#f1efe9", "#f0b429", "#a3a3a3"]);
 
 interface BotVariant {
   id: string;
@@ -12,67 +53,49 @@ interface BotVariant {
   kind: BotKind;
 }
 
-/**
- * Original clay-blob sprites inspired by the Grok Bot thumbnail / studio
- * language (blob body + two eyes). Geometry is not copied from those sites.
- */
-const BOT_VARIANTS: BotVariant[] = [
-  { id: "round-blue", fill: "#1084FE", kind: "round" },
-  { id: "peanut-orange", fill: "#FF6700", kind: "peanut" },
-  { id: "wide-teal", fill: "#00BCA6", kind: "wide" },
-  { id: "tall-pink", fill: "#FF309B", kind: "tall" },
-  { id: "bean-amber", fill: "#FF9800", kind: "bean" },
-  { id: "stack-white", fill: "#F4F4F4", kind: "stack" },
-  { id: "round-sky", fill: "#3D9BFF", kind: "round" },
-  { id: "drop-coral", fill: "#FF5A4A", kind: "drop" },
-  { id: "wide-mint", fill: "#2EE6B0", kind: "wide" },
-  { id: "peanut-violet", fill: "#8B6CFF", kind: "peanut" },
-  { id: "tall-navy", fill: "#1B4FD8", kind: "tall" },
-  { id: "bean-gold", fill: "#F5C518", kind: "bean" },
-];
-
 function BotBody({ kind, fill }: { kind: BotKind; fill: string }): ReactNode {
   switch (kind) {
-    case "round":
-      return <ellipse cx="60" cy="78" rx="42" ry="46" fill={fill} />;
-    case "wide":
-      return <ellipse cx="60" cy="82" rx="50" ry="34" fill={fill} />;
-    case "tall":
-      return <ellipse cx="60" cy="76" rx="32" ry="54" fill={fill} />;
-    case "peanut":
+    case "circle":
+      return <circle cx="60" cy="60" r="46" fill={fill} />;
+    case "pebble":
+      return <ellipse cx="60" cy="60" rx="34" ry="50" fill={fill} />;
+    case "squircle":
+      return <rect x="16" y="16" width="88" height="88" rx="31" fill={fill} />;
+    case "capsule":
+      return <rect x="8" y="36" width="104" height="48" rx="24" fill={fill} />;
+    case "triangle":
       return (
-        <>
-          <ellipse cx="60" cy="48" rx="34" ry="30" fill={fill} />
-          <ellipse cx="60" cy="96" rx="40" ry="36" fill={fill} />
-        </>
-      );
-    case "bean":
-      return (
-        <ellipse
-          cx="60"
-          cy="78"
-          rx="46"
-          ry="36"
+        <polygon
+          points="60,20 104,100 16,100"
           fill={fill}
-          transform="rotate(-28 60 78)"
+          stroke={fill}
+          strokeWidth="14"
+          strokeLinejoin="round"
         />
       );
-    case "stack":
+    case "hexagon":
+      return (
+        <polygon
+          points="60,14 100,37 100,83 60,106 20,83 20,37"
+          fill={fill}
+          stroke={fill}
+          strokeLinejoin="round"
+          strokeWidth="12"
+        />
+      );
+    case "cloud":
       return (
         <>
-          <ellipse cx="60" cy="44" rx="30" ry="28" fill={fill} />
-          <ellipse cx="60" cy="96" rx="42" ry="38" fill={fill} />
+          <ellipse cx="38" cy="68" rx="30" ry="28" fill={fill} />
+          <ellipse cx="82" cy="68" rx="30" ry="28" fill={fill} />
+          <ellipse cx="60" cy="46" rx="34" ry="30" fill={fill} />
         </>
       );
-    case "drop":
+    case "droplet":
       return (
-        <ellipse
-          cx="60"
-          cy="82"
-          rx="36"
-          ry="48"
+        <path
+          d="M60 10C60 10 16 58 16 80a44 44 0 0 0 88 0C104 58 60 10 60 10z"
           fill={fill}
-          transform="rotate(12 60 82)"
         />
       );
     default: {
@@ -83,24 +106,25 @@ function BotBody({ kind, fill }: { kind: BotKind; fill: string }): ReactNode {
 }
 
 function eyeFill(bodyFill: string): string {
-  return bodyFill === "#F4F4F4" || bodyFill === "#F5C518" ? "#1a1a1a" : "#ffffff";
+  return LIGHT_FILLS.has(bodyFill) ? "#0a0a0c" : "#ffffff";
 }
 
-function eyeCy(kind: BotKind): number {
+function eyeLayout(kind: BotKind): { cy: number; spread: number } {
   switch (kind) {
-    case "peanut":
-    case "stack":
-      return 44;
-    case "wide":
-      return 78;
-    case "tall":
-      return 62;
-    case "bean":
-      return 70;
-    case "drop":
-      return 72;
-    case "round":
-      return 70;
+    case "circle":
+    case "squircle":
+    case "hexagon":
+      return { cy: 60, spread: 14 };
+    case "pebble":
+      return { cy: 56, spread: 12 };
+    case "capsule":
+      return { cy: 64, spread: 16 };
+    case "triangle":
+      return { cy: 72, spread: 13 };
+    case "cloud":
+      return { cy: 56, spread: 15 };
+    case "droplet":
+      return { cy: 78, spread: 13 };
     default: {
       const exhaustive: never = kind;
       return exhaustive;
@@ -110,19 +134,22 @@ function eyeCy(kind: BotKind): number {
 
 function BotSvg({ variant }: { variant: BotVariant }) {
   const eyes = eyeFill(variant.fill);
-  const cy = eyeCy(variant.kind);
+  const { cy, spread } = eyeLayout(variant.kind);
+  // Studio eye size is ~0.19 × 0.41 of the body radius (~46).
+  const rx = 8.7;
+  const ry = 18.9;
 
   return (
     <svg
-      viewBox="0 0 120 140"
+      viewBox="0 0 120 120"
       width="100%"
       height="100%"
       aria-hidden="true"
       focusable="false"
     >
       <BotBody kind={variant.kind} fill={variant.fill} />
-      <ellipse cx="46" cy={cy} rx="8" ry="13" fill={eyes} />
-      <ellipse cx="74" cy={cy} rx="8" ry="13" fill={eyes} />
+      <ellipse cx={60 - spread} cy={cy} rx={rx} ry={ry} fill={eyes} />
+      <ellipse cx={60 + spread} cy={cy} rx={rx} ry={ry} fill={eyes} />
     </svg>
   );
 }
@@ -138,13 +165,22 @@ interface Floater {
   rotate: number;
 }
 
-function pickVariant(seed: number): BotVariant {
-  const first = BOT_VARIANTS[0];
-  if (!first) {
-    throw new Error("BOT_VARIANTS is empty");
+function pickFrom<T>(items: readonly T[], seed: number, label: string): T {
+  const first = items[0];
+  if (first === undefined) {
+    throw new Error(`${label} is empty`);
   }
-  const index = Math.floor(unit(seed) * BOT_VARIANTS.length);
-  return BOT_VARIANTS[index] ?? first;
+  return items[Math.floor(unit(seed) * items.length)] ?? first;
+}
+
+function pickVariant(seed: number): BotVariant {
+  const kind = pickFrom(SHAPES, seed, "SHAPES");
+  const color = pickFrom(COLORS, seed + 1, "COLORS");
+  return {
+    id: `${kind}-${color.id}`,
+    fill: color.hex,
+    kind,
+  };
 }
 
 export function FloatingBotAvatars({
@@ -185,7 +221,7 @@ export function FloatingBotAvatars({
           style={
             {
               width: `${floater.size}px`,
-              height: `${floater.size * (140 / 120)}px`,
+              height: `${floater.size}px`,
               left: `${floater.left}vw`,
               top: `${floater.top}vh`,
               animationDuration: `${floater.duration}s`,
