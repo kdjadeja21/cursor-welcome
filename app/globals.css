@@ -137,56 +137,71 @@ body {
 
 /*
  * Official grokbots.ai expression table, scaled from the neutral oval
- * (w=0.186, h=0.412). Left/right tilts match O() / asymmetric faces.
+ * (w=0.186, h=0.412). Each face holds, then eases slowly to the next.
  */
 @keyframes bot-eye-left {
   0%,
-  6% {
+  5% {
     transform: rotate(0deg) scale(1, 1);
   }
-  6.25% {
+  6.25%,
+  11.25% {
     transform: rotate(0deg) scale(1.13, 1.07);
   }
-  12.5% {
+  12.5%,
+  17.5% {
     transform: rotate(0deg) scale(2.42, 1.14);
   }
-  18.75% {
+  18.75%,
+  23.75% {
     transform: rotate(-10deg) scale(2.15, 1.36);
   }
-  25% {
+  25%,
+  30% {
     transform: rotate(14deg) scale(1.45, 0.41);
   }
-  31.25% {
+  31.25%,
+  36.25% {
     transform: rotate(20deg) scale(1.83, 0.32);
   }
-  37.5% {
+  37.5%,
+  42.5% {
     transform: rotate(30deg) scale(1.83, 0.36);
   }
-  43.75% {
+  43.75%,
+  48.75% {
     transform: rotate(-28deg) scale(1.18, 0.97);
   }
-  50% {
+  50%,
+  55% {
     transform: rotate(0deg) scale(2.15, 1.46);
   }
-  56.25% {
+  56.25%,
+  61.25% {
     transform: rotate(0deg) scale(1.13, 0.97);
   }
-  62.5% {
+  62.5%,
+  67.5% {
     transform: rotate(-18deg) scale(1.08, 1.07);
   }
-  68.75% {
+  68.75%,
+  73.75% {
     transform: rotate(-8deg) scale(1.29, 1.12);
   }
-  75% {
+  75%,
+  80% {
     transform: rotate(18deg) scale(1.61, 0.36);
   }
-  81.25% {
+  81.25%,
+  86.25% {
     transform: rotate(0deg) scale(0.91, 0.73);
   }
-  87.5% {
+  87.5%,
+  92.5% {
     transform: rotate(0deg) scale(1.61, 0.29);
   }
-  93.75% {
+  93.75%,
+  98.75% {
     transform: rotate(0deg) scale(1.08, 0.43);
   }
   100% {
@@ -196,52 +211,67 @@ body {
 
 @keyframes bot-eye-right {
   0%,
-  6% {
+  5% {
     transform: rotate(0deg) scale(1, 1);
   }
-  6.25% {
+  6.25%,
+  11.25% {
     transform: rotate(0deg) scale(1.13, 1.07);
   }
-  12.5% {
+  12.5%,
+  17.5% {
     transform: rotate(0deg) scale(2.42, 1.14);
   }
-  18.75% {
+  18.75%,
+  23.75% {
     transform: rotate(10deg) scale(2.15, 1.36);
   }
-  25% {
+  25%,
+  30% {
     transform: rotate(-14deg) scale(1.45, 0.41);
   }
-  31.25% {
+  31.25%,
+  36.25% {
     transform: rotate(-20deg) scale(1.83, 0.32);
   }
-  37.5% {
+  37.5%,
+  42.5% {
     transform: rotate(-30deg) scale(1.83, 0.36);
   }
-  43.75% {
+  43.75%,
+  48.75% {
     transform: rotate(28deg) scale(1.18, 0.97);
   }
-  50% {
+  50%,
+  55% {
     transform: rotate(0deg) scale(2.15, 1.46);
   }
-  56.25% {
+  56.25%,
+  61.25% {
     transform: rotate(0deg) scale(1.18, 0.36);
   }
-  62.5% {
+  62.5%,
+  67.5% {
     transform: rotate(14deg) scale(1.51, 0.41);
   }
-  68.75% {
+  68.75%,
+  73.75% {
     transform: rotate(-8deg) scale(1.08, 0.92);
   }
-  75% {
+  75%,
+  80% {
     transform: rotate(-18deg) scale(1.61, 0.36);
   }
-  81.25% {
+  81.25%,
+  86.25% {
     transform: rotate(0deg) scale(0.91, 0.73);
   }
-  87.5% {
+  87.5%,
+  92.5% {
     transform: rotate(0deg) scale(1.61, 0.29);
   }
-  93.75% {
+  93.75%,
+  98.75% {
     transform: rotate(0deg) scale(1.08, 0.43);
   }
   100% {
@@ -482,7 +512,7 @@ body {
 .welcome-bot-eye {
   transform-box: fill-box;
   transform-origin: center;
-  animation: bot-eye-left 16s ease-in-out infinite;
+  animation: bot-eye-left 64s ease-in-out infinite;
   animation-delay: var(--eye-delay, 0s);
 }
 

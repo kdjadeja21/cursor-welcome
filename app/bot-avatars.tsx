@@ -229,7 +229,7 @@ export function FloatingBotAvatars({
           : 100 + unit(index * 11 + 6) * 24,
         duration: dur,
         delay: unit(index * 11 + 7) * dur,
-        eyeDelay: unit(index * 11 + 10) * 16,
+        eyeDelay: unit(index * 11 + 10) * 64,
         opacity: (0.45 + unit(index * 11 + 8) * 0.3).toFixed(2),
         rotate: Math.round((unit(index * 11 + 9) - 0.5) * 16),
       };
