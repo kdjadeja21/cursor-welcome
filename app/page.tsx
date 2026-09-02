@@ -2,12 +2,16 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { BrandLogo } from "./brand-logo";
+import { DEFAULT_THEME, isThemeId, THEMES, type ThemeId } from "./themes";
+
 interface Sponsor {
   title: string;
   name: string;
 }
 
 interface Config {
+  theme: ThemeId;
   brand: string;
   heading: string;
   useAutoDate: boolean;
@@ -19,8 +23,9 @@ interface Config {
 
 function createDefaultConfig(): Config {
   return {
-    brand: "Cursor Ahmedabad",
-    heading: "Welcome to the Cursor Community Workshop",
+    theme: DEFAULT_THEME,
+    brand: THEMES[DEFAULT_THEME].brand,
+    heading: THEMES[DEFAULT_THEME].heading,
     useAutoDate: true,
     customDate: new Date().toISOString().slice(0, 10),
     intervalSec: 15,
@@ -53,6 +58,7 @@ function parseStoredConfig(raw: unknown): Config | null {
       : DEFAULT_CONFIG.intervalSec;
 
   return {
+    theme: isThemeId(data.theme) ? data.theme : DEFAULT_CONFIG.theme,
     brand:
       typeof data.brand === "string" ? data.brand : DEFAULT_CONFIG.brand,
     heading:
@@ -98,8 +104,21 @@ function buildShareUrl(config: Config): string {
   return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 }
 
-const LOGO_PATH =
-  "m466.383 137.073-206.469-119.2034c-6.63-3.8287-14.811-3.8287-21.441 0l-206.4586 119.2034c-5.5734 3.218-9.0144 9.169-9.0144 15.615v240.375c0 6.436 3.441 12.397 9.0144 15.615l206.4686 119.203c6.63 3.829 14.811 3.829 21.441 0l206.468-119.203c5.574-3.218 9.015-9.17 9.015-15.615v-240.375c0-6.436-3.441-12.397-9.015-15.615zm-12.969 25.25-199.316 345.223c-1.347 2.326-4.904 1.376-4.904-1.319v-226.048c0-4.517-2.414-8.695-6.33-10.963l-195.7577-113.019c-2.3263-1.347-1.3764-4.905 1.3182-4.905h398.6305c5.661 0 9.199 6.136 6.368 11.041h-.009z";
+/**
+ * Copy that the presenter customised is preserved; only text still sitting at
+ * the outgoing theme's default follows the theme across.
+ */
+function applyTheme(config: Config, next: ThemeId): Config {
+  const from = THEMES[config.theme];
+  const to = THEMES[next];
+
+  return {
+    ...config,
+    theme: next,
+    brand: config.brand === from.brand ? to.brand : config.brand,
+    heading: config.heading === from.heading ? to.heading : config.heading,
+  };
+}
 
 function formatDate(config: Config): string {
   const date = config.useAutoDate
@@ -161,40 +180,48 @@ function Particles() {
   );
 }
 
-function WelcomeDisplay({ config }: { config: Config }) {
+function WelcomeDisplay({
+  config,
+  cycleKey,
+}: {
+  config: Config;
+  cycleKey: number;
+}) {
   const logoRef = useRef<HTMLDivElement>(null);
+  const theme = THEMES[config.theme];
   const words = splitHeadingWords(config.heading);
   const accentStart = Math.max(words.length - 3, 0);
   const visibleSponsors = config.sponsors.filter(
     (sponsor) => sponsor.title.trim() || sponsor.name.trim(),
   );
 
+  /**
+   * The wrapper stays mounted so the Rive runtime is not torn down every
+   * replay, so its entry animation is restarted by hand instead.
+   */
   useEffect(() => {
+    const node = logoRef.current;
+    if (!node) return;
+
+    node.classList.remove("lit");
+    node.style.animation = "none";
+    void node.offsetWidth;
+    node.style.animation = "";
+
     const timer = window.setTimeout(() => {
-      logoRef.current?.classList.add("lit");
+      node.classList.add("lit");
     }, 2800);
 
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [cycleKey]);
 
   return (
     <main className="welcome-stage">
-      <div
-        ref={logoRef}
-        className="welcome-logo-wrap"
-        aria-label="Cursor logo"
-      >
-        <svg
-          className="welcome-logo"
-          viewBox="0 0 476 530"
-          xmlns="http://www.w3.org/2000/svg"
-          role="img"
-        >
-          <path d={LOGO_PATH} />
-        </svg>
+      <div ref={logoRef} className="welcome-logo-wrap">
+        <BrandLogo logo={theme.logo} cycleKey={cycleKey} />
       </div>
 
-      <div className="welcome-text-block">
+      <div className="welcome-text-block" key={cycleKey}>
         <div className="welcome-brand">{config.brand}</div>
 
         <h1 className="welcome-heading" aria-label={config.heading}>
@@ -204,7 +231,8 @@ function WelcomeDisplay({ config }: { config: Config }) {
               className="word"
               style={{
                 animationDelay: `${4.7 + index * 0.12}s`,
-                color: index >= accentStart ? "#edecec" : undefined,
+                color:
+                  index >= accentStart ? "var(--foreground)" : undefined,
               }}
             >
               {word}
@@ -249,12 +277,17 @@ function EditSidebar({
   onChange,
   onClose,
   onReset,
+  onToggleTheme,
 }: {
   config: Config;
   onChange: (next: Config) => void;
   onClose: () => void;
   onReset: () => void;
+  onToggleTheme: () => void;
 }) {
+  const theme = THEMES[config.theme];
+  const isSpaceXAI = config.theme === "spacexai";
+
   const updateSponsor = (index: number, field: keyof Sponsor, value: string) => {
     const sponsors = config.sponsors.map((sponsor, sponsorIndex) =>
       sponsorIndex === index ? { ...sponsor, [field]: value } : sponsor,
@@ -286,23 +319,40 @@ function EditSidebar({
         onClick={onClose}
       />
       <aside className="sidebar-panel" aria-label="Welcome screen editor">
-        <div className="flex items-center justify-between border-b border-[#f54e00]/15 px-5 py-4">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.14em] text-[#f54e00]">
+        <div className="sb-divider flex items-center justify-between border-b px-5 py-4">
+          <h2 className="sb-title text-sm font-semibold uppercase tracking-[0.14em]">
             Edit Welcome
           </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-md px-2 py-1 text-sm text-[#edecec]/60 transition hover:bg-[#26241e] hover:text-[#edecec]"
-          >
+          <button type="button" onClick={onClose} className="sb-close px-2 py-1 text-sm">
             Close
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-5 py-5">
           <div className="space-y-5">
+            <div className="sb-divider space-y-2 border-b pb-5">
+              <div className="flex items-center justify-between gap-3">
+                <span className="sb-label text-xs font-medium uppercase tracking-[0.12em]">
+                  SpaceXAI branding
+                </span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={isSpaceXAI}
+                  aria-label="SpaceXAI branding"
+                  onClick={onToggleTheme}
+                  className="sb-switch"
+                />
+              </div>
+              <p className="sb-hint text-xs">
+                {isSpaceXAI
+                  ? "Turn off for the classic Cursor welcome screen."
+                  : "Showing the classic Cursor welcome screen."}
+              </p>
+            </div>
+
             <label className="block space-y-2">
-              <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
+              <span className="sb-label text-xs font-medium uppercase tracking-[0.12em]">
                 Brand
               </span>
               <input
@@ -311,13 +361,13 @@ function EditSidebar({
                 onChange={(event) =>
                   onChange({ ...config, brand: event.target.value })
                 }
-                className="w-full rounded-lg border border-[#f54e00]/20 bg-[#1b1913]/80 px-3 py-2 text-sm text-[#edecec] outline-none transition focus:border-[#f54e00]/50"
-                placeholder="Cursor Ahmedabad"
+                className="sb-input"
+                placeholder={theme.brand}
               />
             </label>
 
             <label className="block space-y-2">
-              <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
+              <span className="sb-label text-xs font-medium uppercase tracking-[0.12em]">
                 Title
               </span>
               <textarea
@@ -326,17 +376,17 @@ function EditSidebar({
                   onChange({ ...config, heading: event.target.value })
                 }
                 rows={3}
-                className="w-full resize-none rounded-lg border border-[#f54e00]/20 bg-[#1b1913]/80 px-3 py-2 text-sm text-[#edecec] outline-none transition focus:border-[#f54e00]/50"
-                placeholder="Welcome to the Cursor Community Workshop"
+                className="sb-input resize-none"
+                placeholder={theme.heading}
               />
             </label>
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
+                <span className="sb-label text-xs font-medium uppercase tracking-[0.12em]">
                   Date
                 </span>
-                <label className="flex items-center gap-2 text-xs text-[#edecec]/80">
+                <label className="sb-toggle-label flex items-center gap-2 text-xs">
                   <input
                     type="checkbox"
                     checked={config.useAutoDate}
@@ -346,7 +396,7 @@ function EditSidebar({
                         useAutoDate: event.target.checked,
                       })
                     }
-                    className="rounded border-[#f54e00]/30 bg-[#1b1913]"
+                    className="sb-check"
                   />
                   Use today
                 </label>
@@ -358,16 +408,16 @@ function EditSidebar({
                 onChange={(event) =>
                   onChange({ ...config, customDate: event.target.value })
                 }
-                className="w-full rounded-lg border border-[#f54e00]/20 bg-[#1b1913]/80 px-3 py-2 text-sm text-[#edecec] outline-none transition focus:border-[#f54e00]/50 disabled:cursor-not-allowed disabled:opacity-45"
+                className="sb-input"
               />
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
+                <span className="sb-label text-xs font-medium uppercase tracking-[0.12em]">
                   Interval Time
                 </span>
-                <label className="flex items-center gap-2 text-xs text-[#edecec]/80">
+                <label className="sb-toggle-label flex items-center gap-2 text-xs">
                   <input
                     type="checkbox"
                     checked={config.intervalEnabled}
@@ -377,16 +427,14 @@ function EditSidebar({
                         intervalEnabled: event.target.checked,
                       })
                     }
-                    className="rounded border-[#f54e00]/30 bg-[#1b1913]"
+                    className="sb-check"
                   />
                   Auto replay
                 </label>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-[#edecec]/50">Replay every</span>
-                <span className="text-xs text-[#f54e00]">
-                  {config.intervalSec}s
-                </span>
+                <span className="sb-hint text-xs">Replay every</span>
+                <span className="sb-value text-xs">{config.intervalSec}s</span>
               </div>
               <input
                 type="range"
@@ -401,50 +449,47 @@ function EditSidebar({
                     intervalSec: Number(event.target.value),
                   })
                 }
-                className="w-full accent-[#f54e00] disabled:cursor-not-allowed disabled:opacity-45"
+                className="sb-range"
               />
-              <p className="text-xs text-[#edecec]/50">
+              <p className="sb-hint text-xs">
                 {config.intervalEnabled
                   ? "Animation replay interval (5–60 seconds)"
                   : "Auto replay is off — the animation plays once."}
               </p>
             </div>
 
-            <div className="space-y-3 border-t border-[#f54e00]/10 pt-4">
+            <div className="sb-divider space-y-3 border-t pt-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#edecec]/60">
+                <span className="sb-label text-xs font-medium uppercase tracking-[0.12em]">
                   Additional Details
                 </span>
                 <button
                   type="button"
                   onClick={addSponsor}
                   disabled={config.sponsors.length >= MAX_SPONSORS}
-                  className="rounded-md border border-[#f54e00]/25 px-2.5 py-1 text-xs font-medium text-[#f54e00] transition hover:bg-[#f54e00]/10 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="sb-chip"
                 >
                   Add Sponsor
                 </button>
               </div>
 
               {config.sponsors.length === 0 && (
-                <p className="text-xs text-[#edecec]/50">
+                <p className="sb-hint text-xs">
                   Add up to 5 sponsors with a title and name.
                 </p>
               )}
 
               <div className="space-y-3">
                 {config.sponsors.map((sponsor, index) => (
-                  <div
-                    key={index}
-                    className="rounded-lg border border-[#f54e00]/15 bg-[#1b1913]/50 p-3"
-                  >
+                  <div key={index} className="sb-card">
                     <div className="mb-2 flex items-center justify-between">
-                      <span className="text-xs font-medium text-[#edecec]/60">
+                      <span className="sb-card-label text-xs font-medium">
                         Sponsor {index + 1}
                       </span>
                       <button
                         type="button"
                         onClick={() => removeSponsor(index)}
-                        className="text-xs text-[#edecec]/50 transition hover:text-red-300"
+                        className="sb-remove text-xs"
                       >
                         Remove
                       </button>
@@ -457,7 +502,7 @@ function EditSidebar({
                           updateSponsor(index, "title", event.target.value)
                         }
                         placeholder="Title (e.g. Gold Sponsor)"
-                        className="w-full rounded-md border border-[#f54e00]/20 bg-[#14120b]/80 px-3 py-2 text-sm text-[#edecec] outline-none transition focus:border-[#f54e00]/50"
+                        className="sb-input sb-input-sm"
                       />
                       <input
                         type="text"
@@ -466,7 +511,7 @@ function EditSidebar({
                           updateSponsor(index, "name", event.target.value)
                         }
                         placeholder="Name (e.g. Acme Corp)"
-                        className="w-full rounded-md border border-[#f54e00]/20 bg-[#14120b]/80 px-3 py-2 text-sm text-[#edecec] outline-none transition focus:border-[#f54e00]/50"
+                        className="sb-input sb-input-sm"
                       />
                     </div>
                   </div>
@@ -476,12 +521,8 @@ function EditSidebar({
           </div>
         </div>
 
-        <div className="border-t border-[#f54e00]/10 px-5 py-4">
-          <button
-            type="button"
-            onClick={onReset}
-            className="w-full rounded-lg border border-red-400/25 px-3 py-2 text-sm font-medium text-red-300 transition hover:border-red-400/45 hover:bg-red-400/10"
-          >
+        <div className="sb-divider border-t px-5 py-4">
+          <button type="button" onClick={onReset} className="sb-reset">
             Reset to defaults
           </button>
         </div>
@@ -622,6 +663,26 @@ export default function Home() {
     return () => window.clearInterval(timer);
   }, [config.intervalSec, config.intervalEnabled]);
 
+  /**
+   * The attribute lives on <html> so the themed tokens also reach <body>, and
+   * the favicon is swapped here because the static metadata cannot react to it.
+   */
+  useEffect(() => {
+    document.documentElement.dataset.theme = config.theme;
+
+    const href = THEMES[config.theme].favicon;
+    let link = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
+
+    link.type = "image/svg+xml";
+    link.href = href;
+  }, [config.theme]);
+
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(Boolean(document.fullscreenElement));
@@ -654,6 +715,13 @@ export default function Home() {
     }
 
     setConfig(createDefaultConfig());
+    setCycleKey((current) => current + 1);
+  }, []);
+
+  const handleToggleTheme = useCallback(() => {
+    setConfig((current) =>
+      applyTheme(current, current.theme === "spacexai" ? "cursor" : "spacexai"),
+    );
     setCycleKey((current) => current + 1);
   }, []);
 
@@ -698,18 +766,24 @@ export default function Home() {
       if (key === "f" || key === "p") {
         event.preventDefault();
         void toggleFullscreen();
+        return;
+      }
+
+      if (key === "t") {
+        event.preventDefault();
+        handleToggleTheme();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isEditing, toggleFullscreen]);
+  }, [isEditing, toggleFullscreen, handleToggleTheme]);
 
   return (
     <div className="welcome-root relative min-h-screen">
       <div className="welcome-bg" aria-hidden="true" />
       <Particles />
-      <WelcomeDisplay key={cycleKey} config={config} />
+      <WelcomeDisplay config={config} cycleKey={cycleKey} />
       {!isFullscreen && <WelcomeFooter />}
 
       {!isFullscreen && (
@@ -717,22 +791,18 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setIsEditing(true)}
-            className="rounded-full border border-[#f54e00]/25 bg-[#14120b]/70 px-4 py-2 text-sm font-medium text-[#edecec] backdrop-blur transition hover:border-[#f54e00]/45 hover:bg-[#1b1913]/80"
+            className="stage-btn"
           >
             Edit
           </button>
           <button
             type="button"
             onClick={toggleFullscreen}
-            className="rounded-full border border-[#f54e00]/25 bg-[#14120b]/70 px-4 py-2 text-sm font-medium text-[#edecec] backdrop-blur transition hover:border-[#f54e00]/45 hover:bg-[#1b1913]/80"
+            className="stage-btn"
           >
             Preview
           </button>
-          <button
-            type="button"
-            onClick={handleShare}
-            className="rounded-full border border-[#f54e00]/25 bg-[#14120b]/70 px-4 py-2 text-sm font-medium text-[#edecec] backdrop-blur transition hover:border-[#f54e00]/45 hover:bg-[#1b1913]/80"
-          >
+          <button type="button" onClick={handleShare} className="stage-btn">
             {shareCopied ? "Copied!" : "Share"}
           </button>
         </div>
@@ -744,6 +814,7 @@ export default function Home() {
           onChange={setConfig}
           onClose={() => setIsEditing(false)}
           onReset={handleReset}
+          onToggleTheme={handleToggleTheme}
         />
       )}
     </div>
