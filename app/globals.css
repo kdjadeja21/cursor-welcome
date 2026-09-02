@@ -135,6 +135,120 @@ body {
   }
 }
 
+/*
+ * Official grokbots.ai expression table, scaled from the neutral oval
+ * (w=0.186, h=0.412). Left/right tilts match O() / asymmetric faces.
+ */
+@keyframes bot-eye-left {
+  0%,
+  6% {
+    transform: rotate(0deg) scale(1, 1);
+  }
+  6.25% {
+    transform: rotate(0deg) scale(1.13, 1.07);
+  }
+  12.5% {
+    transform: rotate(0deg) scale(2.42, 1.14);
+  }
+  18.75% {
+    transform: rotate(-10deg) scale(2.15, 1.36);
+  }
+  25% {
+    transform: rotate(14deg) scale(1.45, 0.41);
+  }
+  31.25% {
+    transform: rotate(20deg) scale(1.83, 0.32);
+  }
+  37.5% {
+    transform: rotate(30deg) scale(1.83, 0.36);
+  }
+  43.75% {
+    transform: rotate(-28deg) scale(1.18, 0.97);
+  }
+  50% {
+    transform: rotate(0deg) scale(2.15, 1.46);
+  }
+  56.25% {
+    transform: rotate(0deg) scale(1.13, 0.97);
+  }
+  62.5% {
+    transform: rotate(-18deg) scale(1.08, 1.07);
+  }
+  68.75% {
+    transform: rotate(-8deg) scale(1.29, 1.12);
+  }
+  75% {
+    transform: rotate(18deg) scale(1.61, 0.36);
+  }
+  81.25% {
+    transform: rotate(0deg) scale(0.91, 0.73);
+  }
+  87.5% {
+    transform: rotate(0deg) scale(1.61, 0.29);
+  }
+  93.75% {
+    transform: rotate(0deg) scale(1.08, 0.43);
+  }
+  100% {
+    transform: rotate(0deg) scale(1, 1);
+  }
+}
+
+@keyframes bot-eye-right {
+  0%,
+  6% {
+    transform: rotate(0deg) scale(1, 1);
+  }
+  6.25% {
+    transform: rotate(0deg) scale(1.13, 1.07);
+  }
+  12.5% {
+    transform: rotate(0deg) scale(2.42, 1.14);
+  }
+  18.75% {
+    transform: rotate(10deg) scale(2.15, 1.36);
+  }
+  25% {
+    transform: rotate(-14deg) scale(1.45, 0.41);
+  }
+  31.25% {
+    transform: rotate(-20deg) scale(1.83, 0.32);
+  }
+  37.5% {
+    transform: rotate(-30deg) scale(1.83, 0.36);
+  }
+  43.75% {
+    transform: rotate(28deg) scale(1.18, 0.97);
+  }
+  50% {
+    transform: rotate(0deg) scale(2.15, 1.46);
+  }
+  56.25% {
+    transform: rotate(0deg) scale(1.18, 0.36);
+  }
+  62.5% {
+    transform: rotate(14deg) scale(1.51, 0.41);
+  }
+  68.75% {
+    transform: rotate(-8deg) scale(1.08, 0.92);
+  }
+  75% {
+    transform: rotate(-18deg) scale(1.61, 0.36);
+  }
+  81.25% {
+    transform: rotate(0deg) scale(0.91, 0.73);
+  }
+  87.5% {
+    transform: rotate(0deg) scale(1.61, 0.29);
+  }
+  93.75% {
+    transform: rotate(0deg) scale(1.08, 0.43);
+  }
+  100% {
+    transform: rotate(0deg) scale(1, 1);
+  }
+}
+
 @keyframes logoIn {
   0% {
     opacity: 0;
@@ -363,6 +477,21 @@ body {
 .welcome-bot-static {
   animation: none;
   transform: rotate(var(--bot-tilt, 0deg));
+}
+
+.welcome-bot-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bot-eye-left 16s ease-in-out infinite;
+  animation-delay: var(--eye-delay, 0s);
+}
+
+.welcome-bot-eye-right {
+  animation-name: bot-eye-right;
+}
+
+.welcome-bot-static .welcome-bot-eye {
+  animation: none;
 }
 
 .welcome-stage {

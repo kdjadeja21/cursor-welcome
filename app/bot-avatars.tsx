@@ -132,10 +132,16 @@ function eyeLayout(kind: BotKind): { cy: number; spread: number } {
   }
 }
 
-function BotSvg({ variant }: { variant: BotVariant }) {
+function BotSvg({
+  variant,
+  animateEyes,
+}: {
+  variant: BotVariant;
+  animateEyes: boolean;
+}) {
   const eyes = eyeFill(variant.fill);
   const { cy, spread } = eyeLayout(variant.kind);
-  // Studio eye size is ~0.19 × 0.41 of the body radius (~46).
+  // Neutral studio eye: w=0.186, h=0.412 of the body radius (~46).
   const rx = 8.7;
   const ry = 18.9;
 
@@ -148,8 +154,26 @@ function BotSvg({ variant }: { variant: BotVariant }) {
       focusable="false"
     >
       <BotBody kind={variant.kind} fill={variant.fill} />
-      <ellipse cx={60 - spread} cy={cy} rx={rx} ry={ry} fill={eyes} />
-      <ellipse cx={60 + spread} cy={cy} rx={rx} ry={ry} fill={eyes} />
+      <ellipse
+        className={
+          animateEyes ? "welcome-bot-eye welcome-bot-eye-left" : undefined
+        }
+        cx={60 - spread}
+        cy={cy}
+        rx={rx}
+        ry={ry}
+        fill={eyes}
+      />
+      <ellipse
+        className={
+          animateEyes ? "welcome-bot-eye welcome-bot-eye-right" : undefined
+        }
+        cx={60 + spread}
+        cy={cy}
+        rx={rx}
+        ry={ry}
+        fill={eyes}
+      />
     </svg>
   );
 }
@@ -161,6 +185,7 @@ interface Floater {
   top: number;
   duration: number;
   delay: number;
+  eyeDelay: number;
   opacity: string;
   rotate: number;
 }
@@ -204,6 +229,7 @@ export function FloatingBotAvatars({
           : 100 + unit(index * 11 + 6) * 24,
         duration: dur,
         delay: unit(index * 11 + 7) * dur,
+        eyeDelay: unit(index * 11 + 10) * 16,
         opacity: (0.45 + unit(index * 11 + 8) * 0.3).toFixed(2),
         rotate: Math.round((unit(index * 11 + 9) - 0.5) * 16),
       };
@@ -228,10 +254,14 @@ export function FloatingBotAvatars({
               animationDelay: `${floater.delay}s`,
               opacity: floater.opacity,
               "--bot-tilt": `${floater.rotate}deg`,
+              "--eye-delay": `-${floater.eyeDelay}s`,
             } as CSSProperties
           }
         >
-          <BotSvg variant={floater.variant} />
+          <BotSvg
+            variant={floater.variant}
+            animateEyes={!reduceMotion}
+          />
         </span>
       ))}
     </div>
