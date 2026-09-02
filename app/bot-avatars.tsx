@@ -209,7 +209,7 @@ export function FloatingBotAvatars({
     const count = reduceMotion ? 8 : 14;
 
     return Array.from({ length: count }, (_, index) => {
-      const size = 36 + unit(index * 11 + 1) * 52;
+      const size = 32 + unit(index * 11 + 1) * 40;
       const dur = 18 + unit(index * 11 + 2) * 16;
 
       return {
@@ -222,7 +222,7 @@ export function FloatingBotAvatars({
         duration: dur,
         delay: unit(index * 11 + 7) * dur,
         eyeDelay: unit(index * 11 + 10) * 7,
-        opacity: (0.45 + unit(index * 11 + 8) * 0.3).toFixed(2),
+        opacity: (0.22 + unit(index * 11 + 8) * 0.16).toFixed(2),
         rotate: Math.round((unit(index * 11 + 9) - 0.5) * 16),
       };
     });

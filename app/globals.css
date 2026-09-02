@@ -357,6 +357,17 @@ body {
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
+  /* Keep the wordmark and copy clear; bots live in the margins. */
+  -webkit-mask-image: radial-gradient(
+    ellipse 52% 46% at 50% 46%,
+    transparent 42%,
+    #000 78%
+  );
+  mask-image: radial-gradient(
+    ellipse 52% 46% at 50% 46%,
+    transparent 42%,
+    #000 78%
+  );
 }
 
 .welcome-bot {
@@ -393,6 +404,7 @@ body {
 
 .welcome-stage {
   position: relative;
+  z-index: 1;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -587,6 +599,14 @@ body {
   margin-right: 0.35ch;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.welcome-root[data-bot-avatars] .welcome-brand,
+.welcome-root[data-bot-avatars] .welcome-heading .word {
+  text-shadow:
+    0 0 10px var(--background),
+    0 1px 18px var(--background),
+    0 0 28px rgb(var(--background-rgb) / 0.95);
 }
 
 .welcome-accent {

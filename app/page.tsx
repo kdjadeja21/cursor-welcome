@@ -879,7 +879,7 @@ export default function Home() {
   const intro = THEMES[config.theme].intro;
 
   return (
-    <div className="welcome-root relative min-h-screen">
+    <div className="welcome-root relative min-h-screen" data-bot-avatars={config.botAvatars ? "" : undefined}>
       <div className="welcome-bg" aria-hidden="true" />
 
       {isHydrated && showIntro && intro ? (
