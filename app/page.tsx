@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { BrandMark } from "./brand-mark";
+import { IntroLoader } from "./intro-loader";
 import { DEFAULT_THEME, isThemeId, THEMES, type ThemeId } from "./themes";
 import { usePrefersReducedMotion } from "./use-prefers-reduced-motion";
 
@@ -186,7 +187,6 @@ function WelcomeDisplay({
   markKey,
   revealKey,
   isRevealed,
-  isReplay,
   reduceMotion,
   onMarkSettled,
 }: {
@@ -194,7 +194,6 @@ function WelcomeDisplay({
   markKey: number;
   revealKey: number;
   isRevealed: boolean;
-  isReplay: boolean;
   reduceMotion: boolean;
   onMarkSettled: () => void;
 }) {
@@ -227,9 +226,8 @@ function WelcomeDisplay({
       >
         <BrandMark
           key={markKey}
-          mark={theme.mark}
+          logo={theme.logo}
           reduceMotion={reduceMotion}
-          isReplay={isReplay}
           onSettled={onMarkSettled}
         />
       </div>
@@ -638,16 +636,16 @@ function isTypingTarget(target: EventTarget | null): boolean {
 export default function Home() {
   const [config, setConfig] = useState<Config>(DEFAULT_CONFIG);
   const [isHydrated, setIsHydrated] = useState(false);
-  /** Bumped to replay the brand mark; the mark remounts on every change. */
+  /** Bumped to replay the stage mark; the mark remounts on every change. */
   const [markKey, setMarkKey] = useState(0);
   /** Bumped when the mark settles, restarting the copy's entry animations. */
   const [revealKey, setRevealKey] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
   /**
-   * The very first pass doubles as the loading screen: only the brand mark is
-   * on screen. Once it has played, the surrounding chrome stays put for the
-   * rest of the session, so replays never hide it again.
+   * The Rive file plays once as a loading overlay. After it finishes (or is
+   * skipped), the welcome stage takes over and never shows the overlay again.
    */
+  const [showIntro, setShowIntro] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -656,11 +654,15 @@ export default function Home() {
 
   const handleMarkSettled = useCallback(() => {
     setIsRevealed(true);
-    setHasLoaded(true);
     setRevealKey((current) => current + 1);
   }, []);
 
-  /** Hides the copy again and plays the mark from the top. */
+  const handleIntroFinish = useCallback(() => {
+    setShowIntro(false);
+    setHasLoaded(true);
+  }, []);
+
+  /** Hides the copy again and plays the stage mark from the top. */
   const replayMark = useCallback(() => {
     setIsRevealed(false);
     setMarkKey((current) => current + 1);
@@ -689,6 +691,18 @@ export default function Home() {
       const url = new URL(window.location.href);
       url.searchParams.delete("data");
       window.history.replaceState({}, "", url.pathname + url.search);
+    }
+
+    const resolvedTheme = nextConfig?.theme ?? DEFAULT_CONFIG.theme;
+    const hasIntro = Boolean(THEMES[resolvedTheme].intro);
+    const skipIntro = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (hasIntro && !skipIntro) {
+      setShowIntro(true);
+    } else {
+      setHasLoaded(true);
     }
 
     setIsHydrated(true);
@@ -827,30 +841,32 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [hasLoaded, isEditing, toggleFullscreen, handleToggleTheme]);
 
+  const intro = THEMES[config.theme].intro;
+
   return (
-    <div
-      className="welcome-root relative min-h-screen"
-      data-phase={hasLoaded ? "stage" : "loading"}
-    >
+    <div className="welcome-root relative min-h-screen">
       <div className="welcome-bg" aria-hidden="true" />
 
-      {isHydrated && (
+      {isHydrated && showIntro && intro ? (
+        <IntroLoader intro={intro} onFinish={handleIntroFinish} />
+      ) : null}
+
+      {isHydrated && hasLoaded && (
         <>
-          {hasLoaded && <Particles />}
+          <Particles />
 
           <WelcomeDisplay
             config={config}
             markKey={markKey}
             revealKey={revealKey}
             isRevealed={isRevealed}
-            isReplay={hasLoaded}
             reduceMotion={prefersReducedMotion}
             onMarkSettled={handleMarkSettled}
           />
 
-          {!isFullscreen && <WelcomeFooter isVisible={hasLoaded} />}
+          {!isFullscreen && <WelcomeFooter isVisible />}
 
-          {!isFullscreen && hasLoaded && (
+          {!isFullscreen && (
             <div className="stage-actions fixed right-5 top-5 z-30 flex gap-2">
               <button
                 type="button"
