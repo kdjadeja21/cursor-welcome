@@ -113,6 +113,28 @@ body {
   }
 }
 
+@keyframes botFloat {
+  0% {
+    transform: translateY(0) translateX(0) rotate(var(--bot-tilt, 0deg));
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-55vh) translateX(12px)
+      rotate(calc(var(--bot-tilt, 0deg) + 8deg));
+  }
+  90% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(-8px)
+      rotate(calc(var(--bot-tilt, 0deg) - 6deg));
+    opacity: 0;
+  }
+}
+
 @keyframes logoIn {
   0% {
     opacity: 0;
@@ -312,6 +334,35 @@ body {
   box-shadow: 0 0 6px rgb(var(--accent-rgb) / var(--particle-glow-alpha));
   animation: float linear infinite;
   opacity: 0;
+}
+
+.welcome-bot-avatars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.welcome-bot {
+  position: absolute;
+  display: block;
+  --bot-tilt: 0deg;
+  animation: botFloat linear infinite;
+  opacity: 0;
+  filter: drop-shadow(0 8px 16px rgb(0 0 0 / 0.28));
+  will-change: transform, opacity;
+}
+
+.welcome-bot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.welcome-bot-static {
+  animation: none;
+  transform: rotate(var(--bot-tilt, 0deg));
 }
 
 .welcome-stage {
@@ -939,5 +990,11 @@ body {
 
   .welcome-accent {
     width: clamp(120px, 22vw, 260px);
+  }
+
+  .welcome-bot {
+    animation: none;
+    opacity: 0.5;
+    transform: rotate(var(--bot-tilt, 0deg));
   }
 }

@@ -10,6 +10,7 @@ The Rive intro plays once on load, then the welcome stage takes over with a larg
 - One-time Rive loading animation, then a large wordmark as the welcome screen's centrepiece
 - Animated welcome display with the brand logo, heading, brand name, and live date
 - Floating particle background effect
+- Optional floating clay bot avatars behind the stage (editor toggle)
 - Sidebar editor to customize all content without touching code — changes persist via `localStorage`
 - Up to 5 sponsor entries (title + name each)
 - Auto date or a fixed custom date
@@ -52,6 +53,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 Click **Edit** (top-right) or press `E` to open the sidebar and update:
 
 - **SpaceXAI branding** — switch between the SpaceXAI and Cursor themes
+- **Bot avatars** — float mixed clay-style bot avatars behind the welcome stage
 - **Brand** — community or chapter name (e.g. "SpaceXAI Ahmedabad")
 - **Title** — the main heading displayed on screen
 - **Date** — use today's date automatically or set a custom one

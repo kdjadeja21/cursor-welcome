@@ -3,8 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { BrandMark } from "./brand-mark";
+import { FloatingBotAvatars } from "./bot-avatars";
 import { IntroLoader } from "./intro-loader";
 import { DEFAULT_THEME, isThemeId, THEMES, type ThemeId } from "./themes";
+import { unit } from "./unit";
 import { usePrefersReducedMotion } from "./use-prefers-reduced-motion";
 
 interface Sponsor {
@@ -20,6 +22,7 @@ interface Config {
   customDate: string;
   intervalSec: number;
   intervalEnabled: boolean;
+  botAvatars: boolean;
   sponsors: Sponsor[];
 }
 
@@ -32,6 +35,7 @@ function createDefaultConfig(): Config {
     customDate: new Date().toISOString().slice(0, 10),
     intervalSec: 15,
     intervalEnabled: true,
+    botAvatars: false,
     sponsors: [],
   };
 }
@@ -78,6 +82,10 @@ function parseStoredConfig(raw: unknown): Config | null {
       typeof data.intervalEnabled === "boolean"
         ? data.intervalEnabled
         : DEFAULT_CONFIG.intervalEnabled,
+    botAvatars:
+      typeof data.botAvatars === "boolean"
+        ? data.botAvatars
+        : DEFAULT_CONFIG.botAvatars,
     sponsors,
   };
 }
@@ -146,16 +154,16 @@ function splitHeadingWords(heading: string): string[] {
 function Particles() {
   const particles = useMemo(
     () =>
-      Array.from({ length: 24 }, () => {
-        const size = Math.random() * 2 + 1;
-        const dur = 12 + Math.random() * 16;
+      Array.from({ length: 24 }, (_, index) => {
+        const size = unit(index * 7 + 1) * 2 + 1;
+        const dur = 12 + unit(index * 7 + 2) * 16;
         return {
           size,
-          left: Math.random() * 100,
-          top: 100 + Math.random() * 20,
+          left: unit(index * 7 + 3) * 100,
+          top: 100 + unit(index * 7 + 4) * 20,
           duration: dur,
-          delay: Math.random() * dur,
-          opacity: (0.3 + Math.random() * 0.5).toFixed(2),
+          delay: unit(index * 7 + 5) * dur,
+          opacity: (0.3 + unit(index * 7 + 6) * 0.5).toFixed(2),
         };
       }),
     [],
@@ -363,6 +371,29 @@ function EditSidebar({
                 {isSpaceXAI
                   ? "Turn off for the classic Cursor welcome screen."
                   : "Showing the classic Cursor welcome screen."}
+              </p>
+            </div>
+
+            <div className="sb-divider space-y-2 border-b pb-5">
+              <div className="flex items-center justify-between gap-3">
+                <span className="sb-label text-xs font-medium uppercase tracking-[0.12em]">
+                  Bot avatars
+                </span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={config.botAvatars}
+                  aria-label="Bot avatars"
+                  onClick={() =>
+                    onChange({ ...config, botAvatars: !config.botAvatars })
+                  }
+                  className="sb-switch"
+                />
+              </div>
+              <p className="sb-hint text-xs">
+                {config.botAvatars
+                  ? "Clay bot avatars are floating behind the welcome screen."
+                  : "Turn on to float mixed bot avatars behind the stage."}
               </p>
             </div>
 
@@ -685,7 +716,11 @@ export default function Home() {
       nextConfig = loadConfigFromStorage();
     }
 
-    if (nextConfig) setConfig(nextConfig);
+    if (nextConfig) {
+      // Hydration from URL / localStorage is a client-only source.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- restore saved config once after mount
+      setConfig(nextConfig);
+    }
 
     if (sharedParam) {
       const url = new URL(window.location.href);
@@ -854,6 +889,9 @@ export default function Home() {
       {isHydrated && hasLoaded && (
         <>
           <Particles />
+          {config.botAvatars && (
+            <FloatingBotAvatars reduceMotion={prefersReducedMotion} />
+          )}
 
           <WelcomeDisplay
             config={config}
