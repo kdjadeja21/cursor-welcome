@@ -64,7 +64,7 @@ All settings are saved to `localStorage` and restored on the next visit. Use **R
 
 The SpaceXAI files under `public/brand/spacexai/` are copied verbatim from the official brand asset kit — only the filenames were simplified. Per the [SpaceXAI brand guidelines](https://x.ai/legal/brand-guidelines), the logo is used exactly as provided: no recolouring, cropping, or glow effects are applied to it, and the chapter name is kept clear of the mark so the two never read as a single new logo. Do not edit these files.
 
-On first load, `spacexai-dark.riv` plays once as a full-screen intro (via the Rive web runtime). It holds for a beat before playing so the write-on is readable, then fades out. The welcome stage then shows the large `wordmark-white.svg` lockup as the page's centrepiece — the Rive file never runs on the main screen, and toggling themes afterwards never replays the intro. If the runtime cannot load, or the visitor prefers reduced motion, the intro is skipped and the wordmark is shown from the start.
+On first load, `spacexai-dark.riv` plays once as a short full-screen intro, then the welcome stage shows `wordmark-white.svg` as the centrepiece. The Rive file never runs on the main screen, and toggling themes afterwards never replays the intro. If the runtime cannot load, or the visitor prefers reduced motion, the intro is skipped and the wordmark is shown from the start.
 
 Theme definitions (copy, favicon, stage logo, intro) live in [`app/themes.ts`](app/themes.ts).
 

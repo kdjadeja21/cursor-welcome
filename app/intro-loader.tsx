@@ -6,16 +6,16 @@ import { Alignment, EventType, Fit, Layout, useRive } from "@rive-app/react-canv
 import type { ThemeIntro } from "./themes";
 
 /**
- * A beat of dark before the Rive logo starts, so the wordmark writes itself
- * after the page has faded up rather than while the browser is still busy.
+ * A short beat of dark before the Rive logo starts, so the write-on is not
+ * lost to the page fading up — kept brief so the intro does not overstay.
  */
-const RIVE_HOLD_MS = 1300;
+const RIVE_HOLD_MS = 350;
 /** How long the finished mark holds still before the welcome stage appears. */
-const RIVE_LINGER_MS = 1100;
+const RIVE_LINGER_MS = 400;
 /** Backstop in case the state machine loops instead of settling. */
-const RIVE_MAX_MS = 5500;
-const RIVE_LOAD_TIMEOUT_MS = 2500;
-const FADE_MS = 450;
+const RIVE_MAX_MS = 2800;
+const RIVE_LOAD_TIMEOUT_MS = 1500;
+const FADE_MS = 280;
 
 export function IntroLoader({
   intro,

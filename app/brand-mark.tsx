@@ -7,7 +7,7 @@ import type { ThemeLogo } from "./themes";
 /** Matches the CSS stroke-draw plus fill on the Cursor mark. */
 const PATH_DRAW_MS = 2900;
 /** The wordmark is already the highlight; copy can follow after a short beat. */
-const IMAGE_HOLD_MS = 500;
+const IMAGE_HOLD_MS = 280;
 const REDUCED_MOTION_HOLD_MS = 150;
 
 type ImageLogo = Extract<ThemeLogo, { kind: "image" }>;

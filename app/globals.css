@@ -22,10 +22,10 @@
   --pill-border-alpha: 0.18;
   --pill-glow-alpha: 0.05;
   /*
-   * The stage wordmark is the highlight of the welcome screen — a wide
-   * lockup (viewBox 1294×158) sized to fill most of the viewport width.
+   * Stage wordmark (viewBox 1294×158). Wide enough to read as the
+   * centrepiece, not so wide that it crowds the heading beneath it.
    */
-  --mark-w: clamp(300px, 88vw, 1200px);
+  --mark-w: clamp(240px, 54vw, 640px);
   --mark-h: calc(var(--mark-w) * 158 / 1294);
 }
 
@@ -265,7 +265,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   opacity: 0;
-  animation: pageFade 1.2s ease-out 0.1s forwards;
+  animation: pageFade 0.45s ease-out forwards;
 }
 
 .welcome-bg {
@@ -380,7 +380,7 @@ body {
   justify-content: center;
   background: var(--background);
   opacity: 1;
-  transition: opacity 450ms ease;
+  transition: opacity 280ms ease;
 }
 
 .intro-overlay-leaving {
