@@ -316,7 +316,7 @@ function SpaceXAIByline({
       {/* eslint-disable-next-line @next/next/no-img-element -- official wordmark, unscaled */}
       <img
         className="grokbot-byline-mark"
-        src="/brand/spacexai/wordmark-white.svg"
+        src="/brand/spacexai/wordmark-black.svg"
         alt="SpaceXAI"
       />
     </p>
