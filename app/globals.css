@@ -603,7 +603,7 @@ body {
 
 [data-theme="grokbot"] .welcome-stage {
   z-index: 1;
-  gap: clamp(1.4rem, 4vw, 3.25rem);
+  gap: clamp(1rem, 2.6vw, 1.85rem);
   padding-top: clamp(3.5rem, 10vh, 7rem);
   justify-content: center;
 }
@@ -617,17 +617,26 @@ body {
   min-width: 0;
 }
 
+[data-theme="grokbot"] .welcome-lockup .welcome-mark-wrap {
+  margin-inline: 0;
+}
+
 [data-theme="grokbot"] .welcome-mark-wrap {
   opacity: 0;
   animation: grokMarkIn 0.8s cubic-bezier(0.22, 1.2, 0.36, 1) 0.08s forwards;
 }
 
 [data-theme="grokbot"] .welcome-heading {
-  font-size: clamp(2.4rem, 8vw, 5.25rem);
+  font-size: clamp(1.35rem, 3.6vw, 2.45rem);
   font-weight: 500;
-  letter-spacing: -0.045em;
-  max-width: none;
+  letter-spacing: -0.03em;
+  max-width: min(32ch, 90vw);
+  line-height: 1.25;
   color: var(--foreground);
+}
+
+[data-theme="grokbot"] .welcome-heading .word {
+  margin-right: 0.4ch;
 }
 
 [data-theme="grokbot"] .welcome-brand {
@@ -636,6 +645,34 @@ body {
   letter-spacing: -0.04em;
   text-transform: none;
   animation: grokLockupIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
+}
+
+.grokbot-byline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0.15rem 0 0;
+  padding: 0.5rem 1.05rem 0.5rem 1.1rem;
+  border-radius: 999px;
+  background: #0a0a0a;
+  color: #ffffff;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: grokLockupIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.28s forwards;
+}
+
+.grokbot-byline-label {
+  font-size: clamp(0.72rem, 1.4vw, 0.85rem);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.grokbot-byline-mark {
+  display: block;
+  height: clamp(15px, 2.2vw, 20px);
+  width: auto;
 }
 
 [data-theme="grokbot"] .welcome-accent {
@@ -1304,7 +1341,8 @@ body {
   .welcome-brand,
   .welcome-heading .word,
   .welcome-date,
-  .welcome-sponsor {
+  .welcome-sponsor,
+  .grokbot-byline {
     opacity: 1;
     transform: none;
   }

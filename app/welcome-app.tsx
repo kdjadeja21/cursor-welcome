@@ -299,6 +299,30 @@ function SponsorRow({
   );
 }
 
+function SpaceXAIByline({
+  isVisible,
+  revealKey,
+}: {
+  isVisible: boolean;
+  revealKey: number;
+}) {
+  return (
+    <p
+      className={`grokbot-byline${isVisible ? "" : " welcome-text-waiting"}`}
+      key={`byline-${revealKey}`}
+      aria-hidden={!isVisible}
+    >
+      <span className="grokbot-byline-label">By</span>
+      {/* eslint-disable-next-line @next/next/no-img-element -- official wordmark, unscaled */}
+      <img
+        className="grokbot-byline-mark"
+        src="/brand/spacexai/wordmark-white.svg"
+        alt="SpaceXAI"
+      />
+    </p>
+  );
+}
+
 function GrokBotDisplay({
   config,
   markKey,
@@ -325,23 +349,6 @@ function GrokBotDisplay({
 
   return (
     <main className="welcome-stage">
-      <h1
-        className={`welcome-heading${waiting}`}
-        key={`heading-${revealKey}`}
-        aria-label={config.heading}
-        aria-hidden={!isRevealed}
-      >
-        {words.map((word, index) => (
-          <span
-            key={`${word}-${index}`}
-            className="word"
-            style={{ animationDelay: `${0.12 + index * 0.08}s` }}
-          >
-            {word}
-          </span>
-        ))}
-      </h1>
-
       <div className="welcome-lockup">
         <div
           ref={markRef}
@@ -363,6 +370,23 @@ function GrokBotDisplay({
         </div>
       </div>
 
+      <h1
+        className={`welcome-heading${waiting}`}
+        key={`heading-${revealKey}`}
+        aria-label={config.heading}
+        aria-hidden={!isRevealed}
+      >
+        {words.map((word, index) => (
+          <span
+            key={`${word}-${index}`}
+            className="word"
+            style={{ animationDelay: `${0.18 + index * 0.06}s` }}
+          >
+            {word}
+          </span>
+        ))}
+      </h1>
+
       <div
         className={`welcome-date${waiting}`}
         key={`date-${revealKey}`}
@@ -371,6 +395,8 @@ function GrokBotDisplay({
         <span className="welcome-date-weekday">{dateLines.weekday}</span>
         {dateLines.rest ? <span>{dateLines.rest}</span> : null}
       </div>
+
+      <SpaceXAIByline isVisible={isRevealed} revealKey={revealKey} />
 
       <div className={waiting} key={`sponsors-${revealKey}`} aria-hidden={!isRevealed}>
         <SponsorRow sponsors={visibleSponsors} />
