@@ -3,7 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { BrandLogo } from "./brand-logo";
+import { IntroLoader } from "./intro-loader";
 import { DEFAULT_THEME, isThemeId, THEMES, type ThemeId } from "./themes";
+
+type Phase = "deciding" | "intro" | "main";
 
 interface Sponsor {
   title: string;
@@ -196,8 +199,8 @@ function WelcomeDisplay({
   );
 
   /**
-   * The wrapper stays mounted so the Rive runtime is not torn down every
-   * replay, so its entry animation is restarted by hand instead.
+   * The wrapper stays mounted across replays, so its entry animation (and,
+   * for the Cursor theme, its glow) is restarted by hand instead of remounting.
    */
   useEffect(() => {
     const node = logoRef.current;
@@ -614,6 +617,11 @@ function isTypingTarget(target: EventTarget | null): boolean {
 export default function Home() {
   const [config, setConfig] = useState<Config>(DEFAULT_CONFIG);
   const [isHydrated, setIsHydrated] = useState(false);
+  /**
+   * The Rive intro is a one-time splash decided once at hydration and never
+   * revisited, so switching themes afterwards never replays it.
+   */
+  const [phase, setPhase] = useState<Phase>("deciding");
   const [isEditing, setIsEditing] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [cycleKey, setCycleKey] = useState(0);
@@ -644,6 +652,14 @@ export default function Home() {
       window.history.replaceState({}, "", url.pathname + url.search);
     }
 
+    const resolvedTheme = nextConfig?.theme ?? DEFAULT_CONFIG.theme;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    setPhase(
+      THEMES[resolvedTheme].intro && !prefersReducedMotion ? "intro" : "main",
+    );
     setIsHydrated(true);
   }, []);
 
@@ -739,6 +755,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (phase !== "main") return;
       if (event.ctrlKey || event.metaKey || event.altKey) return;
       if (isTypingTarget(event.target)) return;
 
@@ -777,45 +794,60 @@ export default function Home() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isEditing, toggleFullscreen, handleToggleTheme]);
+  }, [phase, isEditing, toggleFullscreen, handleToggleTheme]);
+
+  const intro = THEMES[config.theme].intro;
 
   return (
     <div className="welcome-root relative min-h-screen">
       <div className="welcome-bg" aria-hidden="true" />
-      <Particles />
-      <WelcomeDisplay config={config} cycleKey={cycleKey} />
-      {!isFullscreen && <WelcomeFooter />}
 
-      {!isFullscreen && (
-        <div className="fixed right-5 top-5 z-30 flex gap-2">
-          <button
-            type="button"
-            onClick={() => setIsEditing(true)}
-            className="stage-btn"
-          >
-            Edit
-          </button>
-          <button
-            type="button"
-            onClick={toggleFullscreen}
-            className="stage-btn"
-          >
-            Preview
-          </button>
-          <button type="button" onClick={handleShare} className="stage-btn">
-            {shareCopied ? "Copied!" : "Share"}
-          </button>
-        </div>
+      {phase === "intro" && intro && (
+        <IntroLoader intro={intro} onFinish={() => setPhase("main")} />
       )}
 
-      {isEditing && (
-        <EditSidebar
-          config={config}
-          onChange={setConfig}
-          onClose={() => setIsEditing(false)}
-          onReset={handleReset}
-          onToggleTheme={handleToggleTheme}
-        />
+      {phase === "main" && (
+        <>
+          <Particles />
+          <WelcomeDisplay config={config} cycleKey={cycleKey} />
+          {!isFullscreen && <WelcomeFooter />}
+
+          {!isFullscreen && (
+            <div className="fixed right-5 top-5 z-30 flex gap-2">
+              <button
+                type="button"
+                onClick={() => setIsEditing(true)}
+                className="stage-btn"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={toggleFullscreen}
+                className="stage-btn"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                onClick={handleShare}
+                className="stage-btn"
+              >
+                {shareCopied ? "Copied!" : "Share"}
+              </button>
+            </div>
+          )}
+
+          {isEditing && (
+            <EditSidebar
+              config={config}
+              onChange={setConfig}
+              onClose={() => setIsEditing(false)}
+              onReset={handleReset}
+              onToggleTheme={handleToggleTheme}
+            />
+          )}
+        </>
       )}
     </div>
   );

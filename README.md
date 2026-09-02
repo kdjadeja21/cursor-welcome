@@ -4,7 +4,7 @@ A configurable animated welcome screen for community events and workshops, with 
 
 ## Features
 
-- Two branding themes: SpaceXAI (default, monochrome, Rive-animated logo) and Cursor (orange accent, animated SVG mark)
+- Two branding themes: SpaceXAI (default, monochrome, with a one-time Rive intro animation) and Cursor (orange accent, animated SVG mark)
 - Animated welcome display with the brand logo, heading, brand name, and live date
 - Floating particle background effect
 - Sidebar editor to customize all content without touching code — changes persist via `localStorage`
@@ -61,7 +61,7 @@ All settings are saved to `localStorage` and restored on the next visit. Use **R
 
 The SpaceXAI files under `public/brand/spacexai/` are copied verbatim from the official brand asset kit — only the filenames were simplified. Per the [SpaceXAI brand guidelines](https://x.ai/legal/brand-guidelines), the logo is used exactly as provided: no recolouring, cropping, or glow effects are applied to it, and the chapter name is kept clear of the mark so the two never read as a single new logo. Do not edit these files.
 
-The logo animation is the supplied `spacexai-dark.riv`, played with the Rive web runtime. If the runtime cannot load, or the visitor prefers reduced motion, the static `symbol-white.svg` is shown instead.
+On page load, the supplied `spacexai-dark.riv` plays once as a full-screen intro (via the Rive web runtime), then fades out to reveal the welcome page, which uses the static `symbol-white.svg` for the rest of the session — the animation never runs inside the main page itself. If the runtime cannot load, or the visitor prefers reduced motion, the intro is skipped entirely and the static logo is shown from the start. Switching themes afterwards (via the toggle or `T`) never replays the intro.
 
 Theme definitions (copy, favicon, logo) live in [`app/themes.ts`](app/themes.ts).
 

@@ -1,13 +1,22 @@
 export type ThemeId = "spacexai" | "cursor";
 
 /**
- * The SpaceXAI mark is animated from the supplied Rive file and must render
- * exactly as provided, so it carries a static fallback rather than a path the
- * stylesheet can restyle. The Cursor mark is a plain path the CSS draws itself.
+ * What the main welcome stage renders once it's showing. This is always a
+ * static mark — the Rive animation is reserved for the one-time intro below,
+ * per the SpaceXAI brand guidelines' "use exactly as provided" requirement.
  */
 export type ThemeLogo =
-  | { kind: "rive"; src: string; fallback: string; alt: string }
+  | { kind: "image"; src: string; alt: string }
   | { kind: "path"; d: string; viewBox: string; alt: string };
+
+/** A one-time Rive intro played before the welcome stage appears. */
+export interface ThemeIntro {
+  src: string;
+  artboard: string;
+  stateMachine: string;
+  fallback: string;
+  alt: string;
+}
 
 export interface Theme {
   id: ThemeId;
@@ -16,6 +25,7 @@ export interface Theme {
   heading: string;
   favicon: string;
   logo: ThemeLogo;
+  intro?: ThemeIntro;
 }
 
 const CURSOR_LOGO_PATH =
@@ -29,10 +39,16 @@ export const THEMES: Record<ThemeId, Theme> = {
     heading: "Welcome to the SpaceXAI Community Workshop",
     favicon: "/brand/spacexai/favicon.svg",
     logo: {
-      kind: "rive",
-      src: "/brand/spacexai/spacexai-dark.riv",
-      fallback: "/brand/spacexai/symbol-white.svg",
+      kind: "image",
+      src: "/brand/spacexai/symbol-white.svg",
       alt: "SpaceXAI logo",
+    },
+    intro: {
+      src: "/brand/spacexai/spacexai-dark.riv",
+      artboard: "SPACE X WEB",
+      stateMachine: "SPACE X WEB",
+      fallback: "/brand/spacexai/symbol-white.svg",
+      alt: "SpaceXAI",
     },
   },
   cursor: {
