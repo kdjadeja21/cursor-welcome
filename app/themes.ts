@@ -41,7 +41,7 @@ export const THEMES: Record<ThemeId, Theme> = {
       src: "/brand/spacexai/spacexai-dark.riv",
       artboard: "SPACE X WEB",
       stateMachine: "SPACE X WEB",
-      still: "/brand/spacexai/wordmark-white.svg",
+      still: "/brand/spacexai/symbol-white.svg",
       alt: "SpaceXAI",
     },
   },

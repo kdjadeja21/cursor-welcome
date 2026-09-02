@@ -68,7 +68,7 @@ The loading screen and the welcome screen share one brand mark: the supplied `sp
 
 The mark holds for a beat before it plays — long enough for the page to finish fading up — and holds again once it has finished, so the wordmark is readable rather than writing itself while the browser is still busy. Only then does the rest of the page appear: the mark glides up into place while the brand name, heading, date and sponsors write themselves in. Replays (the interval, the theme toggle, `T`, or a reset) play the mark again the same way.
 
-If the Rive runtime cannot load, or the visitor prefers reduced motion, the still `wordmark-white.svg` lockup takes its place and the page is revealed immediately.
+If the Rive runtime cannot load, or the visitor prefers reduced motion, the still `symbol-white.svg` mark takes its place and the page is revealed immediately. The on-stage slot is sized to the X (not the full viewBox), so the X sits on the same axis as the copy and the swoosh trails off to the right.
 
 Theme definitions (copy, favicon, brand mark) live in [`app/themes.ts`](app/themes.ts), and the mark itself is rendered by [`app/brand-mark.tsx`](app/brand-mark.tsx).
 
