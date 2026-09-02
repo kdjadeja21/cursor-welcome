@@ -53,32 +53,7 @@ interface BotVariant {
   kind: BotKind;
 }
 
-function mixHex(hex: string, other: string, amount: number): string {
-  const parse = (value: string) => Number.parseInt(value.slice(1), 16);
-  const mixChannel = (from: number, to: number, shift: number) => {
-    const a = (from >> shift) & 255;
-    const b = (to >> shift) & 255;
-    return Math.round(a + (b - a) * amount);
-  };
-  const from = parse(hex);
-  const to = parse(other);
-  const r = mixChannel(from, to, 16);
-  const g = mixChannel(from, to, 8);
-  const b = mixChannel(from, to, 0);
-  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b
-    .toString(16)
-    .padStart(2, "0")}`;
-}
-
-function BotBody({
-  kind,
-  fill,
-  shade,
-}: {
-  kind: BotKind;
-  fill: string;
-  shade: string;
-}): ReactNode {
+function BotBody({ kind, fill }: { kind: BotKind; fill: string }): ReactNode {
   switch (kind) {
     case "circle":
       return <circle cx="60" cy="60" r="46" fill={fill} />;
@@ -93,7 +68,7 @@ function BotBody({
         <polygon
           points="60,20 104,100 16,100"
           fill={fill}
-          stroke={shade}
+          stroke={fill}
           strokeWidth="14"
           strokeLinejoin="round"
         />
@@ -103,7 +78,7 @@ function BotBody({
         <polygon
           points="60,14 100,37 100,83 60,106 20,83 20,37"
           fill={fill}
-          stroke={shade}
+          stroke={fill}
           strokeLinejoin="round"
           strokeWidth="12"
         />
@@ -159,17 +134,13 @@ function eyeLayout(kind: BotKind): { cy: number; spread: number } {
 
 function BotSvg({
   variant,
-  paintId,
   animateEyes,
 }: {
   variant: BotVariant;
-  paintId: string;
   animateEyes: boolean;
 }) {
   const eyes = eyeFill(variant.fill);
   const { cy, spread } = eyeLayout(variant.kind);
-  const highlight = mixHex(variant.fill, "#ffffff", 0.5);
-  const shade = mixHex(variant.fill, "#0a0a0c", 0.42);
   const radius = 11;
 
   return (
@@ -180,27 +151,7 @@ function BotSvg({
       aria-hidden="true"
       focusable="false"
     >
-      <defs>
-        <radialGradient id={paintId} cx="32%" cy="26%" r="78%">
-          <stop offset="0%" stopColor={highlight} />
-          <stop offset="48%" stopColor={variant.fill} />
-          <stop offset="100%" stopColor={shade} />
-        </radialGradient>
-      </defs>
-      <BotBody
-        kind={variant.kind}
-        fill={`url(#${paintId})`}
-        shade={shade}
-      />
-      <ellipse
-        cx="42"
-        cy="36"
-        rx="18"
-        ry="11"
-        fill="#ffffff"
-        opacity="0.28"
-        pointerEvents="none"
-      />
+      <BotBody kind={variant.kind} fill={variant.fill} />
       <circle
         className={animateEyes ? "welcome-bot-eye" : undefined}
         cx={60 - spread}
@@ -301,7 +252,6 @@ export function FloatingBotAvatars({
         >
           <BotSvg
             variant={floater.variant}
-            paintId={`bot-clay-${index}`}
             animateEyes={!reduceMotion}
           />
         </span>
