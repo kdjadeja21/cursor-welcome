@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { BrandMark } from "./brand-mark";
@@ -1176,7 +1177,12 @@ export function WelcomeApp({
           {!isFullscreen && <WelcomeFooter isVisible />}
 
           {!isFullscreen && (
-            <div className="stage-actions fixed right-5 top-5 z-30 flex gap-2">
+            <div className="stage-actions fixed right-5 top-5 z-30 flex flex-wrap justify-end gap-2">
+              {!lockedTheme ? (
+                <Link href="/grokbot" className="stage-btn">
+                  Grok Bot
+                </Link>
+              ) : null}
               <button
                 type="button"
                 onClick={() => setIsEditing(true)}

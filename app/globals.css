@@ -1119,6 +1119,8 @@ body {
 }
 
 .stage-btn {
+  display: inline-flex;
+  align-items: center;
   border-radius: 999px;
   border: 1px solid rgb(var(--accent-rgb) / 0.25);
   background: rgb(var(--background-rgb) / 0.7);
@@ -1126,6 +1128,7 @@ body {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--foreground);
+  text-decoration: none;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: border-color 0.2s ease, background-color 0.2s ease;
