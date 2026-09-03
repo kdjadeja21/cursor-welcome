@@ -1,0 +1,53 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:07.344
+Welcome to the Community Welcome Screen — a configurable animated welcome display for community events and workshops.
+
+2
+00:00:07.344 --> 00:00:14.377
+The default SpaceXAI theme shows a large animated wordmark, live date, and floating particle background.
+
+3
+00:00:14.377 --> 00:00:20.328
+On first visit, a one-time Rive loading intro plays before the welcome stage takes over.
+
+4
+00:00:20.328 --> 00:00:26.304
+Turn on bot avatars in the editor to float playful clay-style characters behind the welcome stage.
+
+5
+00:00:26.304 --> 00:00:32.304
+Press E or click Edit to open the sidebar editor and customize content without touching code.
+
+6
+00:00:32.304 --> 00:00:45.336
+The editor lets you toggle SpaceXAI branding, set brand and title, choose auto or custom dates, configure animation replay intervals from five to sixty seconds, and add up to five sponsor entries.
+
+7
+00:00:45.336 --> 00:00:53.784
+Press T or flip the SpaceXAI branding switch to swap between the SpaceXAI monochrome look and the classic Cursor orange-accent theme.
+
+8
+00:00:53.784 --> 00:01:01.248
+The Cursor theme restores the original animated SVG logo, accent styling, and community workshop copy.
+
+9
+00:01:01.248 --> 00:01:09.144
+Additional Details in the editor supports up to five sponsor entries, each with a title and name displayed on the welcome stage.
+
+10
+00:01:09.144 --> 00:01:15.648
+Share copies a URL with your full configuration encoded so others see your exact welcome screen setup.
+
+11
+00:01:15.648 --> 00:01:23.280
+The Grok Bot screen is a dedicated welcome experience with colorful blob characters that track your cursor across the stage.
+
+12
+00:01:23.280 --> 00:01:30.264
+On the Grok Bot screen, extra characters can be toggled in the editor to float additional blob bots around the stage.
+
+13
+00:01:30.264 --> 00:01:37.248
+Jump between the main welcome screen and the Grok Bot experience anytime using the Grok Bot button in the top-right actions.

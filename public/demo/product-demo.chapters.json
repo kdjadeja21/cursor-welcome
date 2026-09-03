@@ -1,0 +1,64 @@
+{
+  "chapters": [
+    {
+      "id": "welcome",
+      "label": "Welcome",
+      "startSec": 0
+    },
+    {
+      "id": "spacexai-home",
+      "label": "Spacexai Home",
+      "startSec": 7.344
+    },
+    {
+      "id": "bot-avatars",
+      "label": "Bot Avatars",
+      "startSec": 20.328
+    },
+    {
+      "id": "open-editor",
+      "label": "Open Editor",
+      "startSec": 26.304
+    },
+    {
+      "id": "editor-overview",
+      "label": "Editor Overview",
+      "startSec": 32.304
+    },
+    {
+      "id": "theme-toggle",
+      "label": "Theme Toggle",
+      "startSec": 45.336
+    },
+    {
+      "id": "cursor-theme",
+      "label": "Cursor Theme",
+      "startSec": 53.784
+    },
+    {
+      "id": "sponsors",
+      "label": "Sponsors",
+      "startSec": 61.248
+    },
+    {
+      "id": "share",
+      "label": "Share",
+      "startSec": 69.14399999999999
+    },
+    {
+      "id": "grokbot-home",
+      "label": "Grokbot Home",
+      "startSec": 75.648
+    },
+    {
+      "id": "grokbot-extras",
+      "label": "Grokbot Extras",
+      "startSec": 83.28
+    },
+    {
+      "id": "grokbot-nav",
+      "label": "Grokbot Nav",
+      "startSec": 90.264
+    }
+  ]
+}
