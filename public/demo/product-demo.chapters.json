@@ -1,0 +1,34 @@
+{
+  "chapters": [
+    {
+      "id": "welcome",
+      "label": "Welcome",
+      "startSec": 0
+    },
+    {
+      "id": "welcome-animation",
+      "label": "Welcome Animation",
+      "startSec": 4.296
+    },
+    {
+      "id": "bot-avatars",
+      "label": "Bot Avatars",
+      "startSec": 11.088000000000001
+    },
+    {
+      "id": "editor",
+      "label": "Editor",
+      "startSec": 15.888000000000002
+    },
+    {
+      "id": "grokbot",
+      "label": "Grokbot",
+      "startSec": 21.936
+    },
+    {
+      "id": "share",
+      "label": "Share",
+      "startSec": 27.12
+    }
+  ]
+}
