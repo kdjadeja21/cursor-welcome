@@ -1182,7 +1182,11 @@ export function WelcomeApp({
                 <Link href="/grokbot" className="stage-btn">
                   Grok Bot
                 </Link>
-              ) : null}
+              ) : (
+                <Link href="/" className="stage-btn">
+                  Home
+                </Link>
+              )}
               <button
                 type="button"
                 onClick={() => setIsEditing(true)}
