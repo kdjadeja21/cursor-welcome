@@ -15,36 +15,37 @@
   },
   "branding": {
     "title": "Community Welcome Screen",
-    "subtitle": "SpaceXAI · Cursor · Grok Bot"
+    "subtitle": "Animated welcomes for events"
   },
   "tts": {
     "provider": "edge-tts",
     "voice": "en-US-AvaNeural",
-    "rate": "+0%"
+    "rate": "+5%"
   },
   "sections": [
     {
       "id": "welcome",
       "kind": "title",
-      "text": "Welcome to the Community Welcome Screen — a configurable animated welcome display for community events and workshops."
+      "text": "Welcome to the Community Welcome Screen — built for events and workshops."
     },
     {
-      "id": "spacexai-home",
+      "id": "welcome-animation",
       "route": "/",
-      "waitForText": ["SpaceXAI Ahmedabad"],
-      "waitForSelector": [".welcome-stage", ".stage-actions"],
-      "settleMs": 2500,
-      "text": "The default SpaceXAI theme shows a large animated wordmark, live date, and floating particle background. On first visit, a one-time Rive loading intro plays before the welcome stage takes over."
+      "waitForSelector": [".welcome-stage"],
+      "capture": "video",
+      "settleMs": 5000,
+      "text": "Watch the wordmark animate in, the heading reveal word by word, and particles drift across the background."
     },
     {
       "id": "bot-avatars",
       "route": "/?data=%7B%22theme%22%3A%22spacexai%22%2C%22brand%22%3A%22SpaceXAI%20Ahmedabad%22%2C%22heading%22%3A%22Welcome%20to%20the%20SpaceXAI%20Community%20Workshop%22%2C%22useAutoDate%22%3Atrue%2C%22customDate%22%3A%222026-09-03%22%2C%22intervalSec%22%3A15%2C%22intervalEnabled%22%3Atrue%2C%22botAvatars%22%3Atrue%2C%22sponsors%22%3A%5B%5D%7D",
       "waitForSelector": [".welcome-stage"],
-      "settleMs": 2000,
-      "text": "Turn on bot avatars in the editor to float playful clay-style characters behind the welcome stage."
+      "capture": "video",
+      "settleMs": 4000,
+      "text": "Turn on bot avatars and playful clay characters float behind the welcome stage."
     },
     {
-      "id": "open-editor",
+      "id": "editor",
       "route": "/",
       "waitForSelector": [".stage-actions"],
       "interaction": {
@@ -52,79 +53,23 @@
         "selector": "button.stage-btn:has-text('Edit')"
       },
       "capture": "video",
-      "text": "Press E or click Edit to open the sidebar editor and customize content without touching code."
+      "text": "Open the editor to customize your brand, title, date, sponsors, and replay interval."
     },
     {
-      "id": "editor-overview",
-      "route": "/",
-      "waitForSelector": [".stage-actions"],
-      "interaction": {
-        "type": "press",
-        "key": "e"
-      },
+      "id": "grokbot",
+      "route": "/grokbot",
+      "waitForText": ["Grok Bot"],
+      "waitForSelector": [".grokbot-scene", ".welcome-stage"],
       "capture": "video",
-      "text": "The editor lets you toggle SpaceXAI branding, set brand and title, choose auto or custom dates, configure animation replay intervals from five to sixty seconds, and add up to five sponsor entries."
-    },
-    {
-      "id": "theme-toggle",
-      "route": "/",
-      "waitForSelector": [".welcome-stage"],
-      "interaction": {
-        "type": "press",
-        "key": "t"
-      },
-      "capture": "video",
-      "settleMs": 2000,
-      "text": "Press T or flip the SpaceXAI branding switch to swap between the SpaceXAI monochrome look and the classic Cursor orange-accent theme."
-    },
-    {
-      "id": "cursor-theme",
-      "route": "/?data=%7B%22theme%22%3A%22cursor%22%2C%22brand%22%3A%22Cursor%20Ahmedabad%22%2C%22heading%22%3A%22Welcome%20to%20the%20Cursor%20Community%20Workshop%22%2C%22useAutoDate%22%3Atrue%2C%22customDate%22%3A%222026-09-03%22%2C%22intervalSec%22%3A15%2C%22intervalEnabled%22%3Atrue%2C%22botAvatars%22%3Afalse%2C%22sponsors%22%3A%5B%5D%7D",
-      "waitForText": ["Cursor Ahmedabad"],
-      "waitForSelector": [".welcome-stage"],
-      "settleMs": 2500,
-      "text": "The Cursor theme restores the original animated SVG logo, accent styling, and community workshop copy."
-    },
-    {
-      "id": "sponsors",
-      "route": "/?data=%7B%22theme%22%3A%22spacexai%22%2C%22brand%22%3A%22SpaceXAI%20Ahmedabad%22%2C%22heading%22%3A%22Welcome%20to%20the%20SpaceXAI%20Community%20Workshop%22%2C%22useAutoDate%22%3Atrue%2C%22customDate%22%3A%222026-09-03%22%2C%22intervalSec%22%3A15%2C%22intervalEnabled%22%3Atrue%2C%22botAvatars%22%3Afalse%2C%22sponsors%22%3A%5B%7B%22title%22%3A%22Gold%20Sponsor%22%2C%22name%22%3A%22Acme%20Corp%22%7D%5D%7D",
-      "waitForText": ["Gold Sponsor", "Acme Corp"],
-      "waitForSelector": [".welcome-sponsors"],
-      "settleMs": 2000,
-      "text": "Additional Details in the editor supports up to five sponsor entries, each with a title and name displayed on the welcome stage."
+      "settleMs": 5000,
+      "text": "The Grok Bot screen adds colorful blob characters that bounce and float around the stage."
     },
     {
       "id": "share",
       "route": "/",
       "waitForSelector": [".stage-actions"],
       "focus": { "selector": "button.stage-btn:has-text('Share')", "padding": 8 },
-      "text": "Share copies a URL with your full configuration encoded so others see your exact welcome screen setup."
-    },
-    {
-      "id": "grokbot-home",
-      "route": "/grokbot",
-      "waitForText": ["Grok Bot"],
-      "waitForSelector": [".grokbot-scene", ".welcome-stage"],
-      "settleMs": 2500,
-      "text": "The Grok Bot screen is a dedicated welcome experience with colorful blob characters that track your cursor across the stage."
-    },
-    {
-      "id": "grokbot-extras",
-      "route": "/grokbot",
-      "waitForSelector": [".grokbot-scene"],
-      "interaction": {
-        "type": "press",
-        "key": "e"
-      },
-      "capture": "video",
-      "text": "On the Grok Bot screen, extra characters can be toggled in the editor to float additional blob bots around the stage."
-    },
-    {
-      "id": "grokbot-nav",
-      "route": "/",
-      "waitForSelector": [".stage-actions"],
-      "focus": { "selector": "a.stage-btn:has-text('Grok Bot')", "padding": 8 },
-      "text": "Jump between the main welcome screen and the Grok Bot experience anytime using the Grok Bot button in the top-right actions."
+      "text": "Hit Share to copy a link with your full configuration baked in."
     }
   ]
 }
