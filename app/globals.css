@@ -500,6 +500,17 @@ body {
   overflow: hidden;
   --look-x: 0.5;
   --look-y: 0.5;
+  /* Keep bots in the margins so the lockup and copy stay legible. */
+  -webkit-mask-image: radial-gradient(
+    ellipse 58% 54% at 50% 46%,
+    transparent 34%,
+    #000 72%
+  );
+  mask-image: radial-gradient(
+    ellipse 58% 54% at 50% 46%,
+    transparent 34%,
+    #000 72%
+  );
 }
 
 .grokbot-hero,
@@ -541,6 +552,8 @@ body {
 .grokbot-mark {
   display: block;
   overflow: visible;
+  filter: drop-shadow(0 0 10px var(--background))
+    drop-shadow(0 0 20px rgb(var(--background-rgb) / 0.96));
 }
 
 .grokbot-hero-static,
@@ -602,10 +615,24 @@ body {
 }
 
 [data-theme="grokbot"] .welcome-stage {
-  z-index: 1;
+  z-index: 2;
+  isolation: isolate;
   gap: clamp(1rem, 2.6vw, 1.85rem);
   padding-top: clamp(3.5rem, 10vh, 7rem);
   justify-content: center;
+}
+
+[data-theme="grokbot"] .welcome-stage::before {
+  content: "";
+  position: absolute;
+  inset: 8% 6% 12%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 72% 68% at 50% 44%,
+    rgb(var(--background-rgb) / 0.82),
+    transparent 72%
+  );
 }
 
 .welcome-lockup {
@@ -645,6 +672,23 @@ body {
   letter-spacing: -0.04em;
   text-transform: none;
   animation: grokLockupIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
+}
+
+[data-theme="grokbot"] .welcome-brand,
+[data-theme="grokbot"] .welcome-heading .word,
+[data-theme="grokbot"] .grokbot-byline,
+[data-theme="grokbot"] .grokbot-byline-label,
+[data-theme="grokbot"] .welcome-date,
+[data-theme="grokbot"] .welcome-date-weekday {
+  text-shadow:
+    0 0 10px var(--background),
+    0 0 22px rgb(var(--background-rgb) / 0.98),
+    0 1px 3px rgb(var(--background-rgb) / 0.9);
+}
+
+[data-theme="grokbot"] .grokbot-byline-mark {
+  filter: drop-shadow(0 0 8px var(--background))
+    drop-shadow(0 0 18px rgb(var(--background-rgb) / 0.96));
 }
 
 .grokbot-byline {
