@@ -8,10 +8,13 @@ import type { ThemeLogo } from "./themes";
 const PATH_DRAW_MS = 2900;
 /** The wordmark is already the highlight; copy can follow after a short beat. */
 const IMAGE_HOLD_MS = 280;
+/** Face marks pop in quickly; copy follows after a short bounce. */
+const FACE_HOLD_MS = 720;
 const REDUCED_MOTION_HOLD_MS = 150;
 
 type ImageLogo = Extract<ThemeLogo, { kind: "image" }>;
 type PathLogo = Extract<ThemeLogo, { kind: "path" }>;
+type FaceLogo = Extract<ThemeLogo, { kind: "face" }>;
 
 function useSettleOnce(onSettled: () => void) {
   const hasSettled = useRef(false);
@@ -74,6 +77,50 @@ function DrawnMark({
   );
 }
 
+function FaceMark({
+  logo,
+  settle,
+  holdMs,
+}: {
+  logo: FaceLogo;
+  settle: () => void;
+  holdMs: number;
+}) {
+  useSettleAfter(settle, holdMs);
+
+  return (
+    <svg
+      className="brand-mark grokbot-mark"
+      viewBox="0 0 120 120"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label={logo.alt}
+    >
+      <circle cx="60" cy="60" r="54" fill={logo.fill} />
+      <g className="grokbot-look">
+        <g transform="rotate(-20 60 56)">
+          <ellipse
+            className="grokbot-eye"
+            cx="46"
+            cy="56"
+            rx="8"
+            ry="16"
+            fill="#ffffff"
+          />
+          <ellipse
+            className="grokbot-eye"
+            cx="74"
+            cy="56"
+            rx="8"
+            ry="16"
+            fill="#ffffff"
+          />
+        </g>
+      </g>
+    </svg>
+  );
+}
+
 /**
  * Renders the welcome-stage logo. Remount (via `key`) to replay its entrance.
  */
@@ -100,6 +147,14 @@ export function BrandMark({
     case "path":
       return (
         <DrawnMark logo={logo} settle={settle} reduceMotion={reduceMotion} />
+      );
+    case "face":
+      return (
+        <FaceMark
+          logo={logo}
+          settle={settle}
+          holdMs={reduceMotion ? REDUCED_MOTION_HOLD_MS : FACE_HOLD_MS}
+        />
       );
     default: {
       const exhaustive: never = logo;

@@ -1,4 +1,5 @@
-export type ThemeId = "spacexai" | "cursor";
+export type HomeThemeId = "spacexai" | "cursor";
+export type ThemeId = HomeThemeId | "grokbot";
 
 /**
  * What the welcome stage renders. Always a static mark — the Rive file is
@@ -6,7 +7,8 @@ export type ThemeId = "spacexai" | "cursor";
  */
 export type ThemeLogo =
   | { kind: "image"; src: string; alt: string }
-  | { kind: "path"; d: string; viewBox: string; alt: string };
+  | { kind: "path"; d: string; viewBox: string; alt: string }
+  | { kind: "face"; fill: string; alt: string };
 
 /** A one-time Rive intro played before the welcome stage appears. */
 export interface ThemeIntro {
@@ -61,10 +63,26 @@ export const THEMES: Record<ThemeId, Theme> = {
       alt: "Cursor logo",
     },
   },
+  grokbot: {
+    id: "grokbot",
+    label: "Grok Bot",
+    brand: "Grok Bot",
+    heading: "Welcome",
+    favicon: "/brand/grokbot/favicon.svg",
+    logo: {
+      kind: "face",
+      fill: "#0a0a0a",
+      alt: "Grok Bot",
+    },
+  },
 };
 
-export const DEFAULT_THEME: ThemeId = "spacexai";
+export const DEFAULT_THEME: HomeThemeId = "spacexai";
+
+export function isHomeThemeId(value: unknown): value is HomeThemeId {
+  return value === "spacexai" || value === "cursor";
+}
 
 export function isThemeId(value: unknown): value is ThemeId {
-  return value === "spacexai" || value === "cursor";
+  return isHomeThemeId(value) || value === "grokbot";
 }

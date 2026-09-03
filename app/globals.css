@@ -54,6 +54,30 @@
   --mark-h: var(--mark-w);
 }
 
+/* Grok Bot — light, playful, matching the studio blob-face mock */
+[data-theme="grokbot"] {
+  --background: #ffffff;
+  --background-rgb: 255 255 255;
+  --foreground: #0a0a0a;
+  --foreground-rgb: 10 10 10;
+  --accent: #0a0a0a;
+  --accent-rgb: 10 10 10;
+  --card: #f6f5f2;
+  --card-rgb: 246 245 242;
+  --card-01: #f3f2ee;
+  --card-02: #ecebe6;
+  --card-03: #e4e3dd;
+  --card-04: #dcdbd4;
+  --bg-glow-alpha: 0.14;
+  --particle-alpha: 0;
+  --particle-glow-alpha: 0;
+  --accent-line-alpha: 0.22;
+  --pill-border-alpha: 0.12;
+  --pill-glow-alpha: 0;
+  --mark-w: clamp(52px, 9vw, 76px);
+  --mark-h: var(--mark-w);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -147,6 +171,39 @@ body {
   92%,
   94% {
     transform: scaleY(0.08);
+  }
+}
+
+@keyframes grokIdle {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(var(--bot-tilt, 0deg));
+  }
+  50% {
+    transform: translate(var(--drift-x, 10px), var(--drift-y, -12px))
+      rotate(calc(var(--bot-tilt, 0deg) + 4deg));
+  }
+}
+
+@keyframes grokMarkIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) rotate(-8deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.08) rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes grokLockupIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -335,6 +392,39 @@ body {
   animation: drift 18s ease-in-out infinite alternate;
 }
 
+[data-theme="grokbot"] .welcome-bg {
+  background:
+    radial-gradient(
+      900px 620px at 10% 16%,
+      rgb(225 82 176 / 0.12),
+      transparent 58%
+    ),
+    radial-gradient(
+      720px 480px at 86% 8%,
+      rgb(139 94 60 / 0.1),
+      transparent 52%
+    ),
+    radial-gradient(
+      980px 720px at 90% 48%,
+      rgb(59 147 240 / 0.13),
+      transparent 56%
+    ),
+    radial-gradient(
+      820px 560px at 94% 100%,
+      rgb(47 191 160 / 0.18),
+      transparent 52%
+    ),
+    #ffffff;
+}
+
+[data-theme="grokbot"] .welcome-bg::before {
+  background: radial-gradient(
+    circle at 50% 42%,
+    rgb(241 239 233 / 0.55),
+    transparent 48%
+  );
+}
+
 .welcome-particles {
   position: fixed;
   inset: 0;
@@ -402,6 +492,91 @@ body {
   animation: none;
 }
 
+.grokbot-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  --look-x: 0.5;
+  --look-y: 0.5;
+}
+
+.grokbot-hero,
+.grokbot-floater {
+  position: absolute;
+  display: block;
+  --bot-tilt: 0deg;
+  --drift-x: 8px;
+  --drift-y: -10px;
+  --anchor-x: 0.5;
+  --anchor-y: 0.5;
+  animation: grokIdle ease-in-out infinite;
+  will-change: transform;
+  filter: drop-shadow(0 10px 18px rgb(10 10 10 / 0.08));
+}
+
+.grokbot-hero-rose {
+  --drift-x: -12px;
+  --drift-y: 10px;
+}
+
+.grokbot-hero-brun {
+  --drift-x: 6px;
+  --drift-y: -8px;
+}
+
+.grokbot-hero-bleu {
+  --drift-x: 14px;
+  --drift-y: -6px;
+}
+
+.grokbot-hero-teal {
+  --drift-x: -8px;
+  --drift-y: 12px;
+}
+
+.grokbot-hero svg,
+.grokbot-floater svg,
+.grokbot-mark {
+  display: block;
+  overflow: visible;
+}
+
+.grokbot-hero-static,
+.grokbot-floater-static {
+  animation: none;
+  transform: rotate(var(--bot-tilt, 0deg));
+}
+
+.grokbot-floater {
+  z-index: 0;
+}
+
+.grokbot-look {
+  transform: translate(
+    calc((var(--look-x, 0.5) - var(--anchor-x, 0.5)) * 10px),
+    calc((var(--look-y, 0.5) - var(--anchor-y, 0.5)) * 8px)
+  );
+  transition: transform 0.18s ease-out;
+}
+
+.grokbot-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bot-eye-blink 6.8s ease-in-out infinite;
+  animation-delay: var(--eye-delay, 0s);
+}
+
+.grokbot-hero-static .grokbot-eye,
+.grokbot-floater-static .grokbot-eye,
+.grokbot-hero-static .grokbot-look,
+.grokbot-floater-static .grokbot-look {
+  animation: none;
+  transform: none;
+  transition: none;
+}
+
 .welcome-stage {
   position: relative;
   z-index: 1;
@@ -419,6 +594,145 @@ body {
   text-align: center;
   gap: clamp(0.25rem, 0.6vw, 0.5rem);
   overflow-x: hidden;
+}
+
+[data-theme="grokbot"] .welcome-root,
+.welcome-root[data-theme="grokbot"] {
+  background: var(--background);
+}
+
+[data-theme="grokbot"] .welcome-stage {
+  z-index: 1;
+  gap: clamp(1rem, 2.6vw, 1.85rem);
+  padding-top: clamp(3.5rem, 10vh, 7rem);
+  justify-content: center;
+}
+
+.welcome-lockup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(0.7rem, 1.8vw, 1.2rem);
+  min-width: 0;
+}
+
+[data-theme="grokbot"] .welcome-lockup .welcome-mark-wrap {
+  margin-inline: 0;
+}
+
+[data-theme="grokbot"] .welcome-mark-wrap {
+  opacity: 0;
+  animation: grokMarkIn 0.8s cubic-bezier(0.22, 1.2, 0.36, 1) 0.08s forwards;
+}
+
+[data-theme="grokbot"] .welcome-heading {
+  font-size: clamp(1.35rem, 3.6vw, 2.45rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  max-width: min(32ch, 90vw);
+  line-height: 1.25;
+  color: var(--foreground);
+}
+
+[data-theme="grokbot"] .welcome-heading .word {
+  margin-right: 0.4ch;
+}
+
+[data-theme="grokbot"] .welcome-brand {
+  font-size: clamp(2rem, 6.4vw, 4.15rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  text-transform: none;
+  animation: grokLockupIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
+}
+
+.grokbot-byline {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.55rem;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  background: none;
+  color: var(--foreground);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: grokLockupIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.28s forwards;
+}
+
+.grokbot-byline-label {
+  font-size: clamp(0.8rem, 1.6vw, 1rem);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  line-height: 1;
+  color: rgb(var(--foreground-rgb) / 0.48);
+}
+
+.grokbot-byline-mark {
+  display: block;
+  height: clamp(22px, 3.4vw, 32px);
+  width: auto;
+  overflow: visible;
+}
+
+[data-theme="grokbot"] .welcome-accent {
+  display: none;
+}
+
+[data-theme="grokbot"] .welcome-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  border: none;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  font-size: clamp(1.05rem, 2.4vw, 1.45rem);
+  padding: 0;
+  color: rgb(var(--foreground-rgb) / 0.52);
+}
+
+[data-theme="grokbot"] .welcome-date .dot {
+  display: none;
+}
+
+[data-theme="grokbot"] .welcome-date-weekday {
+  font-weight: 500;
+  color: rgb(var(--foreground-rgb) / 0.62);
+}
+
+[data-theme="grokbot"] .welcome-sponsor {
+  background: rgb(var(--card-rgb) / 0.78);
+  border-color: rgb(var(--foreground-rgb) / 0.08);
+}
+
+[data-theme="grokbot"] .stage-btn {
+  background: rgb(255 255 255 / 0.72);
+  border-color: rgb(var(--foreground-rgb) / 0.12);
+}
+
+[data-theme="grokbot"] .stage-btn:hover {
+  background: rgb(var(--card-rgb) / 0.95);
+  border-color: rgb(var(--foreground-rgb) / 0.22);
+}
+
+[data-theme="grokbot"] .sidebar-panel {
+  box-shadow: -8px 0 32px rgb(10 10 10 / 0.08);
+}
+
+[data-theme="grokbot"] .welcome-footer {
+  color: rgb(var(--foreground-rgb) / 0.42);
+}
+
+[data-theme="grokbot"] .welcome-footer a {
+  color: rgb(var(--foreground-rgb) / 0.62);
 }
 
 /*
@@ -805,6 +1119,8 @@ body {
 }
 
 .stage-btn {
+  display: inline-flex;
+  align-items: center;
   border-radius: 999px;
   border: 1px solid rgb(var(--accent-rgb) / 0.25);
   background: rgb(var(--background-rgb) / 0.7);
@@ -812,6 +1128,7 @@ body {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--foreground);
+  text-decoration: none;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -1029,7 +1346,8 @@ body {
   .welcome-brand,
   .welcome-heading .word,
   .welcome-date,
-  .welcome-sponsor {
+  .welcome-sponsor,
+  .grokbot-byline {
     opacity: 1;
     transform: none;
   }
@@ -1042,5 +1360,16 @@ body {
     animation: none;
     opacity: 0.5;
     transform: rotate(var(--bot-tilt, 0deg));
+  }
+
+  .grokbot-hero,
+  .grokbot-floater {
+    animation: none;
+    transform: rotate(var(--bot-tilt, 0deg));
+  }
+
+  [data-theme="grokbot"] .welcome-mark-wrap {
+    opacity: 1;
+    transform: none;
   }
 }
