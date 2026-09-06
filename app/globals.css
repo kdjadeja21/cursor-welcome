@@ -611,8 +611,14 @@ body {
   min-width: 0;
 }
 
+[data-theme="grokbot"] .welcome-lockup {
+  gap: 0.45rem;
+}
+
 [data-theme="grokbot"] .welcome-lockup .welcome-mark-wrap {
   margin-inline: 0;
+  /* ViewBox is 158 around a radius-100 ball; trim the unused right gutter. */
+  margin-inline-end: calc(var(--mark-w) * -58 / 316);
 }
 
 [data-theme="grokbot"] .welcome-mark-wrap {

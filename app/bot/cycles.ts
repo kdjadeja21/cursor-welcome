@@ -43,6 +43,27 @@ export function defaultCycle(): Cycle {
   };
 }
 
+/**
+ * Welcome-hero loop: idle expressions plus a few body morphs, without the
+ * full catalogue (sleep, orbit, burst, comet).
+ */
+export function heroCycle(): Cycle {
+  return {
+    name: "",
+    id: "hero",
+    blocks: [
+      { state: "idle", duration: clampDuration("idle", 3.4) },
+      { state: "wink", duration: clampDuration("wink", 1.5) },
+      { state: "idle", duration: clampDuration("idle", 2.6) },
+      { state: "egg", duration: clampDuration("egg", 1.8) },
+      { state: "idle", duration: clampDuration("idle", 2.4) },
+      { state: "hexagon", duration: clampDuration("hexagon", 1.6) },
+      { state: "idle", duration: clampDuration("idle", 2.4) },
+      { state: "thinking", duration: clampDuration("thinking", 2.4) },
+    ],
+  };
+}
+
 export function totalDuration(blocks: Block[]): number {
   return blocks.reduce((sum, b) => sum + b.duration, 0);
 }
