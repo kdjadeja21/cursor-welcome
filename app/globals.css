@@ -597,8 +597,8 @@ body {
 
 [data-theme="grokbot"] .welcome-stage {
   z-index: 1;
-  gap: clamp(1rem, 2.6vw, 1.85rem);
-  padding-top: clamp(3.5rem, 10vh, 7rem);
+  gap: 0.5rem;
+  padding: clamp(2rem, 6vh, 3.5rem) 1.25rem;
   justify-content: center;
 }
 
@@ -612,13 +612,11 @@ body {
 }
 
 [data-theme="grokbot"] .welcome-lockup {
-  gap: 0.45rem;
+  gap: 0.3rem;
 }
 
 [data-theme="grokbot"] .welcome-lockup .welcome-mark-wrap {
   margin-inline: 0;
-  /* ViewBox is 158 around a radius-100 ball; trim the unused right gutter. */
-  margin-inline-end: calc(var(--mark-w) * -58 / 316);
 }
 
 [data-theme="grokbot"] .welcome-mark-wrap {
@@ -627,6 +625,7 @@ body {
 }
 
 [data-theme="grokbot"] .welcome-heading {
+  margin: 0;
   font-size: clamp(1.35rem, 3.6vw, 2.45rem);
   font-weight: 500;
   letter-spacing: -0.03em;
@@ -652,7 +651,7 @@ body {
   align-items: baseline;
   justify-content: center;
   gap: 0.55rem;
-  margin: 0.35rem 0 0;
+  margin: 0.55rem 0 0;
   padding: 0;
   background: none;
   color: var(--foreground);

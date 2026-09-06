@@ -52,14 +52,14 @@ export function heroCycle(): Cycle {
     name: "",
     id: "hero",
     blocks: [
-      { state: "idle", duration: clampDuration("idle", 3.4) },
-      { state: "wink", duration: clampDuration("wink", 1.5) },
-      { state: "idle", duration: clampDuration("idle", 2.6) },
+      { state: "idle", duration: clampDuration("idle", 2.4) },
+      { state: "wink", duration: clampDuration("wink", 1.4) },
+      { state: "idle", duration: clampDuration("idle", 1.8) },
       { state: "egg", duration: clampDuration("egg", 1.8) },
-      { state: "idle", duration: clampDuration("idle", 2.4) },
+      { state: "idle", duration: clampDuration("idle", 1.8) },
       { state: "hexagon", duration: clampDuration("hexagon", 1.6) },
-      { state: "idle", duration: clampDuration("idle", 2.4) },
-      { state: "thinking", duration: clampDuration("thinking", 2.4) },
+      { state: "idle", duration: clampDuration("idle", 1.8) },
+      { state: "thinking", duration: clampDuration("thinking", 2.2) },
     ],
   };
 }

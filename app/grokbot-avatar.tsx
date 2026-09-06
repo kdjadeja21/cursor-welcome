@@ -7,10 +7,11 @@ import { NOTIF_BLUE } from "./bot/decor";
 import { BotEngine, type BotFrame } from "./bot/engine";
 import { followLook } from "./bot/gaze";
 import { clamp, mixHex } from "./bot/math";
-import { BALL_RADIUS, HALF_VIEWBOX } from "./bot/repere";
+import { BALL_RADIUS } from "./bot/repere";
 import { POSES, STATE_BY_ID, type StateId } from "./bot/states";
 
-const VB = HALF_VIEWBOX;
+/** Tight crop around the ball so the lockup does not show empty SVG gutter. */
+const VB = 110;
 const DEFAULT_PAPER = "#ffffff";
 const DEFAULT_INK = "#0a0a0c";
 
