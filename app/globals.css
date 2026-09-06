@@ -74,7 +74,7 @@
   --accent-line-alpha: 0.22;
   --pill-border-alpha: 0.12;
   --pill-glow-alpha: 0;
-  --mark-w: clamp(52px, 9vw, 76px);
+  --mark-w: clamp(64px, 12vw, 96px);
   --mark-h: var(--mark-w);
 }
 
@@ -186,17 +186,11 @@ body {
 }
 
 @keyframes grokMarkIn {
-  0% {
+  from {
     opacity: 0;
-    transform: scale(0.7) rotate(-8deg);
   }
-  70% {
+  to {
     opacity: 1;
-    transform: scale(1.08) rotate(3deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
   }
 }
 
@@ -623,7 +617,7 @@ body {
 
 [data-theme="grokbot"] .welcome-mark-wrap {
   opacity: 0;
-  animation: grokMarkIn 0.8s cubic-bezier(0.22, 1.2, 0.36, 1) 0.08s forwards;
+  animation: grokMarkIn 0.45s ease-out 0.08s forwards;
 }
 
 [data-theme="grokbot"] .welcome-heading {
