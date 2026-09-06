@@ -58,8 +58,6 @@ export function heroCycle(): Cycle {
       { state: "egg", duration: clampDuration("egg", 1.8) },
       { state: "idle", duration: clampDuration("idle", 1.8) },
       { state: "hexagon", duration: clampDuration("hexagon", 1.6) },
-      { state: "idle", duration: clampDuration("idle", 1.8) },
-      { state: "thinking", duration: clampDuration("thinking", 2.2) },
     ],
   };
 }
