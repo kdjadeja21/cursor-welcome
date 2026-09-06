@@ -2,15 +2,13 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 
-import { defaultCycle, type Block } from "./bot/cycles";
 import { NOTIF_BLUE } from "./bot/decor";
-import { BotEngine, type BotFrame, type Look } from "./bot/engine";
-import { followLook, TOUR_TIME, tourLook } from "./bot/gaze";
+import { BotEngine, type BotFrame } from "./bot/engine";
+import { followLook } from "./bot/gaze";
 import { clamp, mixHex } from "./bot/math";
 import { BALL_RADIUS, HALF_VIEWBOX } from "./bot/repere";
-import { POSES, STATE_BY_ID, type StateId } from "./bot/states";
+import { POSES } from "./bot/states";
 
-const SCRIPT_MORPH = 1 / 60;
 const VB = HALF_VIEWBOX;
 const DEFAULT_PAPER = "#ffffff";
 const DEFAULT_INK = "#0a0a0c";
@@ -61,7 +59,6 @@ export function GrokBotAvatar({
   const maskId = `bot-mask-${reactId}`;
   const svgRef = useRef<SVGSVGElement>(null);
   const engine = useMemo(() => new BotEngine(BALL_RADIUS, "idle"), []);
-  const cycle = useMemo<Block[]>(() => defaultCycle().blocks, []);
   const frozenFrame = useMemo(() => {
     const still = new BotEngine(BALL_RADIUS, "idle");
     return still.sample(POSES.idle);
@@ -77,28 +74,6 @@ export function GrokBotAvatar({
     let raf = 0;
     let last = 0;
     let clock = 0;
-    let blockIndex = 0;
-    let blockStart = 0;
-    let cycleStarted = false;
-    let lastBlock = -1;
-    let primed = false;
-
-    const sample = () => {
-      setFrame(engine.sample(clock));
-    };
-
-    const applyBlock = (index: number, rewind: boolean) => {
-      const block = cycle[index];
-      if (!block) return;
-      if (rewind || index < lastBlock) {
-        engine.reset(block.state, clock);
-      } else {
-        engine.setState(block.state, clock);
-      }
-      lastBlock = index;
-      blockIndex = index;
-      blockStart = clock;
-    };
 
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerType === "touch") return;
@@ -109,11 +84,7 @@ export function GrokBotAvatar({
       pointer.current = null;
     };
 
-    const aim = (state: StateId) => {
-      if (!STATE_BY_ID.get(state)?.baseFace) {
-        engine.setLook(null, clock);
-        return;
-      }
+    const aim = () => {
       const box = svgRef.current?.getBoundingClientRect();
       if (!box || box.width === 0 || box.height === 0) return;
       const halfW = Math.max(1, window.innerWidth / 2);
@@ -129,10 +100,6 @@ export function GrokBotAvatar({
       );
     };
 
-    const scriptGaze = (look: Look) => {
-      engine.setLook(look, clock, SCRIPT_MORPH);
-    };
-
     window.addEventListener("pointermove", onPointerMove);
     document.addEventListener("pointerleave", onPointerLeave);
 
@@ -141,33 +108,8 @@ export function GrokBotAvatar({
       const dt = last ? Math.min((ms - last) / 1000, 0.064) : 0;
       last = ms;
       clock += dt;
-
-      if (!primed) {
-        engine.reset("idle", 0);
-        engine.setLook(tourLook(0), clock - SCRIPT_MORPH, SCRIPT_MORPH);
-        primed = true;
-      }
-
-      if (clock < TOUR_TIME) {
-        scriptGaze(tourLook(clock));
-      } else {
-        if (!cycleStarted) {
-          cycleStarted = true;
-          engine.setLook(null, clock);
-          applyBlock(0, true);
-        }
-
-        const block = cycle[blockIndex];
-        if (block && clock - blockStart >= block.duration) {
-          const next = (blockIndex + 1) % cycle.length;
-          applyBlock(next, next === 0);
-        }
-
-        const state = cycle[blockIndex]?.state ?? "idle";
-        aim(state);
-      }
-
-      sample();
+      aim();
+      setFrame(engine.sample(clock));
     };
 
     raf = requestAnimationFrame(tick);
@@ -177,7 +119,7 @@ export function GrokBotAvatar({
       window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("pointerleave", onPointerLeave);
     };
-  }, [cycle, engine, reduceMotion]);
+  }, [engine, reduceMotion]);
 
   const drawn = reduceMotion ? frozenFrame : frame;
 
