@@ -71,7 +71,7 @@ export const THEMES: Record<ThemeId, Theme> = {
     favicon: "/brand/grokbot/favicon.svg",
     logo: {
       kind: "face",
-      fill: "#0a0a0a",
+      fill: "#0a0a0c",
       alt: "Grok Bot",
     },
   },

@@ -19,7 +19,7 @@ export default function GrokBotPage() {
   return (
     <WelcomeApp
       lockedTheme="grokbot"
-      storageKey="cursor-welcome-config-grokbot"
+      storageKey="cursor-welcome-config-grokbot-v2"
       defaultBotAvatars
     />
   );
