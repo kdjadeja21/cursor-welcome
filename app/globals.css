@@ -657,7 +657,7 @@ body {
   color: var(--foreground);
   opacity: 0;
   transform: translateY(10px);
-  animation: grokLockupIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.28s forwards;
+  animation: grokLockupIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.55s forwards;
 }
 
 .grokbot-byline-label {
@@ -696,6 +696,7 @@ body {
   font-size: clamp(1.05rem, 2.4vw, 1.45rem);
   padding: 0;
   color: rgb(var(--foreground-rgb) / 0.52);
+  animation: dateIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.95s forwards;
 }
 
 [data-theme="grokbot"] .welcome-date .dot {
