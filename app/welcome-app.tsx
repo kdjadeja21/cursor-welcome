@@ -55,7 +55,7 @@ function createDefaultConfig(preset: WelcomePreset): Config {
     useAutoDate: true,
     customDate: new Date().toISOString().slice(0, 10),
     intervalSec: 15,
-    intervalEnabled: true,
+    intervalEnabled: false,
     botAvatars: preset.defaultBotAvatars,
     sponsors: [],
   };

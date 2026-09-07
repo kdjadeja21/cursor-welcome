@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
+import { GrokBotAvatar } from "./grokbot-avatar";
 import type { ThemeLogo } from "./themes";
 
 /** Matches the CSS stroke-draw plus fill on the Cursor mark. */
@@ -81,43 +82,22 @@ function FaceMark({
   logo,
   settle,
   holdMs,
+  reduceMotion,
 }: {
   logo: FaceLogo;
   settle: () => void;
   holdMs: number;
+  reduceMotion: boolean;
 }) {
   useSettleAfter(settle, holdMs);
 
   return (
-    <svg
+    <GrokBotAvatar
       className="brand-mark grokbot-mark"
-      viewBox="0 0 120 120"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label={logo.alt}
-    >
-      <circle cx="60" cy="60" r="54" fill={logo.fill} />
-      <g className="grokbot-look">
-        <g transform="rotate(-20 60 56)">
-          <ellipse
-            className="grokbot-eye"
-            cx="46"
-            cy="56"
-            rx="8"
-            ry="16"
-            fill="#ffffff"
-          />
-          <ellipse
-            className="grokbot-eye"
-            cx="74"
-            cy="56"
-            rx="8"
-            ry="16"
-            fill="#ffffff"
-          />
-        </g>
-      </g>
-    </svg>
+      alt={logo.alt}
+      fill={logo.fill}
+      reduceMotion={reduceMotion}
+    />
   );
 }
 
@@ -154,6 +134,7 @@ export function BrandMark({
           logo={logo}
           settle={settle}
           holdMs={reduceMotion ? REDUCED_MOTION_HOLD_MS : FACE_HOLD_MS}
+          reduceMotion={reduceMotion}
         />
       );
     default: {
