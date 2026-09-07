@@ -1,0 +1,41 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:06.768
+Welcome to Cursor Community Welcome — a configurable animated welcome screen for workshops and events.
+
+2
+00:00:06.768 --> 00:00:15.672
+The landing stage opens with the Cursor logo, chapter brand, word-by-word heading, live date, and a floating particle backdrop.
+
+3
+00:00:15.672 --> 00:00:23.712
+Top-right controls let organizers edit content, enter presentation preview, or share a link with the current configuration.
+
+4
+00:00:23.712 --> 00:00:35.568
+The sidebar editor customizes brand, title, auto or fixed date, a five-to-sixty-second replay interval, and up to five sponsors — or reset to defaults without touching code.
+
+5
+00:00:35.568 --> 00:00:46.224
+Keyboard shortcuts keep presentation smooth — press E to open the editor, F or P for fullscreen preview, and Escape to close the sidebar or exit fullscreen.
+
+6
+00:00:46.224 --> 00:00:58.752
+A shareable URL encodes the full configuration — custom brand, heading, a fixed event date instead of today, replay interval, and sponsor chips — then saves it to local storage.
+
+7
+00:00:58.752 --> 00:01:06.816
+Settings persist in local storage and restore on the next visit, with sponsor chips showing a title and name for each partner.
+
+8
+00:01:06.816 --> 00:01:12.312
+Share copies that configuration link so teammates open the same welcome screen instantly.
+
+9
+00:01:12.312 --> 00:01:18.816
+Preview enters presentation mode so the welcome animation fills the screen without editor chrome.
+
+10
+00:01:18.816 --> 00:01:26.112
+The footer credits the crafter in India and links back to Cursor — a polished close for every community session.

@@ -1,0 +1,105 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "output": {
+    "video": "public/demo/product-demo.mp4",
+    "captions": "public/demo/product-demo.vtt",
+    "chapters": "public/demo/product-demo.chapters.json",
+    "draftDir": "public/demo/draft"
+  },
+  "video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "fit": "pad",
+    "background": "#14120b"
+  },
+  "branding": {
+    "title": "Cursor Community Welcome",
+    "subtitle": "Configurable workshop welcome screen"
+  },
+  "tts": {
+    "provider": "edge-tts",
+    "voice": "en-US-AvaNeural",
+    "rate": "+0%"
+  },
+  "sections": [
+    {
+      "id": "welcome",
+      "kind": "title",
+      "text": "Welcome to Cursor Community Welcome — a configurable animated welcome screen for workshops and events."
+    },
+    {
+      "id": "landing",
+      "route": "/",
+      "waitForText": ["Cursor Ahmedabad", "Workshop"],
+      "waitForSelector": [".welcome-logo-wrap", ".welcome-heading", ".welcome-date", ".welcome-particles"],
+      "settleMs": 800,
+      "text": "The landing stage opens with the Cursor logo, chapter brand, word-by-word heading, live date, and a floating particle backdrop."
+    },
+    {
+      "id": "controls",
+      "route": "/",
+      "waitForText": ["Edit", "Preview", "Share"],
+      "focus": { "selector": ".fixed.right-5.top-5", "padding": 12 },
+      "settleMs": 400,
+      "text": "Top-right controls let organizers edit content, enter presentation preview, or share a link with the current configuration."
+    },
+    {
+      "id": "open-editor",
+      "route": "/",
+      "waitForText": ["Edit"],
+      "interaction": { "type": "click", "selector": "button:has-text(\"Edit\")" },
+      "capture": "video",
+      "text": "The sidebar editor customizes brand, title, auto or fixed date, a five-to-sixty-second replay interval, and up to five sponsors — or reset to defaults without touching code."
+    },
+    {
+      "id": "keyboard-edit",
+      "route": "/",
+      "waitForSelector": [".welcome-stage"],
+      "interaction": { "type": "press", "key": "e" },
+      "capture": "video",
+      "text": "Keyboard shortcuts keep presentation smooth — press E to open the editor, F or P for fullscreen preview, and Escape to close the sidebar or exit fullscreen."
+    },
+    {
+      "id": "customized",
+      "route": "/?data=%7B%22brand%22%3A%22Cursor%20Mumbai%22%2C%22heading%22%3A%22Welcome%20to%20the%20Cursor%20Community%20Meetup%22%2C%22useAutoDate%22%3Afalse%2C%22customDate%22%3A%222026-08-15%22%2C%22intervalSec%22%3A20%2C%22intervalEnabled%22%3Atrue%2C%22sponsors%22%3A%5B%7B%22title%22%3A%22Gold%20Sponsor%22%2C%22name%22%3A%22Acme%20Corp%22%7D%2C%7B%22title%22%3A%22Community%20Partner%22%2C%22name%22%3A%22Dev%20Collective%22%7D%5D%7D",
+      "waitForText": ["Cursor Mumbai", "Meetup", "Saturday, 15 August 2026"],
+      "waitForSelector": [".welcome-sponsors", ".welcome-heading"],
+      "settleMs": 800,
+      "text": "A shareable URL encodes the full configuration — custom brand, heading, a fixed event date instead of today, replay interval, and sponsor chips — then saves it to local storage."
+    },
+    {
+      "id": "sponsors",
+      "route": "/",
+      "waitForText": ["Acme Corp", "Dev Collective", "Gold Sponsor"],
+      "focus": { "selector": ".welcome-sponsors", "padding": 16 },
+      "settleMs": 400,
+      "text": "Settings persist in local storage and restore on the next visit, with sponsor chips showing a title and name for each partner."
+    },
+    {
+      "id": "share",
+      "route": "/",
+      "waitForText": ["Share"],
+      "interaction": { "type": "click", "selector": "button:has-text(\"Share\")" },
+      "capture": "video",
+      "text": "Share copies that configuration link so teammates open the same welcome screen instantly."
+    },
+    {
+      "id": "preview",
+      "route": "/",
+      "waitForText": ["Preview"],
+      "interaction": { "type": "click", "selector": "button:has-text(\"Preview\")" },
+      "capture": "video",
+      "text": "Preview enters presentation mode so the welcome animation fills the screen without editor chrome."
+    },
+    {
+      "id": "footer",
+      "route": "/",
+      "waitForSelector": [".welcome-footer"],
+      "waitForText": ["Crafted by", "Built with"],
+      "focus": { "selector": ".welcome-footer", "padding": 10 },
+      "settleMs": 400,
+      "text": "The footer credits the crafter in India and links back to Cursor — a polished close for every community session."
+    }
+  ]
+}
