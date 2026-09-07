@@ -1,0 +1,167 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "output": {
+    "video": "public/demo/product-demo.mp4",
+    "captions": "public/demo/product-demo.vtt",
+    "chapters": "public/demo/product-demo.chapters.json",
+    "draftDir": "public/demo/draft"
+  },
+  "video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "fit": "pad",
+    "background": "#14120b"
+  },
+  "branding": {
+    "title": "Cursor Community Welcome",
+    "subtitle": "Configurable animated welcome screens for workshops and events"
+  },
+  "tts": {
+    "provider": "edge-tts",
+    "voice": "en-US-AvaNeural",
+    "rate": "+0%"
+  },
+  "sections": [
+    {
+      "id": "welcome",
+      "kind": "title",
+      "text": "Welcome to the Cursor Community welcome screen — a configurable animated display for workshops and events."
+    },
+    {
+      "id": "home",
+      "route": "/",
+      "waitForText": ["Cursor Ahmedabad", "Welcome", "Workshop"],
+      "waitForSelector": [
+        ".welcome-logo-wrap",
+        ".welcome-brand",
+        ".welcome-heading",
+        ".welcome-date"
+      ],
+      "settleMs": 800,
+      "text": "The home stage opens with the Cursor logo, your community brand, a word-by-word headline, today’s date, and a floating particle backdrop."
+    },
+    {
+      "id": "brand-focus",
+      "route": "/",
+      "waitForText": ["Cursor Ahmedabad"],
+      "focus": { "selector": ".welcome-brand", "padding": 16 },
+      "settleMs": 400,
+      "text": "The brand name is the hero signal — swap it for your chapter or community without touching code."
+    },
+    {
+      "id": "heading-focus",
+      "route": "/",
+      "waitForSelector": [".welcome-heading"],
+      "focus": { "selector": ".welcome-heading", "padding": 12 },
+      "settleMs": 400,
+      "text": "The headline welcomes attendees and animates word by word, with the last few words highlighted for stage presence."
+    },
+    {
+      "id": "date-focus",
+      "route": "/",
+      "waitForSelector": [".welcome-date"],
+      "focus": { "selector": ".welcome-date", "padding": 14 },
+      "settleMs": 300,
+      "text": "The date can follow today automatically, or you can lock a fixed event day from the editor."
+    },
+    {
+      "id": "controls",
+      "route": "/",
+      "waitForText": ["Edit", "Share"],
+      "focus": { "selector": ".fixed.right-5.top-5", "padding": 10 },
+      "settleMs": 300,
+      "text": "Top-right controls open the editor or copy a shareable configuration link. Settings persist in local storage."
+    },
+    {
+      "id": "keyboard-edit",
+      "route": "/",
+      "waitForSelector": [".welcome-stage"],
+      "interaction": { "type": "press", "key": "e" },
+      "capture": "video",
+      "settleMs": 300,
+      "text": "Keyboard shortcuts keep the stage smooth — press E to open the editor, and Escape to close the sidebar."
+    },
+    {
+      "id": "open-editor",
+      "route": "/",
+      "waitForText": ["Edit"],
+      "focus": { "selector": ".fixed.right-5.top-5 button:first-child", "padding": 8 },
+      "interaction": {
+        "type": "click",
+        "selector": "button:has-text(\"Edit\")"
+      },
+      "capture": "video",
+      "settleMs": 400,
+      "text": "Click Edit to open the sidebar. Customize brand, title, date, auto-replay interval, and sponsors without changing any code."
+    },
+    {
+      "id": "editor-fields",
+      "route": "/",
+      "waitForText": ["Edit"],
+      "interaction": {
+        "type": "click",
+        "selector": "button:has-text(\"Edit\")"
+      },
+      "capture": "video",
+      "settleMs": 500,
+      "text": "Tune Use today or a fixed date, set animation replay from five to sixty seconds or turn auto replay off, add up to five sponsor titles and names, and reset to defaults when you need a clean slate."
+    },
+    {
+      "id": "customized",
+      "route": "/?data=%7B%22brand%22%3A%22Cursor%20Mumbai%22%2C%22heading%22%3A%22Welcome%20to%20the%20Cursor%20Community%20Meetup%22%2C%22useAutoDate%22%3Afalse%2C%22customDate%22%3A%222026-09-12%22%2C%22intervalSec%22%3A20%2C%22intervalEnabled%22%3Atrue%2C%22sponsors%22%3A%5B%7B%22title%22%3A%22Gold%20Sponsor%22%2C%22name%22%3A%22Acme%20Corp%22%7D%2C%7B%22title%22%3A%22Community%20Partner%22%2C%22name%22%3A%22DevCafe%22%7D%5D%7D",
+      "waitForText": [
+        "Cursor Mumbai",
+        "Meetup",
+        "Saturday, 12 September 2026",
+        "Gold Sponsor",
+        "Acme Corp"
+      ],
+      "waitForSelector": [".welcome-sponsors", ".welcome-heading"],
+      "settleMs": 900,
+      "text": "Shareable links encode the full configuration — custom brand, meetup headline, a locked event date, replay interval, and sponsor chips — so teammates open the same welcome screen instantly."
+    },
+    {
+      "id": "sponsors-focus",
+      "route": "/",
+      "waitForText": ["Gold Sponsor", "Acme Corp", "DevCafe"],
+      "focus": { "selector": ".welcome-sponsors", "padding": 14 },
+      "settleMs": 500,
+      "text": "Sponsors appear beneath the date with a title and name for each partner, up to five entries on the welcome loop."
+    },
+    {
+      "id": "editor-sponsors",
+      "route": "/",
+      "waitForText": ["Cursor Mumbai", "Edit"],
+      "interaction": {
+        "type": "click",
+        "selector": "button:has-text(\"Edit\")"
+      },
+      "capture": "video",
+      "settleMs": 500,
+      "text": "Re-open the editor anytime to add or remove sponsors, adjust the replay interval, or refine the welcome copy before doors open."
+    },
+    {
+      "id": "share",
+      "route": "/",
+      "waitForText": ["Share", "Cursor Mumbai"],
+      "focus": { "selector": ".fixed.right-5.top-5 button:nth-child(3)", "padding": 8 },
+      "interaction": {
+        "type": "click",
+        "selector": "button:has-text(\"Share\")"
+      },
+      "capture": "video",
+      "settleMs": 400,
+      "text": "Share copies a URL with your configuration in the query string so anyone can restore the same brand, date, interval, and sponsors."
+    },
+    {
+      "id": "footer",
+      "route": "/",
+      "waitForSelector": [".welcome-footer"],
+      "waitForText": ["Krushnasinh Jadeja"],
+      "focus": { "selector": ".welcome-footer", "padding": 12 },
+      "settleMs": 400,
+      "text": "The footer credits the maker, India, and Cursor. That covers the welcome experience — motion, editing, persistence, sponsors, and sharing."
+    }
+  ]
+}
