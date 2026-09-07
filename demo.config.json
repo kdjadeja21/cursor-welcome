@@ -1,0 +1,75 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "output": {
+    "video": "public/demo/product-demo.mp4",
+    "captions": "public/demo/product-demo.vtt",
+    "chapters": "public/demo/product-demo.chapters.json",
+    "draftDir": "public/demo/draft"
+  },
+  "video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "fit": "pad",
+    "background": "#0a0a0a"
+  },
+  "branding": {
+    "title": "Community Welcome Screen",
+    "subtitle": "Animated welcomes for events"
+  },
+  "tts": {
+    "provider": "edge-tts",
+    "voice": "en-US-AvaNeural",
+    "rate": "+5%"
+  },
+  "sections": [
+    {
+      "id": "welcome",
+      "kind": "title",
+      "text": "Welcome to the Community Welcome Screen — built for events and workshops."
+    },
+    {
+      "id": "welcome-animation",
+      "route": "/",
+      "waitForSelector": [".welcome-stage"],
+      "capture": "video",
+      "settleMs": 5000,
+      "text": "Watch the wordmark animate in, the heading reveal word by word, and particles drift across the background."
+    },
+    {
+      "id": "bot-avatars",
+      "route": "/?data=%7B%22theme%22%3A%22spacexai%22%2C%22brand%22%3A%22SpaceXAI%20Ahmedabad%22%2C%22heading%22%3A%22Welcome%20to%20the%20SpaceXAI%20Community%20Workshop%22%2C%22useAutoDate%22%3Atrue%2C%22customDate%22%3A%222026-09-03%22%2C%22intervalSec%22%3A15%2C%22intervalEnabled%22%3Atrue%2C%22botAvatars%22%3Atrue%2C%22sponsors%22%3A%5B%5D%7D",
+      "waitForSelector": [".welcome-stage"],
+      "capture": "video",
+      "settleMs": 4000,
+      "text": "Turn on bot avatars and playful clay characters float behind the welcome stage."
+    },
+    {
+      "id": "editor",
+      "route": "/",
+      "waitForSelector": [".stage-actions"],
+      "interaction": {
+        "type": "click",
+        "selector": "button.stage-btn:has-text('Edit')"
+      },
+      "capture": "video",
+      "text": "Open the editor to customize your brand, title, date, sponsors, and replay interval."
+    },
+    {
+      "id": "grokbot",
+      "route": "/grokbot",
+      "waitForText": ["Grok Bot"],
+      "waitForSelector": [".grokbot-scene", ".welcome-stage"],
+      "capture": "video",
+      "settleMs": 5000,
+      "text": "The Grok Bot screen adds colorful blob characters that bounce and float around the stage."
+    },
+    {
+      "id": "share",
+      "route": "/",
+      "waitForSelector": [".stage-actions"],
+      "focus": { "selector": "button.stage-btn:has-text('Share')", "padding": 8 },
+      "text": "Hit Share to copy a link with your full configuration baked in."
+    }
+  ]
+}
