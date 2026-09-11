@@ -1,0 +1,158 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "output": {
+    "video": "public/demo/product-demo.mp4",
+    "captions": "public/demo/product-demo.vtt",
+    "draftDir": "public/demo/draft"
+  },
+  "video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "fit": "pad",
+    "background": "#14120b"
+  },
+  "branding": {
+    "title": "Cursor Community Welcome",
+    "subtitle": "Animated welcome screens for events and workshops"
+  },
+  "tts": {
+    "provider": "edge-tts",
+    "voice": "en-US-AvaNeural",
+    "rate": "+0%"
+  },
+  "sections": [
+    {
+      "id": "welcome",
+      "kind": "title",
+      "text": "Welcome to the Cursor Community welcome screen — a configurable display for workshops and events."
+    },
+    {
+      "id": "home",
+      "route": "/",
+      "waitForText": ["Cursor Ahmedabad", "Welcome", "Workshop"],
+      "waitForSelector": [
+        ".welcome-logo-wrap",
+        ".welcome-brand",
+        ".welcome-heading",
+        ".welcome-date"
+      ],
+      "settleMs": 900,
+      "text": "The home screen opens with an animated Cursor logo, your community brand, a headline, and today’s date over a floating particle backdrop."
+    },
+    {
+      "id": "brand-focus",
+      "route": "/",
+      "waitForText": ["Cursor Ahmedabad"],
+      "focus": { "selector": ".welcome-brand", "padding": 16 },
+      "settleMs": 400,
+      "text": "The brand name is the hero signal — swap it for your chapter or community without touching code."
+    },
+    {
+      "id": "heading-focus",
+      "route": "/",
+      "waitForSelector": [".welcome-heading"],
+      "focus": { "selector": ".welcome-heading", "padding": 12 },
+      "settleMs": 400,
+      "text": "The headline welcomes attendees and animates word by word for a polished stage presence."
+    },
+    {
+      "id": "date-focus",
+      "route": "/",
+      "waitForSelector": [".welcome-date"],
+      "focus": { "selector": ".welcome-date", "padding": 14 },
+      "settleMs": 300,
+      "text": "The live date updates automatically, or you can lock in a fixed event date from the editor."
+    },
+    {
+      "id": "controls",
+      "route": "/",
+      "waitForText": ["Edit", "Preview", "Share"],
+      "focus": { "selector": ".fixed.right-5.top-5", "padding": 10 },
+      "settleMs": 300,
+      "text": "Top-right controls open the editor, enter presentation mode, or copy a shareable link with your settings. Press E, F, or P as keyboard shortcuts."
+    },
+    {
+      "id": "open-editor",
+      "route": "/",
+      "waitForText": ["Edit"],
+      "focus": { "selector": ".fixed.right-5.top-5 button:first-child", "padding": 8 },
+      "interaction": {
+        "type": "click",
+        "selector": "button:has-text(\"Edit\")"
+      },
+      "capture": "video",
+      "settleMs": 400,
+      "text": "Click Edit — or press E — to open the sidebar. Customize brand, title, date, replay interval, and sponsors. Everything persists in local storage."
+    },
+    {
+      "id": "editor-fields",
+      "route": "/",
+      "waitForText": ["Edit"],
+      "interaction": {
+        "type": "click",
+        "selector": "button:has-text(\"Edit\")"
+      },
+      "capture": "video",
+      "settleMs": 500,
+      "text": "Tune the date with Use today or a fixed day, set animation replay from five to sixty seconds, and add up to five sponsor titles and names."
+    },
+    {
+      "id": "customized",
+      "route": "/?data=%7B%22brand%22%3A%22Cursor%20Mumbai%22%2C%22heading%22%3A%22Welcome%20to%20the%20Cursor%20Community%20Meetup%22%2C%22useAutoDate%22%3Atrue%2C%22customDate%22%3A%222026-08-12%22%2C%22intervalSec%22%3A20%2C%22intervalEnabled%22%3Atrue%2C%22sponsors%22%3A%5B%7B%22title%22%3A%22Gold%20Sponsor%22%2C%22name%22%3A%22Acme%20Corp%22%7D%2C%7B%22title%22%3A%22Community%20Partner%22%2C%22name%22%3A%22DevCafe%22%7D%5D%7D",
+      "waitForText": ["Cursor Mumbai", "Meetup", "Gold Sponsor", "Acme Corp"],
+      "waitForSelector": [".welcome-sponsors"],
+      "settleMs": 900,
+      "text": "After editing, the stage reflects your chapter name, meetup headline, and sponsor line-up — ready for the event."
+    },
+    {
+      "id": "sponsors-focus",
+      "route": "/",
+      "waitForText": ["Gold Sponsor", "Acme Corp"],
+      "focus": { "selector": ".welcome-sponsors", "padding": 14 },
+      "settleMs": 500,
+      "text": "Sponsors appear beneath the date so partners get a clear moment on screen during the welcome loop."
+    },
+    {
+      "id": "editor-sponsors",
+      "route": "/",
+      "waitForText": ["Cursor Mumbai", "Edit"],
+      "interaction": {
+        "type": "click",
+        "selector": "button:has-text(\"Edit\")"
+      },
+      "capture": "video",
+      "settleMs": 500,
+      "text": "Re-open the editor anytime to add or remove sponsors, reset to defaults, or refine the welcome copy before doors open."
+    },
+    {
+      "id": "share",
+      "route": "/",
+      "waitForText": ["Share", "Cursor Mumbai"],
+      "focus": { "selector": ".fixed.right-5.top-5 button:nth-child(3)", "padding": 8 },
+      "interaction": {
+        "type": "click",
+        "selector": "button:has-text(\"Share\")"
+      },
+      "capture": "video",
+      "settleMs": 400,
+      "text": "Share copies a link with your configuration encoded in the URL so teammates open the same welcome screen instantly."
+    },
+    {
+      "id": "preview",
+      "route": "/",
+      "waitForText": ["Preview", "Cursor Mumbai"],
+      "focus": { "selector": ".fixed.right-5.top-5 button:nth-child(2)", "padding": 8 },
+      "settleMs": 400,
+      "text": "Preview — or press F or P — enters fullscreen presentation mode and hides chrome so the welcome screen fills the stage."
+    },
+    {
+      "id": "footer",
+      "route": "/",
+      "waitForSelector": [".welcome-footer"],
+      "focus": { "selector": ".welcome-footer", "padding": 12 },
+      "settleMs": 400,
+      "text": "The footer credits the maker and Cursor. That covers the full welcome experience — motion, editing, sponsors, sharing, and presentation mode."
+    }
+  ]
+}
