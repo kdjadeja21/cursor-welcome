@@ -1,0 +1,142 @@
+@property --orbit {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.countdown-root {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+  user-select: none;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.countdown-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.countdown-frame {
+  position: relative;
+  width: min(94vw, 72rem);
+  height: min(70vh, 36rem);
+}
+
+.countdown-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  animation: countdown-orbit 32s linear infinite;
+}
+
+.countdown-slot {
+  position: absolute;
+  left: calc(
+    50% + cos(calc(var(--angle) + var(--orbit) - 90deg)) * 46%
+  );
+  top: calc(
+    50% + sin(calc(var(--angle) + var(--orbit) - 90deg)) * 41%
+  );
+  width: var(--size);
+  height: var(--size);
+  transform: translate(-50%, -50%) rotate(var(--orbit));
+}
+
+.countdown-upright {
+  width: 100%;
+  height: 100%;
+  transform: rotate(calc(-1 * var(--orbit)));
+}
+
+.countdown-bob {
+  width: 100%;
+  height: 100%;
+  animation: countdown-bob 0.56s ease-in-out infinite;
+  animation-delay: var(--bob-delay, 0s);
+}
+
+.countdown-blob-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.countdown-lockup {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  width: max-content;
+  max-width: 52%;
+  text-align: center;
+}
+
+.countdown-title {
+  margin: 0;
+  font-size: clamp(2.35rem, 6.2vw, 5.1rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+  color: #fff;
+  overflow-wrap: anywhere;
+}
+
+.countdown-timer {
+  margin: 0.18em 0 0;
+  font-size: clamp(1.6rem, 4.3vw, 3.3rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #c5c5c8;
+}
+
+.countdown-credit {
+  position: absolute;
+  left: max(1.25rem, env(safe-area-inset-left));
+  bottom: max(1.15rem, env(safe-area-inset-bottom));
+  z-index: 2;
+  margin: 0;
+  font-size: clamp(0.78rem, 1.5vw, 1.02rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.countdown-credit-title {
+  color: #fff;
+}
+
+.countdown-credit-day {
+  color: #8b5cf6;
+}
+
+@keyframes countdown-orbit {
+  to {
+    --orbit: 360deg;
+  }
+}
+
+@keyframes countdown-bob {
+  0%,
+  100% {
+    transform: translateY(7%);
+  }
+  50% {
+    transform: translateY(-10%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown-ring,
+  .countdown-bob {
+    animation: none !important;
+  }
+}
