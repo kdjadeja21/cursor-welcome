@@ -62,6 +62,32 @@ export function heroCycle(): Cycle {
   };
 }
 
+const RING_STATES: StateId[] = [
+  "idle",
+  "egg",
+  "play",
+  "hexagon",
+  "wink",
+  "idle",
+  "play",
+  "egg",
+];
+
+/** Staggered montage so a ring of bots is not in lockstep. */
+export function ringCycle(shift: number): Cycle {
+  const n = RING_STATES.length;
+  const start = ((shift % n) + n) % n;
+  const order = RING_STATES.slice(start).concat(RING_STATES.slice(0, start));
+  return {
+    name: "",
+    id: "ring",
+    blocks: order.map((state) => ({
+      state,
+      duration: clampDuration(state, STATE_BY_ID.get(state)?.duration ?? 2),
+    })),
+  };
+}
+
 export function totalDuration(blocks: Block[]): number {
   return blocks.reduce((sum, b) => sum + b.duration, 0);
 }
