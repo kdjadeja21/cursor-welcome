@@ -83,7 +83,8 @@
   margin: 0;
   font-size: clamp(2.35rem, 6.2vw, 5.1rem);
   font-weight: 700;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.03em;
+  word-spacing: 0.06em;
   line-height: 1.05;
   color: #fff;
   overflow-wrap: anywhere;
@@ -100,14 +101,15 @@
 
 .countdown-credit {
   position: absolute;
-  left: max(1.25rem, env(safe-area-inset-left));
-  bottom: max(1.15rem, env(safe-area-inset-bottom));
+  left: max(5.25rem, env(safe-area-inset-left));
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
   z-index: 2;
   margin: 0;
   font-size: clamp(0.78rem, 1.5vw, 1.02rem);
   font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .countdown-credit-title {

@@ -10,11 +10,10 @@ import {
 } from "./config";
 import { formatCountdown } from "./format-time";
 
-function useRemainingSeconds(durationSec: number): number {
+function CountdownTimer({ durationSec }: { durationSec: number }) {
   const [remaining, setRemaining] = useState(durationSec);
 
   useEffect(() => {
-    setRemaining(durationSec);
     const startedAt = Date.now();
     const id = window.setInterval(() => {
       const elapsed = Math.floor((Date.now() - startedAt) / 1000);
@@ -25,7 +24,11 @@ function useRemainingSeconds(durationSec: number): number {
     return () => window.clearInterval(id);
   }, [durationSec]);
 
-  return remaining;
+  return (
+    <p className="countdown-timer" role="timer" aria-atomic="true">
+      {formatCountdown(remaining)}
+    </p>
+  );
 }
 
 function BlobSlot({ blob }: { blob: OrbitBlob }) {
@@ -47,8 +50,6 @@ function BlobSlot({ blob }: { blob: OrbitBlob }) {
 }
 
 export function CountdownScene({ config }: { config: CountdownConfig }) {
-  const remaining = useRemainingSeconds(config.durationSec);
-
   return (
     <div className="countdown-root" data-scene="countdown">
       <div className="countdown-stage">
@@ -60,9 +61,10 @@ export function CountdownScene({ config }: { config: CountdownConfig }) {
           </div>
           <div className="countdown-lockup">
             <h1 className="countdown-title">{config.title}</h1>
-            <p className="countdown-timer" role="timer" aria-atomic="true">
-              {formatCountdown(remaining)}
-            </p>
+            <CountdownTimer
+              key={config.durationSec}
+              durationSec={config.durationSec}
+            />
           </div>
         </div>
       </div>
