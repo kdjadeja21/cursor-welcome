@@ -60,6 +60,10 @@ Interactive checks (theme toggle, editor) belong in the feature files. Use a rea
 
 Isolation: two `next dev` processes can share the same tree. Give each a distinct `--port`. They share `localStorage` only if they share an origin. Use different ports so origins differ (`127.0.0.1:3456` vs `127.0.0.1:3457`). Do not reuse a presenter's `localhost:3000` session.
 
+`capture.sh` uses a throwaway Chrome `--user-data-dir` so a locked default profile does not abort the shot. Headless Chrome logs D-Bus noise. Ignore it if the PNG is written.
+
+The on-screen Next.js `N` badge is off via `devIndicators: false` in `next.config.ts`.
+
 ## Evidence
 
 Store proofs under `/tmp/cursor-welcome-verify/` (or a path the caller names). Cleanup must not delete this directory.
