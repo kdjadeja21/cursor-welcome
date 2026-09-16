@@ -41,17 +41,17 @@
 }
 
 .countdown-slot {
-  /* 0deg = top, clockwise. Near side is bottom-right (theta 135°). */
+  /* 0deg = top, clockwise. Near side sits on the right, slightly down. */
   --theta: calc(var(--angle) + var(--orbit));
   --x: sin(var(--theta));
   --y: calc(-1 * cos(var(--theta)));
-  --xr: calc(var(--x) * 0.978 - var(--y) * 0.208);
-  --yr: calc(var(--x) * 0.208 + var(--y) * 0.978);
-  --depth: cos(calc(var(--theta) - 135deg));
-  --scale: calc(0.34 + (var(--depth) + 1) * 0.58);
+  --xr: calc(var(--x) * 0.961 - var(--y) * 0.276);
+  --yr: calc(var(--x) * 0.276 + var(--y) * 0.961);
+  --depth: cos(calc(var(--theta) - 118deg));
+  --scale: calc(0.32 + (var(--depth) + 1) * 0.54);
   position: absolute;
-  left: calc(50% + var(--xr) * 38%);
-  top: calc(50% + var(--yr) * 32%);
+  left: calc(50% + var(--xr) * 40%);
+  top: calc(50% + var(--yr) * 22%);
   width: calc(var(--size) * var(--scale));
   height: calc(var(--size) * var(--scale));
   z-index: calc(20 + var(--depth) * 20);

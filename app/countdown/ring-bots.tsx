@@ -23,6 +23,9 @@ import { ORBIT_BOTS, type OrbitBot } from "./config";
 
 const VB = 110;
 const PAPER = "#000000";
+const EYE_RX = 9;
+const EYE_H = 38;
+const EYE_GAP = 16;
 
 function RingBotSvg({
   fill,
@@ -55,15 +58,22 @@ function RingBotSvg({
           height={VB * 2}
         >
           <path d={frame.bodyPath} fill="#fff" />
-          {frame.eyes.map((eye, i) => (
-            <path
-              key={i}
-              d={eye.d}
-              transform={eye.matrix}
-              opacity={eye.alpha}
-              fill="#000"
-            />
-          ))}
+          <rect
+            x={-EYE_GAP - EYE_RX}
+            y={-EYE_H / 2}
+            width={EYE_RX * 2}
+            height={EYE_H}
+            rx={EYE_RX}
+            fill="#000"
+          />
+          <rect
+            x={EYE_GAP - EYE_RX}
+            y={-EYE_H / 2}
+            width={EYE_RX * 2}
+            height={EYE_H}
+            rx={EYE_RX}
+            fill="#000"
+          />
         </mask>
       </defs>
       <path d={frame.bodyPath} fill={PAPER} />
