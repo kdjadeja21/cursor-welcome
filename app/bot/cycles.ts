@@ -64,11 +64,13 @@ export function heroCycle(): Cycle {
 
 const RING_STATES: StateId[] = [
   "idle",
-  "wink",
   "egg",
-  "hexagon",
   "play",
+  "hexagon",
+  "wink",
   "idle",
+  "play",
+  "egg",
 ];
 
 /** Staggered montage so a ring of bots is not in lockstep. */

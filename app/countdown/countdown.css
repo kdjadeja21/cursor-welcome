@@ -4,6 +4,15 @@
   initial-value: 0deg;
 }
 
+.countdown-root {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
 .countdown-root .stage-actions {
   opacity: 1;
   animation: none;
@@ -19,8 +28,8 @@
 
 .countdown-frame {
   position: relative;
-  width: min(94vw, 72rem);
-  height: min(70vh, 36rem);
+  width: min(96vw, 80rem);
+  height: min(88vh, 52rem);
 }
 
 .countdown-ring {
@@ -32,46 +41,51 @@
 }
 
 .countdown-slot {
+  /* 0deg = top, clockwise. Tilt ~28° so the near side sits bottom-right. */
+  --theta: calc(var(--angle) + var(--orbit));
+  --x: sin(var(--theta));
+  --y: calc(-1 * cos(var(--theta)));
+  --xr: calc(var(--x) * 0.883 + var(--y) * 0.47);
+  --yr: calc(var(--x) * -0.47 + var(--y) * 0.883);
+  --depth: cos(calc(var(--theta) - 135deg));
+  --scale: calc(0.34 + (var(--depth) + 1) * 0.58);
   position: absolute;
-  left: calc(
-    50% + cos(calc(var(--angle) + var(--orbit) - 90deg)) * 46%
-  );
-  top: calc(
-    50% + sin(calc(var(--angle) + var(--orbit) - 90deg)) * 41%
-  );
-  width: var(--size);
-  height: var(--size);
-  overflow: hidden;
-  transform: translate(-50%, -50%) rotate(var(--orbit));
+  left: calc(50% + var(--xr) * 44%);
+  top: calc(50% + var(--yr) * 30%);
+  width: calc(var(--size) * var(--scale));
+  height: calc(var(--size) * var(--scale));
+  z-index: calc(20 + var(--depth) * 20);
+  overflow: visible;
+  transform: translate(-50%, -50%);
 }
 
 .countdown-upright {
   width: 100%;
   height: 100%;
-  transform: rotate(calc(-1 * var(--orbit)));
 }
 
 .countdown-bot-svg {
   display: block;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .countdown-lockup {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
+  transform: translate(-50%, -52%);
+  z-index: 40;
   width: max-content;
   max-width: 52%;
   text-align: center;
+  pointer-events: none;
 }
 
 .countdown-title {
   margin: 0;
-  font-size: clamp(2.35rem, 6.2vw, 5.1rem);
+  font-size: clamp(2.1rem, 5.6vw, 4.4rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   word-spacing: 0.06em;
@@ -82,32 +96,11 @@
 
 .countdown-timer {
   margin: 0.18em 0 0;
-  font-size: clamp(1.6rem, 4.3vw, 3.3rem);
+  font-size: clamp(1.5rem, 4.2vw, 3rem);
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1;
   color: #c5c5c8;
-}
-
-.countdown-credit {
-  position: absolute;
-  left: max(1.25rem, env(safe-area-inset-left));
-  bottom: max(1.15rem, env(safe-area-inset-bottom));
-  z-index: 2;
-  margin: 0;
-  font-size: clamp(0.78rem, 1.5vw, 1.02rem);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-.countdown-credit-title {
-  color: #fff;
-}
-
-.countdown-credit-day {
-  color: #8b5cf6;
 }
 
 @keyframes countdown-orbit {

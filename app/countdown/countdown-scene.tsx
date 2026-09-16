@@ -77,10 +77,9 @@ export function CountdownScene() {
       }
     }
 
-    if (!next && (params.get("title") || params.get("day") || params.get("seconds"))) {
+    if (!next && (params.get("title") || params.get("seconds"))) {
       next = parseCountdownConfig({
         title: params.get("title") ?? undefined,
-        day: params.get("day") ?? undefined,
         seconds: params.get("seconds") ?? undefined,
       });
     }
@@ -204,10 +203,6 @@ export function CountdownScene() {
           </div>
         </div>
       </div>
-      <p className="countdown-credit">
-        <span className="countdown-credit-title">{config.brand}</span>{" "}
-        <span className="countdown-credit-day">{config.dayLabel}</span>
-      </p>
 
       {isHydrated && !isFullscreen ? (
         <div className="stage-actions fixed right-5 top-5 z-30 flex flex-wrap justify-end gap-2">

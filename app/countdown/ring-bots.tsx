@@ -82,8 +82,6 @@ function RingSlot({
   frame: BotFrame;
 }) {
   const style = {
-    width: bot.size,
-    height: bot.size,
     "--size": `${bot.size}px`,
     "--angle": `${bot.angleDeg}deg`,
   } as CSSProperties;

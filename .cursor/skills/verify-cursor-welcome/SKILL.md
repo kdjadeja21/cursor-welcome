@@ -71,7 +71,7 @@ Store proofs under `/tmp/cursor-welcome-verify/` (or a path the caller names). C
 Standards:
 
 - Hit the real route in a browser. `npm run build` alone is not proof.
-- For `/countdown`, the screenshot must show black background, title, MM:SS timer, blob ring, and the Day 2 label.
+- For `/countdown`, the screenshot must show a black background, the title, an MM:SS timer, and a perspective bot ring. There is no corner brand or day label.
 - For the ticking timer, capture twice with ≥1s gap and assert the displayed `MM:SS` changed (or stayed `00:00` if already elapsed).
 - Welcome editor persistence is `localStorage` on that origin. Prove it by reload, not by reading storage APIs from Node.
 

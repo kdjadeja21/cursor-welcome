@@ -1,18 +1,18 @@
 # Keyboard chrome
 
-Welcome stages (`/` and `/grokbot`) listen for `E`, `T`, `F`/`P`, and `Esc`. The countdown bumper does not.
+Welcome stages (`/` and `/grokbot`) listen for `E`, `T`, `F`/`P`, and `Esc`. `/countdown` uses `E`, `F`/`P`, and `Esc` (no theme toggle).
 
 ## Sub-features
 
 - `open-editor` opens the sidebar with `E`.
 - `toggle-theme` on `/` switches SpaceXAI and Cursor.
 - `fullscreen` enters presentation with `F` or `P`.
-- `countdown-ignores` is outdated. `/countdown` now uses the same `E` / `F` / `Esc` chrome as `/`.
+- `countdown-keys` opens the countdown editor with `E` and preview with `F`/`P`.
 
 ## How to get to it (user POV)
 
-- Focus the welcome page (not an input) and press the key.
-- On `/countdown`, there is no editor to open.
+- Focus the page (not an input) and press the key.
+- On `/countdown`, `E` opens the countdown editor.
 
 ## Driving it with capture.sh / Chromium
 

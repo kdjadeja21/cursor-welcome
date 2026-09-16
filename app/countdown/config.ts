@@ -1,7 +1,5 @@
 export interface CountdownConfig {
   title: string;
-  brand: string;
-  dayLabel: string;
   durationSec: number;
   running: boolean;
 }
@@ -13,19 +11,18 @@ export interface OrbitBot {
   angleDeg: number;
 }
 
-export const COUNTDOWN_STORAGE_KEY = "cursor-welcome-countdown-config";
+export const COUNTDOWN_STORAGE_KEY = "cursor-welcome-countdown-config-v2";
 
 export const DEFAULT_COUNTDOWN: CountdownConfig = {
   title: "Grok Bot Galaxy",
-  brand: "Grok Bot Galaxy",
-  dayLabel: "Day 2",
   durationSec: 60,
   running: true,
 };
 
 const MIN_DURATION_SEC = 1;
 const MAX_DURATION_SEC = 99 * 60;
-const STEP_DEG = 360 / 15;
+const BOT_COUNT = 16;
+const STEP_DEG = 360 / BOT_COUNT;
 
 function firstValue(value: unknown): unknown {
   return Array.isArray(value) ? value[0] : value;
@@ -61,23 +58,8 @@ export function parseCountdownConfig(raw: unknown): CountdownConfig {
       ? (raw as Record<string, unknown>)
       : {};
 
-  const title = parseText(
-    firstValue(record.title),
-    DEFAULT_COUNTDOWN.title,
-  );
-  const brandRaw = firstValue(record.brand);
-  const brand =
-    typeof brandRaw === "string"
-      ? brandRaw
-      : title;
-
   return {
-    title,
-    brand,
-    dayLabel: parseText(
-      firstValue(record.dayLabel) ?? firstValue(record.day),
-      DEFAULT_COUNTDOWN.dayLabel,
-    ),
+    title: parseText(firstValue(record.title), DEFAULT_COUNTDOWN.title),
     durationSec: parseDuration(
       firstValue(record.durationSec) ?? firstValue(record.seconds),
     ),
@@ -117,20 +99,23 @@ export function buildCountdownShareUrl(config: CountdownConfig): string {
   return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 }
 
+const RING_SIZE = 86;
+
 export const ORBIT_BOTS: readonly OrbitBot[] = [
-  { id: "1", fill: "#8b5cf6", size: 52, angleDeg: 0 },
-  { id: "2", fill: "#7ec8ff", size: 50, angleDeg: STEP_DEG },
-  { id: "3", fill: "#1d4ed8", size: 74, angleDeg: STEP_DEG * 2 },
-  { id: "4", fill: "#f08a24", size: 108, angleDeg: STEP_DEG * 3 },
-  { id: "5", fill: "#8b5cf6", size: 104, angleDeg: STEP_DEG * 4 },
-  { id: "6", fill: "#3ecf8e", size: 136, angleDeg: STEP_DEG * 5 },
-  { id: "7", fill: "#2ad4e0", size: 72, angleDeg: STEP_DEG * 6 },
-  { id: "8", fill: "#8b5e3c", size: 76, angleDeg: STEP_DEG * 7 },
-  { id: "9", fill: "#1d4ed8", size: 90, angleDeg: STEP_DEG * 8 },
-  { id: "10", fill: "#f08a24", size: 110, angleDeg: STEP_DEG * 9 },
-  { id: "11", fill: "#2ad4e0", size: 48, angleDeg: STEP_DEG * 10 },
-  { id: "12", fill: "#3ecf8e", size: 50, angleDeg: STEP_DEG * 11 },
-  { id: "13", fill: "#e8483f", size: 34, angleDeg: STEP_DEG * 12 },
-  { id: "14", fill: "#8b5e3c", size: 48, angleDeg: STEP_DEG * 13 },
-  { id: "15", fill: "#f08a24", size: 50, angleDeg: STEP_DEG * 14 },
+  { id: "1", fill: "#8b5cf6", size: RING_SIZE, angleDeg: STEP_DEG * 0 },
+  { id: "2", fill: "#14b8a6", size: RING_SIZE, angleDeg: STEP_DEG * 1 },
+  { id: "3", fill: "#2563eb", size: RING_SIZE, angleDeg: STEP_DEG * 2 },
+  { id: "4", fill: "#f08a24", size: RING_SIZE, angleDeg: STEP_DEG * 3 },
+  { id: "5", fill: "#8b5cf6", size: RING_SIZE, angleDeg: STEP_DEG * 4 },
+  { id: "6", fill: "#3ecf8e", size: RING_SIZE, angleDeg: STEP_DEG * 5 },
+  { id: "7", fill: "#f08a24", size: RING_SIZE, angleDeg: STEP_DEG * 6 },
+  { id: "8", fill: "#2563eb", size: RING_SIZE, angleDeg: STEP_DEG * 7 },
+  { id: "9", fill: "#8b5e3c", size: RING_SIZE, angleDeg: STEP_DEG * 8 },
+  { id: "10", fill: "#f08a24", size: RING_SIZE, angleDeg: STEP_DEG * 9 },
+  { id: "11", fill: "#2563eb", size: RING_SIZE, angleDeg: STEP_DEG * 10 },
+  { id: "12", fill: "#3ecf8e", size: RING_SIZE, angleDeg: STEP_DEG * 11 },
+  { id: "13", fill: "#14b8a6", size: RING_SIZE, angleDeg: STEP_DEG * 12 },
+  { id: "14", fill: "#e8483f", size: RING_SIZE, angleDeg: STEP_DEG * 13 },
+  { id: "15", fill: "#8b5e3c", size: RING_SIZE, angleDeg: STEP_DEG * 14 },
+  { id: "16", fill: "#f97316", size: RING_SIZE, angleDeg: STEP_DEG * 15 },
 ];

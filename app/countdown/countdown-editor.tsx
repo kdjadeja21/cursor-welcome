@@ -66,36 +66,6 @@ export function CountdownEditor({
               />
             </label>
 
-            <label className="block space-y-2">
-              <span className="sb-label text-xs font-medium uppercase tracking-[0.12em]">
-                Corner brand
-              </span>
-              <input
-                type="text"
-                value={config.brand}
-                onChange={(event) =>
-                  onChange({ ...config, brand: event.target.value })
-                }
-                className="sb-input"
-                placeholder={DEFAULT_COUNTDOWN.brand}
-              />
-            </label>
-
-            <label className="block space-y-2">
-              <span className="sb-label text-xs font-medium uppercase tracking-[0.12em]">
-                Day
-              </span>
-              <input
-                type="text"
-                value={config.dayLabel}
-                onChange={(event) =>
-                  onChange({ ...config, dayLabel: event.target.value })
-                }
-                className="sb-input"
-                placeholder={DEFAULT_COUNTDOWN.dayLabel}
-              />
-            </label>
-
             <div className="space-y-2">
               <span className="sb-label text-xs font-medium uppercase tracking-[0.12em]">
                 Countdown start
