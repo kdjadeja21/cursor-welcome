@@ -4,14 +4,9 @@
   initial-value: 0deg;
 }
 
-.countdown-root {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  color: #fff;
-  overflow: hidden;
-  user-select: none;
-  font-family: var(--font-inter), system-ui, sans-serif;
+.countdown-root .stage-actions {
+  opacity: 1;
+  animation: none;
 }
 
 .countdown-stage {
@@ -19,6 +14,7 @@
   inset: 0;
   display: grid;
   place-items: center;
+  user-select: none;
 }
 
 .countdown-frame {
@@ -45,6 +41,7 @@
   );
   width: var(--size);
   height: var(--size);
+  overflow: hidden;
   transform: translate(-50%, -50%) rotate(var(--orbit));
 }
 
@@ -54,18 +51,11 @@
   transform: rotate(calc(-1 * var(--orbit)));
 }
 
-.countdown-bob {
-  width: 100%;
-  height: 100%;
-  animation: countdown-bob 0.56s ease-in-out infinite;
-  animation-delay: var(--bob-delay, 0s);
-}
-
-.countdown-blob-svg {
+.countdown-bot-svg {
   display: block;
   width: 100%;
   height: 100%;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .countdown-lockup {
@@ -101,8 +91,8 @@
 
 .countdown-credit {
   position: absolute;
-  left: max(5.25rem, env(safe-area-inset-left));
-  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  left: max(1.25rem, env(safe-area-inset-left));
+  bottom: max(1.15rem, env(safe-area-inset-bottom));
   z-index: 2;
   margin: 0;
   font-size: clamp(0.78rem, 1.5vw, 1.02rem);
@@ -126,19 +116,8 @@
   }
 }
 
-@keyframes countdown-bob {
-  0%,
-  100% {
-    transform: translateY(7%);
-  }
-  50% {
-    transform: translateY(-10%);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .countdown-ring,
-  .countdown-bob {
+  .countdown-ring {
     animation: none !important;
   }
 }

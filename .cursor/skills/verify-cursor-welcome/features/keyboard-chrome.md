@@ -7,7 +7,7 @@ Welcome stages (`/` and `/grokbot`) listen for `E`, `T`, `F`/`P`, and `Esc`. The
 - `open-editor` opens the sidebar with `E`.
 - `toggle-theme` on `/` switches SpaceXAI and Cursor.
 - `fullscreen` enters presentation with `F` or `P`.
-- `countdown-ignores` keeps `/countdown` free of that chrome.
+- `countdown-ignores` is outdated. `/countdown` now uses the same `E` / `F` / `Esc` chrome as `/`.
 
 ## How to get to it (user POV)
 
@@ -21,7 +21,7 @@ Preconditions:
 - Interactive CDP or Playwright page, not a static screenshot helper.
 
 - **Editor.** On `/`, press `E`. Sidebar is visible.
-- **Countdown.** On `/countdown`, press `E`. No editor appears. Capture still shows only the bumper.
+- **Countdown.** On `/countdown`, press `E`. The countdown editor sidebar appears.
 
 ## Gotchas
 

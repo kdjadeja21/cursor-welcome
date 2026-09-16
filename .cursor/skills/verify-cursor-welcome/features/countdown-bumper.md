@@ -1,34 +1,35 @@
 # Countdown bumper
 
-`/countdown` is a black, chrome-free bumper. Centered title, MM:SS timer, clockwise blob ring, bottom-left day label.
+`/countdown` is a black bumper with a morphing bot ring. Title, timer, and corner copy are editable through the same Edit sidebar pattern as `/`.
 
 ## Sub-features
 
-- `countdown-default` loads `/countdown` with title `Grok Bot Galaxy`, timer starting at `01:00`, and `Day 2` in purple.
-- `countdown-tick` advances MM:SS about once per second.
-- `countdown-params` honors `title`, `day`, and `seconds` query params.
-- `countdown-no-chrome` has no Edit / Share / theme controls on the scene.
+- `countdown-default` loads `/countdown` with title `Grok Bot Galaxy`, timer starting at `01:00`, corner brand `Grok Bot Galaxy`, and `Day 2` in purple.
+- `countdown-tick` advances MM:SS about once per second when the timer is running.
+- `countdown-params` honors `title`, `day`, and `seconds` query params, and `?data=` share JSON.
+- `countdown-edit` opens the sidebar from **Edit** or `E` and persists to `localStorage` key `cursor-welcome-countdown-config`.
 
 ## How to get to it (user POV)
 
 - Open `/countdown`.
-- Open `/countdown?title=Grok%20Bot%20Galaxy&day=Day%202&seconds=60` for the video defaults made explicit.
-- Open `/countdown?seconds=5` to watch a short remaining time.
+- Click **Edit** or press `E`.
+- Open `/countdown?title=Grok%20Bot%20Galaxy&day=Day%202&seconds=60` for the video defaults as query params.
+- Open a Share link with `?data=` JSON.
 
 ## Driving it with capture.sh / Chromium
 
 Preconditions:
 
 - Doctor reports 200 for `/countdown`.
-- `prefers-reduced-motion` is not forced unless you are testing the static ring.
+- Use a fresh origin (new port) when you need an empty store.
 
-- **Load bumper.** Run `.cursor/skills/verify-cursor-welcome/scripts/capture.sh --port $PORT --path /countdown --out /tmp/cursor-welcome-verify/countdown.png`. The screenshot shows a black background, the title `Grok Bot Galaxy`, a `MM:SS` timer, a ring of colored blobs with pill eyes, and bottom-left `Grok Bot Galaxy` plus purple `Day 2`.
-- **Tick.** Capture twice, 1500ms apart. The accessible timer text changes unless it is already `00:00`.
-- **Params.** Open `/countdown?title=Hello&day=Day%209&seconds=90`. Title is `Hello`, day label includes `Day 9`, timer starts at `01:30`.
-- **Proof.** Keep `/tmp/cursor-welcome-verify/countdown.png` after teardown.
+- **Load bumper.** Capture `--path /countdown`. The screenshot shows a black background, title, MM:SS timer, colored morphing bots, bottom-left brand plus purple day, and top-right **Edit**.
+- **Open editor.** Click **Edit**. The sidebar named `Countdown editor` shows Title, Corner brand, Day, and Countdown start.
+- **Proof.** Keep the screenshot after teardown.
 
 ## Gotchas
 
-- `/countdown` must not show the welcome editor or particle field. If you see Edit or a Rive intro, you are on the wrong route.
-- Timer first paint is the configured duration. Do not assert a value from wall-clock `Date.now()` in Node.
-- Blob orbit is CSS. A single screenshot proves presence of the ring, not clockwise direction. Direction needs two frames or a short video.
+- Fullscreen hides Edit / Share / Home. Press `Esc` or `F` to leave it.
+- `E` while a text field is focused types the letter instead of opening the sidebar.
+- Simple `title` / `day` / `seconds` params apply only when `data` is absent.
+- Blob orbit is CSS. Morphing faces are rAF. A still proves presence, not clockwise motion.
